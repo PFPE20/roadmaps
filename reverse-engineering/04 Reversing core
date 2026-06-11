@@ -1,0 +1,341 @@
+
+FASE 04 — C → ASSEMBLY x86-64  [REVERSING CORE]
+------------------------------------------------
+
+► Registros fundamentales y sus variantes de tamaño
+  rax, rbx, rcx, rdx (propósito general), rsp (stack pointer), rbp (base pointer), rip (instruction pointer). Cada función que escribas en C se traduce a manipulaciones de estos registros. Investigar que cada registro de 64 bits tiene variantes de menor tamaño que comparten el mismo espacio físico: rax (64 bits) → eax (32 bits) → ax (16 bits) → ah/al (8 bits). Según la arquitectura del binario que analices en CTF verás unas u otras.
+
+► Instrucciones básicas: MOV, PUSH, POP, CALL, RET
+  El prólogo de toda función (push rbp / mov rbp, rsp) y su epílogo
+  (pop rbp / ret). Reconocer este patrón te permite identificar
+  límites de funciones en cualquier binario.
+
+► Condicionales y bucles en Assembly
+  cmp + jz/jnz/jl/jg... Un if en C se convierte en un cmp seguido
+  de un salto condicional. Un for en un bloque con salto hacia atrás.
+
+► Convención de llamada (calling convention)
+  En Linux x86-64, los primeros 6 argumentos van en rdi, rsi, rdx,
+  rcx, r8, r9. El valor de retorno en rax. Saber esto te permite
+  "leer" una llamada a función en Assembly como si fuera C.
+
+// CTF relevance: leer el output de Ghidra/IDA y correlacionarlo
+// con código C que tú mismo hayas compilado
+
+-------------------------------------------------------------
+
+► Registros fundamentales: rax, rbx, rcx, rdx, rsp, rbp, rip
+
+  Los registros fundamentales en la arquitectura x86-64 son componentes clave del procesador que almacenan datos temporalmente durante la ejecución de instrucciones.
+
+  "RAX" (64bits) → "EAX" (32bits) → "AX" (16bits) → "AL | AH" (8bits)
+
+    • Uso principal: Operaciones aritméticas y lógicas. 
+    • Rol especial: Almacena el valor de retorno de funciones.
+    • Es el registro principal para cálculos y operaciones matemáticas. 
+
+  ---
+
+  "RBX" (64bits) → "EBX" (32bits) → "BX" (16bits) → "BL | BH" (8bits)
+
+    • Uso principal: Puntero a datos en la memoria de datos. 
+    • Considerado un registro de propósito general, pero históricamente usado como índice base para acceso a tablas.
+
+  ---
+
+  "RCX" (64 bits) → "ECX" (32bits) → "CX" (16bits) → "CL | CH" (8bits)
+
+    • Uso principal: Contador en bucles y operaciones repetitivas (como rep).
+    • También se usa para pasar el cuarto argumento en llamadas a funciones.
+
+  ---
+
+  "RDX" (64bits) → "EDX" (32bits) → "DX" (16bits) → "DL | DH" (8bits)
+
+    • Uso principal: Soporte en operaciones de multiplicación y división (usado junto con RAX). 
+    • Pasa el tercer argumento en llamadas a funciones.
+
+  ---
+
+  "RSP" (64bits) → "ESP" (32bits) → "SP" (16bits) → "SPL" (8bits)
+
+    • Uso principal: Apunta al tope de la pila (stack). 
+    • Controla la gestión de la pila durante llamadas a funciones, push y pop.
+    • Es crítico para la integridad del flujo del programa.
+
+  ---
+
+  "RBP" (64bits) → "EBP" (32bits) → "BP" (16bits) → "BPL" (8bits)
+
+    • Uso principal: Apunta al fondo del marco de pila (stack frame) actual. 
+    • Ayuda a acceder a variables locales y parámetros de función.
+    • Aunque es de propósito general, se usa predominantemente como marco de pila. 
+
+  ---
+
+  "RIP" (64bits) → "EIP" (32bits) → "IP" (16bits)
+
+    • Uso principal: Contiene la dirección de la próxima instrucción a ejecutar. 
+    • No accesible directamente por el programador en ensamblador ordinario. 
+    • Controla el flujo de ejecución del programa.
+
+-------------------------------------------------------------
+
+► Instrucciones básicas: MOV, PUSH, POP, CALL, RET, LEA, JMP, ADD, SUB
+
+  Las instrucciones MOV, PUSH, POP, CALL y RET son fundamentales en lenguaje ensamblador (x86/x64) y permiten el manejo básico de datos, la gestión de la pila y el control de flujo entre funciones.
+
+  ---
+
+  MOV – MOVSB - MOVSW  Transferencia de datos
+
+    "MOV"
+
+  La instrucción MOV copia un valor de una ubicación a otra. No realiza operaciones aritméticas ni lógicas. 
+
+    MOV destino, origen
+
+    "MOVSB"
+
+  Move Byte String → Mover cadena de bytes.
+
+    "MOVSW"
+
+  Move Word String → Mover cadena de palabras.
+
+  ---
+
+  PUSH y POP – Gestión de la pila
+
+  La pila (stack) es una estructura LIFO (Last In, First Out) usada para almacenar temporalmente datos, como registros o direcciones de retorno. 
+
+    "PUSH – Almacena en la pila"
+
+  Decrementa el puntero de pila (ESP o RSP) y almacena el valor.
+
+    PUSH EAX    ; EAX se guarda en la pila, ESP = ESP - 4 (32 bits)
+
+    "POP – Recupera de la pila"
+
+  Recupera el valor del tope de la pila y luego incrementa ESP. 
+
+    POP EBX     ; EBX = valor del tope, ESP = ESP + 4
+
+  ---
+
+  "CALL" y "RET" – Llamadas a subrutinas
+
+  Estas instrucciones permiten llamar y retornar de funciones. 
+
+    "CALL – Llama a una función"
+
+  • Guarda la dirección de retorno (la siguiente instrucción) en la pila (PUSH EIP).
+  • Salta a la dirección de la función. 
+
+    CALL mi_funcion   
+
+    "RET – Retorna de una función"
+
+  • Extrae la dirección de retorno de la pila (POP EIP).
+  • Salta a esa dirección. 
+
+  ---
+
+  "LEA"
+
+  • "Load Effective Address" → Cargar la dirección efectiva.
+
+  ---
+
+  "JMP" - "JE" - "JNE" - "JG" - "JL"
+
+    "JMP"
+
+  Jump → Salto
+
+    "JE"
+
+  Jump If Equal → Saltar si es igual.
+
+    "JNE"
+
+  Jump if not equal → Saltar si no es igual.
+
+    "JG"
+
+  Jump if greater → Saltar si es mayor.
+
+    "JL"
+
+  Jump if less → Saltar si es menor.
+
+  ---
+
+  ADD - SUB - Sumas / restas
+
+  Las instrucciones ADD y SUB se utilizan para realizar sumas / restas simples de datos binarios en tamaño de bytes, palabras y palabras dobles, es decir, para sumar o restar operandos de 8, 16 o 32 bits, respectivamente.
+
+    ADD/SUB	destination, source
+
+-------------------------------------------------------------
+
+► Condicionales y bucles en Assembly
+
+  En lenguaje ensamblador, los condicionales y bucles se implementan mediante saltos condicionales e incondicionales, que alteran el flujo de ejecución del programa basándose en el estado de los indicadores (flags) del procesador.  A diferencia de los lenguajes de alto nivel, no existen palabras clave como if o for, sino que se usan instrucciones de comparación y salto. 
+
+  "Condicionales"
+
+  Para implementar una estructura condicional (if-else), se siguen estos pasos:
+
+    1. Comparar dos valores con CMP. 
+    2. Saltar si la condición es verdadera (o falsa, según la lógica). 
+    3. Usar etiquetas para marcar los bloques de código.
+
+    Ejemplo: if (a < b)
+
+    -------------------------------------------------------------------------
+    |       mov eax, 10      ; a = 10                                       |
+    |       mov ebx, 20      ; b = 20                                       |
+    |       cmp eax, ebx     ; ¿a < b?                                      |
+    |       jge else         ; Si a >= b, saltar a 'else'                   |
+    |                                                                       |
+    |       ; Bloque 'then'                                                 |
+    |       ; (código si a < b)                                             |
+    |       jmp fin_if       ; Saltar al final para no ejecutar el 'else'   |
+    |                                                                       |
+    |   else:                                                               |
+    |       ; Bloque 'else'                                                 |
+    |       ; (código si a >= b)                                            |
+    |                                                                       |
+    |   fin_if:                                                             |
+    |       ; Continuación del programa                                     |
+    -------------------------------------------------------------------------
+
+    En este caso:
+
+    • CMP eax, ebx establece los flags según la resta eax - ebx.
+    • JGE (Jump if Greater or Equal) salta si eax >= ebx.
+    • Si no salta, ejecuta el bloque then y luego salta (jmp) al final para evitar el else. 
+
+  ---
+
+  "Bucles"
+
+  Los bucles se implementan con saltos que regresan a una etiqueta si una condición se cumple. Los más comunes son while y bucles con contador.
+
+    Ejemplo: Bucle while (contar del 1 al 5)
+
+    -----------------------------------------------------------
+    |       mov ecx, 1       ; Inicializar contador en 1      |
+    |                                                         |
+    |   bucle:                                                |
+    |       ; (código del bucle, por ejemplo, imprimir ecx)   |
+    |       inc ecx          ; Incrementar contador           |
+    |       cmp ecx, 6       ; ¿contador < 6?                 |
+    |       jl bucle         ; Si es menor, repetir           |
+    |                                                         |
+    |       ; Fin del bucle                                   |
+    -----------------------------------------------------------
+
+
+    Ejemplo: Bucle con LOOP (contador en ECX)
+
+    La instrucción LOOP decrementa ECX y salta si no es cero. 
+
+    -----------------------------------------------------------------
+    |       mov ecx, 5       ; Repetir 5 veces                      |
+    |                                                               |
+    |   bucle:                                                      |
+    |       ; (código del bucle)                                    |
+    |       loop bucle       ; Decrementa ECX y salta si ECX != 0   |
+    |                                                               |
+    |       ; Fin del bucle                                         |
+    -----------------------------------------------------------------
+
+  ---
+
+  "Etiquetas"
+
+  Las etiquetas (como bucle:, fin_if:) son nombres simbólicos que el ensamblador convierte en direcciones de memoria. Permiten referenciar puntos del código sin usar números, mejorando la legibilidad y mantenibilidad. 
+
+    -----------------------------------------------------------------
+    |   inicio:                                                     |
+    |       mov eax, 1                                              |
+    |       cmp eax, 10                                             |
+    |       jl inicio   ; Salta de vuelta a 'inicio' si eax < 10    |
+    -----------------------------------------------------------------
+
+-------------------------------------------------------------
+
+► Convención de llamada (calling convention)
+
+  Una convención de llamada es un esquema de bajo nivel que define cómo las funciones o subrutinas reciben parámetros de su llamador, cómo devuelven resultados y cómo se gestiona la pila durante las llamadas.  Es un aspecto clave de la interfaz binaria de aplicaciones (ABI) y asegura la compatibilidad entre código compilado con diferentes herramientas o módulos escritos en distintos lenguajes.
+
+  ---
+
+    "Elementos principales"
+
+  Las convenciones de llamada varían según la arquitectura, el sistema operativo y el compilador, pero comúnmente especifican:
+
+    • Ubicación de los parámetros: si se pasan por registros, por pila o una combinación. 
+
+    • Orden de los argumentos: por ejemplo, de izquierda a derecha (como en cdecl) o de derecha a izquierda. 
+
+    • Responsabilidad de limpieza de la pila: si la función llamada (callee) o la que llama (caller) debe limpiar los argumentos de la pila. 
+
+    • Registros volátiles y no volátiles: qué registros puede modificar la función sin preservarlos, y cuáles debe guardar y restaurar. 
+
+    • Retorno de valores: en qué registro (por ejemplo, EAX en x86) o cómo se devuelve un valor complejo (por referencia). 
+
+  ---
+
+    "Ejemplos comunes en x86"
+
+    • cdecl: Usado por C en sistemas x86. Los argumentos se pasan por pila de derecha a izquierda. El llamador limpia la pila.  Permite funciones con número variable de argumentos (como printf).
+
+    • stdcall: Usado en APIs de Windows. Argumentos por pila (derecha a izquierda), pero el llamado limpia la pila. Más eficiente para funciones con número fijo de parámetros.
+
+    • fastcall: Los primeros argumentos se pasan en registros (por ejemplo, ECX, EDX), el resto por pila. Mejora el rendimiento al reducir el uso de la pila. 
+
+  ---
+
+    "Convención x64 (AMD64)"
+
+  En arquitectura x64, la convención predeterminada (en Windows y Unix) es más eficiente:
+
+    • Los primeros cuatro argumentos enteros se pasan en registros: RCX, RDX, R8, R9. 
+
+    • Los argumentos en coma flotante se pasan en XMM0–XMM3.
+
+    • Los argumentos adicionales se pasan por pila (de derecha a izquierda).
+
+    • El llamador reserva espacio en la pila ("shadow space") y es responsable de limpiarla. 
+
+    • El valor de retorno entero se devuelve en RAX.
+
+    -----------------------------------------------------------------------
+    |   ; Ejemplo: llamada a función en x64                               |
+    |   mov rcx, 1      ; Primer argumento                                |
+    |   mov rdx, 2      ; Segundo argumento                               |
+    |   mov r8, 3       ; Tercer argumento                                |
+    |   mov r9, 4       ; Cuarto argumento                                |
+    |   sub rsp, 32     ; Reserva shadow space                            |
+    |   call mi_funcion                                                   |
+    |   add rsp, 32     ; Limpia la pila (responsabilidad del llamador)   |
+    -----------------------------------------------------------------------
+
+  ---
+
+    "Importancia en interoperabilidad"
+
+  Cuando se combinan módulos de diferentes lenguajes o compiladores (por ejemplo, C++ y Fortran), o al usar bibliotecas dinámicas (DLLs), es crucial que ambas partes usen la misma convención de llamada.  Un desajuste causa errores graves como stack corruption o fallos de segmentación (segfault).
+
+  Por ejemplo, en MinGW (GCC para Windows), un cambio en la convención por defecto a partir de la versión 4.7.0 impidió la compatibilidad entre objetos compilados con versiones antiguas y nuevas, requiriendo recompilación de bibliotecas como SFML. 
+
+  ---
+
+    "Convenciones en otras arquitecturas"
+
+    • ARM (A32): Los primeros cuatro argumentos en r0–r3. El llamado debe preservar r4–r11. El retorno en r0. 
+    
+    • RISC-V: Define registros para argumentos (a0–a7) y convenciones de llamada como RVC (Register Calling Convention). 

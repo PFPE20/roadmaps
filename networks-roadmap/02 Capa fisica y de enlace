@@ -1,0 +1,238 @@
+
+===================================================
+
+        FASE 2 – Capa física y de enlace (cómo viajan los bits)
+
+===================================================
+
+	Objetivo: entender cómo se conectan realmente los dispositivos.
+
+	Conceptos
+
+• Ethernet
+• Punto de acceso inalámbrico
+• Puente de red
+• Brouter (solo a nivel conceptual)
+
+
+	Qué se debe entender aquí
+
+• Ethernet ≠ Internet
+• Qué hace un switch (aunque no lo tengas explícito, debes entenderlo)
+• Qué función cumple un Access Point (y qué NO hace)
+
+	Bloques que se anexan:
+
+• Bloque A – Modelos y arquitectura
+• Bloque B – Protocolos esenciales
+
+	Qué estudiar del bloque en esta fase:
+
+• Ethernet como capa 2
+• Frames
+• MAC addresses
+• ARP (solo como necesidad, no en detalle)
+
+---------------------------------------------------
+
+	--- Cómo se conectan realmente los dispositivos ---
+
+Los dispositivos se conectan mediante enlaces físicos o virtuales que permiten la comunicación e intercambio de datos entre ellos, formados por una combinación de hardware como routers, switches, cables o antenas, y software como protocolos, sistemas operativos y controladores. Esta interconexión se basa en la existencia de nodos —dispositivos como computadoras, servidores, impresoras o teléfonos inteligentes— que poseen una dirección única para su identificación dentro de la red.
+
+La conectividad puede ser de dos tipos principales: física o inalámbrica. Las conexiones físicas requieren cables que unan el emisor con el receptor, como los cables de cobre, fibra óptica o estándares como USB, HDMI o pares trenzados. Por otro lado, las conexiones inalámbricas no necesitan medios físicos y se basan en tecnologías como Wi-Fi, Bluetooth, NFC, radiofrecuencia, satélite o redes móviles (3G, 4G, 5G, y futuros estándares como 6G).
+
+El funcionamiento de estas conexiones depende de varios componentes clave: la tarjeta de red (NIC) que conecta un dispositivo a la red, permitiendo la transmisión y recepción de datos; los switches y routers que gestionan el tráfico dentro de la red o entre redes diferentes; y los protocolos de comunicación, como TCP/IP, que establecen las reglas para el envío y recepción de datos.
+
+Además, la topología de la red —la disposición física o lógica de los nodos y medios de transmisión— influye en cómo se establece la conexión. Entre las topologías comunes se encuentran la estrella (donde todos los nodos se conectan a un nodo central), el bus (donde todos los nodos comparten un solo medio), el anillo (donde los datos circulan en una dirección cerrada) y la malla (donde cada nodo está conectado a múltiples otros, ofreciendo redundancia).
+
+Finalmente, la interconexión entre dispositivos también puede lograrse mediante tecnologías como Bluetooth, Wi-Fi, conexiones USB o aplicaciones específicas, permitiendo compartir información y recursos de forma rápida y eficiente.
+
+	- "¿Qué es la conectividad?" -
+Empezando por lo básico, podemos definir la conectividad como la capacidad de establecer un vínculo o una conexión entre dos elementos. Solemos utilizar el concepto como manera de definir la capacidad de un dispositivo o un conjunto de dispositivos —es decir, un sistema o red— para unirse con otros, semejantes o heterogéneos. Por extensión, también definimos con el término conectividad a la facilidad o disponibilidad de diferentes entidades tecnológicas para vincularse con otras. La conectividad se mantiene a lo largo del ciclo de vida de un dispositivo o una red. La conexión, normalmente, tiene un inicio y un final, sin que ésta afecte a la conectividad o la capacidad para vincularse.
+
+ - "¿Qué Son las Conexiones de infraestructura?" -
+Las conexiones de red son los enlaces que permiten la comunicación entre diferentes dispositivos y sistemas a través de una infraestructura de red. Estas conexiones pueden ser físicas o lógicas y son esenciales para la transmisión de datos en redes locales (LAN), redes de área amplia (WAN), y otras configuraciones más complejas.
+
+Las conexiones de red permiten compartir recursos, acceder a información y mantener la comunicación en tiempo real entre usuarios y dispositivos. Son el pilar sobre el cual se construyen redes corporativas, domésticas y, en última instancia, la propia Internet.
+
+	- "Conexiones de infraestructura: Cómo Funciona y Sus Componentes" -
+El funcionamiento de una conexión a red implica varios componentes clave que trabajan en conjunto para asegurar la transferencia de datos:
+
+• Tarjeta de Red (NIC): Es el hardware que conecta un dispositivo a la red, permitiendo la transmisión y recepción de datos.
+• Cableado o Medios de Transmisión: Pueden ser cables de cobre, fibra óptica o señales inalámbricas que transportan los datos.
+• Switches y Routers: Los switches conectan dispositivos dentro de la misma red, mientras que los routers dirigen el tráfico de datos entre diferentes redes.
+• Protocolos de Comunicación: Como TCP/IP, que establecen reglas y procedimientos para la transferencia de datos entre dispositivos.
+
+ - Conexiones de infraestructuras: Interconexión y Colaboración
+Las redes conectadas son el resultado de la interconexión de varias redes individuales, permitiendo la colaboración y el intercambio de información entre diferentes organizaciones, usuarios y dispositivos. La interconexión puede ser física, mediante cables y equipos, o lógica, a través de la configuración de protocolos y software que aseguran la compatibilidad y la seguridad en la transferencia de datos.
+
+Ejemplos de redes conectadas incluyen las intranets corporativas, que permiten a los empleados acceder a recursos compartidos, y las redes de colaboración entre diferentes empresas para compartir información crítica de manera segura.
+
+ - Tipos de Conexiones de infraestructura: Físicas y Lógicas
+Las conexiones de red se dividen en dos categorías principales:
+
+• Conexiones Físicas: Incluyen todos los medios tangibles a través de los cuales se conectan los dispositivos, como cables Ethernet, fibra óptica, y conexiones inalámbricas mediante antenas.
+• Conexiones Lógicas: Son las configuraciones y protocolos que permiten que la comunicación a través de las conexiones físicas sea posible. Incluyen direcciones IP, puertos de comunicación, y las reglas establecidas por protocolos como TCP/IP o HTTP.
+
+ - ¿Qué Tipo de Conexion es Internet?
+Internet es una red de redes, lo que significa que está compuesta por una vasta cantidad de redes más pequeñas interconectadas a nivel global. Esta interconexión permite que cualquier dispositivo conectado a una red pueda comunicarse con otro en cualquier parte del mundo.
+
+Internet se clasifica principalmente como una red pública y de área global (GAN, por sus siglas en inglés), que se basa en protocolos como el TCP/IP para garantizar la transmisión y recepción de datos a través de diferentes medios y tecnologías. La escalabilidad, redundancia y resiliencia de Internet la convierten en la red más grande y compleja que existe.
+
+ - Tipos de Conexiones a Internet
+Existen varios tipos de conexiones de red a Internet, cada una con sus propias características y ventajas:
+
+• Conexión por Cable: Utiliza un cable coaxial para transmitir datos desde el proveedor de servicios de Internet (ISP) hasta el usuario. Es común en áreas urbanas y ofrece velocidades rápidas y estables.
+• Conexión DSL (Digital Subscriber Line): Transmite datos a través de líneas telefónicas tradicionales. Es más lenta que el cable, pero está disponible en áreas más remotas.
+• Fibra Óptica: Utiliza cables de fibra óptica para transmitir datos a velocidades extremadamente rápidas y con baja latencia. Es la opción más avanzada, aunque aún no está disponible en todas partes.
+• Conexión Satelital: Ideal para zonas rurales o remotas donde otras formas de conexión no son viables. Sin embargo, suele tener mayores latencias y puede verse afectada por condiciones meteorológicas.
+• Conexión Inalámbrica (Wi-Fi y Móviles 4G/5G): Ofrece flexibilidad y movilidad, pero puede ser más vulnerable a interferencias y la velocidad depende de la distancia al punto de acceso o torre celular.
+
+---------------------------------------------------
+
+		--- CONCEPTOS ---
+
+	- "Ethernet" -
+
+Ethernet es una tecnología de red ampliamente utilizada que permite a los ordenadores y dispositivos comunicarse entre sí en una red de área local (LAN). Desarrollada originalmente en la década de 1970 por Robert Metcalfe en Xerox Corporation, se convirtió en la columna vertebral de las redes cableadas modernas gracias a su fiabilidad, velocidad y facilidad de uso. Esta tecnología define el formato de los datos y su modo de transmisión a través de una red, permitiendo la conectividad entre dispositivos como computadoras, impresoras, servidores y routers.
+
+Ethernet funciona enviando paquetes de datos a través de cables utilizando protocolos estandarizados, y cada dispositivo en la red posee una dirección MAC única para su identificación. Los dispositivos se comunican mediante la transmisión de datos en paquetes que contienen información sobre el origen y el destino, y solo el dispositivo destinatario procesa los datos recibidos. Para gestionar el tráfico, Ethernet utiliza métodos como CSMA/CD (Acceso Múltiple con Detección de Portadora y Detección de Colisiones), que ayuda a prevenir y resolver colisiones cuando dos dispositivos intentan transmitir al mismo tiempo.
+
+	- "Punto de acceso inalámbrico" -
+
+Los puntos de acceso inalámbrico (APs o WAPs) son dispositivos inalámbricos capaces de permitir la conexión entre dispositivos Wi-Fi y redes cableadas. Éstos componen las redes de área local inalámbricas (WLANs). Un punto de acceso actúa como un transmisor central y receptor de señales inalámbricas de radio. Los puntos de acceso inalámbrico más comunes cuentan con soporte Wi-Fi y son generalmente utilizados en hogares, para soportar hot spots o puntos calientes públicos en internet, y en redes de empresas para organizar la proliferación de dispositivos móviles inalámbricos en uso.
+
+El punto de acceso puede ser incorporado en un router cableado, o bien puede situarse como un dispositivo independiente.
+
+AP: Access Point
+WAP: Wireless Access Point
+
+	- "Hardwares de puntos de acceso Wi-Fi" -
+
+Los puntos de acceso independientes son pequeños dispositivos físicos similares a los routers de banda ancha caseros. Los routers inalámbricos utilizados para redes caseras cuentan con puntos de acceso incorporados al hardware, y cuentan con la capacidad de trabajar como unidades de tipo AP independientes. Muchos desarrolladores de productos Wi-Fi producen puntos de acceso, lo cual permite a empresas ofrecer conectividad inalámbrica gracias a una conexión vía cable Ethernet entre el punto de acceso y un router cableado. El hardware de tipo AP consiste en transceptores de radio, antenas y firmware del dispositivo.
+
+Los puntos calientes (hotspots) Wi-Fi comúnmente despliegan una o más APs inalámbricas a modo de respaldar un área de cobertura Wi-Fi.
+
+Las redes de empresas o negocios también se caracterizan por instalar APs en sus áreas de trabajo. Mientras que en la mayoría de hogares se requiere de un solo router inalámbrico con un punto de acceso incorporado para cubrir el espacio físico, una empresa puede llegar a implementar muchos de estos. Determinar la ubicación óptima para la instalación de puntos de acceso puede ser una tarea complicada, incluso para profesionales, debido a la necesidad de ocupar un área de una manera igualitaria y ofrecer una señal confiable y estable.
+
+	- "Puente de red" -
+
+Un puente LAN, también conocido como puente de red, es un dispositivo de red crítico diseñado para conectar y administrar múltiples redes de área local (LAN) operando en la capa de enlace de datos, o Capa 2, del Modelo OSI.
+
+Diferente a los routers que operan en la capa de red y determinan rutas para los datos en función de Direcciones IP. Un puente LAN se basa en Direcciones MAC para decidir a dónde se deben reenviar los paquetes de datos. Esto permite que el puente filtre el tráfico de manera eficaz, lo que garantiza que los datos solo se envíen al segmento relevante de la red.
+
+Al vincular segmentos de LAN separados, un puente crea un entorno de red sin interrupciones, lo que permite que los dispositivos de diferentes segmentos se comuniquen como si estuvieran en la misma LAN. Esto no solo mejora la eficiencia de la red, sino que también ayuda a reducir la congestión del tráfico, ya que evita que circulen datos innecesarios por toda la red.
+
+Además, al ampliar el alcance de una LAN, un puente ayuda a segmentar redes más grandes en partes más pequeñas y manejables, mejorando así el rendimiento general y la escalabilidad de la red.
+
+	- "Qué es un segmento de red" -
+
+Un segmento de red es una subred dentro de una red mayor, generalmente conectada a una LAN principal o backbone, que agrupa dispositivos como computadoras y periféricos que comparten un mismo dominio de transmisión y están interconectados, ya sea físicamente o lógicamente. Su función principal consiste en mejorar el rendimiento, la seguridad y la administración de la red al limitar el tráfico y permitir la implementación de políticas específicas por segmento. La segmentación de red implica dividir una red en partes más pequeñas y aisladas, lo que ayuda a reducir el movimiento lateral de amenazas, controlar el flujo de tráfico y minimizar la superficie de ataque frente a ciberataques. Cada segmento puede tener sus propias políticas de seguridad, listas de control de acceso (ACL) y protocolos, proporcionando un control más granular sobre el tráfico y la protección de activos sensibles como datos de clientes o propiedad intelectual.
+
+	- "¿Cómo funciona un puente LAN?" -
+
+Un puente LAN conecta dos o más segmentos de red en la capa de enlace de datos (Capa 2) del modelo OSI, lo que les permite funcionar como una única red unificada. El puente tiene una tabla de direcciones MAC integrada que utiliza para filtrar y reenviar paquetes de datos entre los segmentos conectados. Cuando un paquete de datos llega a uno de los puertos del puente, este examina la dirección MAC de destino del paquete.
+
+Si la dirección MAC de destino se encuentra dentro del mismo segmento de red desde el que se originó el paquete, el puente filtra el paquete, evitando que se reenvíe a otros segmentos, lo que reduce el tráfico innecesario. Si la dirección MAC de destino pertenece a un dispositivo en un segmento diferente, el puente reenvía el paquete al segmento apropiado.
+
+El puente aprende y actualiza continuamente su tabla de direcciones MAC observando las direcciones MAC de origen de los paquetes entrantes. Con el tiempo, este proceso de aprendizaje permite al puente crear un mapa preciso de la red, optimizando el reenvío de paquetes de datos. Este proceso ayuda a mantener una comunicación eficiente entre los segmentos de la red, al tiempo que minimiza la congestión y las colisiones, lo que contribuye a la estabilidad y el rendimiento de la red.
+
+ - Tipos de puentes LAN
+
+• Puente transparente
+
+Un puente transparente es el tipo más común de puente LAN. Funciona aprendiendo las direcciones MAC de los dispositivos en la red a medida que reenvía paquetes de datos entre segmentos de la red. El término "transparente" se refiere al hecho de que los dispositivos en la red no son conscientes de la presencia del puente, que funciona sin problemas en segundo plano. El puente crea una tabla de direcciones MAC observando las tramas entrantes y registrando las direcciones de origen. Cuando se recibe una trama, el puente utiliza esta tabla para decidir si reenviar la trama a otro segmento o filtrarla, reduciendo el tráfico innecesario. Los puentes transparentes son ideales para ampliar las redes LAN o segmentarlas para mejorar el rendimiento.
+
+• Puente de enrutamiento de origen
+
+Los puentes de enrutamiento de origen se utilizan normalmente en redes Token Ring. A diferencia de los puentes transparentes, que se basan en direcciones MAC y una tabla de reenvío construida dinámicamente, los puentes de enrutamiento de origen requieren que el dispositivo de envío especifique la ruta que debe tomar un paquete de datos a través de la red. Esta información se incluye en el encabezado de la trama, lo que permite que el puente reenvíe el paquete según la ruta predeterminada. Si bien este enfoque puede proporcionar un mayor control sobre el enrutamiento de datos, requiere una configuración más compleja y es menos común en las redes modernas. Ethernet esta historia!
+
+• Puente traslacional
+
+Un puente de traducción se utiliza para conectar dos tipos diferentes de arquitecturas de red, como redes Ethernet y Token Ring. Dado que estas redes utilizan diferentes formatos de trama y protocolos, el puente de traducción realiza las conversiones necesarias para permitir la comunicación entre ellas. Esto incluye la traducción entre diferentes formatos de direcciones MAC, tamaños de trama y protocolos de red. Los puentes de traducción son particularmente útiles en entornos donde sistemas heredados necesidad de comunicarse con infraestructuras de red modernas, asegurando interoperabilidad entre diversas tecnologías de red.
+
+- Modelos de puentes LAN
+
+Los puentes LAN se pueden implementar en varios modelos según la arquitectura y los requisitos de la red.
+
+• Puente local: Un puente local conecta varios segmentos de LAN dentro de la misma ubicación física o cerca de ella. Este modelo se utiliza normalmente para dividir una LAN grande en segmentos más pequeños y manejables, lo que reduce la congestión y mejora el rendimiento. Los puentes locales funcionan filtrando y reenviando paquetes de datos entre segmentos según las direcciones MAC, lo que permite que los dispositivos de diferentes segmentos se comuniquen como si estuvieran en la misma red.
+   
+• Puente remoto: Un puente remoto conecta segmentos de LAN que están separados geográficamente, a menudo a través de redes de área amplia (WAN) o diferentes ubicaciones dentro de una organización. Los puentes remotos amplían el alcance de una LAN al reenviar datos entre segmentos distantes, lo que permite una comunicación fluida entre sitios remotos. Por lo general, utilizan conexiones punto a punto, como líneas arrendadas o VPNs, para cerrar la brecha entre redes. Los puentes remotos son esenciales para las organizaciones con múltiples oficinas o sucursales que necesitan mantener una red unificada
+
+• Puente inalámbrico: Un puente inalámbrico conecta segmentos de LAN mediante tecnología inalámbrica en lugar de conexiones cableadas tradicionales. Este modelo es particularmente útil en situaciones en las que el cableado físico es poco práctico o imposible, como la conexión de edificios en un entorno de campus o la vinculación de segmentos de red en una configuración temporal. Los puentes inalámbricos utilizan señales de radiofrecuencia para transmitir datos entre segmentos, lo que proporciona flexabilidad en el diseño de redes. Dependiendo de los requisitos de la red, operan en configuraciones punto a punto o punto a multipunto.
+
+• Puente de capa 2: Un puente de capa 2, también conocido como puente de capa de enlace de datos, opera únicamente en la capa de enlace de datos (Capa 2) del modelo OSI. Reenvía tramas basadas en direcciones MAC sin involucrar ninguna información de la capa de red (Capa 3), como direcciones IP. Los puentes de capa 2 son el tipo de puente más común y se utilizan para crear un entorno de red sin interrupciones mediante la conexión de múltiples segmentos de LAN en un único dominio de difusión. Este modelo simplifica la administración de la red y mejora la eficiencia al reducir el tráfico de difusión.
+
+• Puente de capa 3: Un puente de capa 3 combina la funcionalidad de un puente tradicional con la de un enrutador. Si bien opera principalmente en la capa de enlace de datos, también tiene la capacidad de enrutar datos en función de direcciones IP (capa 3). Este modelo híbrido permite que el puente realice funciones tanto de puenteo como de enrutamiento, lo que lo hace adecuado para entornos de red complejos donde la segmentación y el enrutamiento son necesarios. Los puentes de capa 3 se utilizan a menudo en redes más grandes donde se requiere una segmentación y gestión avanzada del tráfico.
+
+ - Brouter (solo a nivel conceptual)
+
+Un bridge router o brouter es un dispositivo de interconexión de redes de computadoras que funciona como un puente de red y como un enrutador. Un brouter puede ser configurado para actuar como puente de red para parte del tráfico de la red, y como enrutador para el resto.
+
+La diferencia fundamental entre Router y Brouter
+
+• Router: Trabaja en la Capa 3 (IP). Si recibe un paquete de un protocolo que no reconoce o que no es "enrutable" (como protocolos antiguos tipo NetBEUI o tramas de Capa 2 puras), simplemente lo ignora o lo tira.
+• Brouter (Bridge-Router): Trabaja en la Capa 2 y Capa 3. Si el protocolo es conocido (como TCP/IP), actúa como un router inteligente. Si el protocolo es "desconocido" o no enrutable, no lo tira; lo trata como un puente (bridge) y lo reenvía a la otra red basándose en la dirección MAC.
+
+---------------------------------------------------
+
+		--- Ethernet como capa 2 ---
+
+Ethernet opera en la capa de enlace de datos (capa 2) y en la capa física (capa 1) del modelo OSI, definiendo tanto los protocolos de capa 2 como las tecnologías de capa 1. Esta capa se encarga de la comunicación entre dispositivos en la misma red local, gestionando las tramas de datos que se transmiten a través de los medios físicos. La estructura de la trama de Ethernet agrega encabezados y tráilers a la PDU de la capa 3 para encapsular el mensaje que se envía.
+
+La capa 2 de Ethernet se divide en dos subcapas: la subcapa de control de enlace lógico (LLC) y la subcapa de control de acceso al medio (MAC). La subcapa LLC se encarga de la comunicación entre las capas superiores (como el software de red) y las capas inferiores (hardware), tomando los datos del protocolo de red (por ejemplo, un paquete IPv4) y agregando información de control para ayudar a entregar el paquete al nodo de destino. Esta subcapa se implementa en software, generalmente como el controlador de la tarjeta de interfaz de red (NIC). Por otro lado, la subcapa MAC se encarga de la encapsulación de datos, incluyendo la delimitación de trama, el direccionamiento mediante direcciones MAC y la detección de errores, así como del control de acceso al medio, que regula cómo las tramas se colocan en los medios y se recuperan en caso de colisiones. El método clásico de control de acceso para Ethernet es el Acceso múltiple con detección de portadora con detección de colisiones (CSMA/CD).
+
+El direccionamiento de capa 2 en Ethernet se basa en direcciones MAC únicas, que identifican de forma física a los dispositivos en la red local. Estas direcciones no son jerárquicas y solo tienen significado dentro de la red local. Para que los dispositivos puedan comunicarse, es necesario mapear las direcciones IP (capa 3) con las direcciones MAC (capa 2), lo cual se realiza mediante el protocolo ARP (Protocolo de Resolución de Direcciones). ARP utiliza tramas de broadcast y unicast para resolver direcciones IPv4 en direcciones MAC y mantener una tabla de asignaciones.
+
+Existen dos estilos principales de tramas Ethernet: el estándar DIX Ethernet (también conocido como Ethernet II) y el estándar IEEE 802.3. El formato Ethernet II es el más utilizado en redes TCP/IP y utiliza un campo EtherType de dos bytes para identificar el protocolo de capa superior encapsulado en la trama, como IPv4 (0x0800), ARP (0x0806) o IPv6 (0x86DD). En contraste, el estándar IEEE 802.3 utiliza un campo de longitud en lugar de EtherType, lo que requiere un encabezado IEEE 802.2 para especificar el tipo de protocolo.
+
+	- "Frames" -
+
+Un frame (trama en español) es una unidad de datos que se transmite a través de una red y contiene información sobre la fuente y el destino de los datos. Es la unidad de datos en la capa de enlace de datos del modelo OSI (capa 2), utilizada para la comunicación entre dispositivos dentro de una misma red local (LAN). Cada frame incluye un encabezado que contiene información de control y direcciones MAC (origen y destino), así como una cola (trailer) que incluye una verificación de integridad (FCS, Frame Check Sequence) para detectar errores. El payload o contenido de datos contiene la información que se desea transmitir. Cuando un dispositivo necesita enviar datos a través de una red, divide la información en frames, cada uno con su propio encabezado y payload, para facilitar la transmisión confiable entre dispositivos de red. Esta estructura permite que los switches y otros dispositivos de red dirijan correctamente los datos hacia su destino.
+
+	- "MAC addresses" -
+
+La dirección MAC (Media Access Control) es un identificador único de 48 bits asignado por el fabricante a la tarjeta de red de cada dispositivo, como ordenadores, móviles, routers o impresoras, y actúa como una huella digital del hardware. Está compuesta por 12 dígitos hexadecimales (del 0 al 9 y de la A a la F), agrupados generalmente en seis pares separados por dos puntos, guiones o espacios, como en 00:1e:c2:9e:28:6b. Los seis primeros dígitos identifican al fabricante del dispositivo, mientras que los seis últimos corresponden a un número específico asignado por ese fabricante para diferenciar cada interfaz de red. Esta dirección se utiliza en la capa 2 del modelo OSI (capa de enlace de datos) para garantizar que los datos se entreguen al dispositivo correcto dentro de una red local, como una red WiFi o cableada.
+
+	- "ARP (solo como necesidad, no en detalle)" -
+
+El Protocolo de Resolución de Direcciones (ARP → Address Resolution Protocol) es un protocolo de red fundamental que permite asociar direcciones IP, que son lógicas y dinámicas, con direcciones MAC, que son físicas y fijas, en una red local (LAN). Este proceso es esencial para que los dispositivos puedan comunicarse entre sí, ya que los paquetes de datos se transmiten a través de la capa de enlace de datos utilizando direcciones MAC, mientras que las direcciones IP se utilizan en la capa de red. Cuando un dispositivo necesita enviar información a otro, primero verifica su caché ARP para ver si ya conoce la dirección MAC correspondiente a la dirección IP de destino; si no la encuentra, envía una solicitud ARP a todos los dispositivos de la red para obtener dicha información. El dispositivo con la dirección IP solicitada responde con su propia dirección MAC, permitiendo así la comunicación directa entre los dispositivos. ARP opera en la capa 2 del modelo OSI, también conocida como la capa de enlace de datos, y es un componente crítico del conjunto de protocolos TCP/IP.
+
+---------------------------------------------------
+
+1. ¿Qué diferencia hay entre transmitir datos y enrutar datos?
+
+   La transmisión de datos se refiere al proceso de enviar información a través de de una red, ya sea mediante señales eléctricas, inalámbricas o fibra óptica y puede realizarse mediante métodos síncronos, asíncronos o de paquetes. En este último los datos se dividen en paquetes pequeños facilitando su transmisión mejorando su eficiencia. Por otra parte enrutar datos se refiere a el proceso de encontrar una ruta específica que ayude a llegar la información (datos) desde su origen a su destino a través de una red. Esto implica que los paquetes utilizan/analizan las direcciones de destino en los paquetes y tablas de enrutamiento para decidir el camino óptimo. A diferencia de la transmisión que se encarga del del envío de los datos, el enrutamiento se encarga de elegir el camino más óptimo para hacer llegar esos datos/paquetes. En resumen, la transimisión se encarga de enviar los datos y el enrutamiento de guiarlos hasta su destino.
+   
+2. ¿Qué papel cumple Ethernet dentro de una red local?
+
+   Proporciona tecnología estandarizada para conectar los dispositivos en una red, permitiendo su comunicación eficiente y fiable. Define el formato de datos y su medio físico, ya sea cableado por par trenzado, coaxial, fibra óptica, o también inalámbrico, aunque su uso principal es en conexiones alámbricas.
+   
+   Su función es facilitar la transferencia de datos mediante la transmisión de información de paquetes, cada uno con una dirección MAC de origen y destino, lo que permite que sólo el dispositivo destinatario procese la información.
+   
+   También garantiza la conectividad dentro de una red local, proporciona la infraestructura necesaria para el acceso a internet a través de un router, y ofrece alta velocidad de transmisión.
+   
+   En resumen Ethernet es la base tecnológica que permite la comunicación, el intercambio rápido de datos y la integración de dispositivos en una red local, siendo la tecnología más común para redes cableadas.
+   
+3. ¿Qué función tiene un punto de acceso inalámbrico y qué función no tiene?
+
+   Los puntos de acceso son ideales para extender la señal Wi-Fi en espacios grandes, donde un solo router no puede proporcionar cobertura completa para todo el espacio. A diferencia de los repetidores, que amplifican la señal inalámbrica existente pero reducen hasta un 50& la calidad de la señal, los puntos de acceso generan una nueva señal inalámbrica desde una conexión cableada, lo que garantiza una conexión más estable y de mayor rendimiento. Además permite gestionar múltiples conexiones en simultáneo.
+   
+   Sin embargo, un punto de acceso no tiene la función de crear una red nueva ni de proporcionar enrutamiento o acceso a internet por sí solo. No actúa como pasarela entre la red local e internet, tarea que corresponde al router, que también gestiona funciones como asignar direcciones IP mediante DCHP y enrutamiento de paquetes. Aunque algunos routes incluyen funciones de punto de acceso, un AP no puede reemplazar a un router ya que no puede gestionar la conexión a internet ni proporcionar servicios de enrutamiento. Asímismo, no puede funcionar como un dispositivo independiente en una red inalámbrica sin conexión a una red cableada.
+   
+4. ¿Por qué un dispositivo puede comunicarse dentro de la red sin conocer direcciones IP externas?
+
+   Un dispositivo puede comunicarse dentro de una red local gracias a la IP privada. Estas IP privadas son únicas dentro del segmento de red y permiten que los dispositivos se identifiquen y se comuniquen entre sí sin necesidad de acceder a internet. El router o modem que conecta esta red local con internet actúa como traductor de direcciones mediante NAT (Network Access Translation), permite que múltiples dispositivos con direcciones IP privadas compartan una sola dirección IP pública para comunicarse con el exterior. Eso significa que el tráfico interno se gestiona exclusiamente con las direcciones privadas y el tráfico externo se traduce a la IP pública del router. Como resultado los dispositivos pueden comunicarse entre sí sin que sea necesario conocer y usar las direcciones de IP externas.
+   
+5. ¿Qué información permite identificar a un dispositivo dentro de una red local?
+   
+   Una dirección de IP privada permite identificar dispositivos conectados a una red local, ya que será la única en esa red y se utiliza para permitir la comunicación de los dispositivos. Esta dirección se asigna a los dispositivos cuando se conectan a la red. Además el protocolo de resoluciones de direcciones (ARP) asocia la dirección de IP con la dirección MAC de la capa 2 lo que permite identificar el dispositivo de forma precisa en la red. Herramientas de descubrimiento de red utilizan protocolos como ARP, SNMP y ping para detectar y recopilar información sobre dispositivos, incluyendo sus direcciones IP, nombres, SO y estados de conexión.
+   
+6. ¿Por qué el tráfico local no necesita pasar por un router?
+   
+   El tráfico local no necesita pasar por un router ya que los switches operan en un nivel de capa 2 del modelo OSI, gestionan el tráfico de una red local mediante las MAC de los dispositivos, lo que permite una conmutación eficiente y directa entre dispositivos sin necesidad de enrutamiento. Un switch aprende las direcciones MAC de los dispositivos conectados a sus puertos y envía la información al puerto correspondiente, optimizando el consumo de ancho de banda y reduciendo el tráfico innecesario. En cambio el router operan en la capa 3, gestionando el enrutamiento entre redes, lo que implica la inspección de IP y desiciones de rutas basadas en las tablas de enrutamiento. Por lo tanto, cuando dos dispositivos están en la misma red local, se comunican usando el switch y evitando el paso por el router.
+
+Criterio de cierre:
+Puedes describir cómo dos dispositivos se comunican sin salir de la red local.
+
+---------------------------------------------------

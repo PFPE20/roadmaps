@@ -1,0 +1,152 @@
+
+FASE 02 — PUNTEROS Y GESTIÓN DE MEMORIA  [MEMORIA]
+---------------------------------------------------
+
+► ¿Qué es un puntero?
+  Una variable que guarda una dirección de memoria en lugar de un
+  valor. "int *p = &x" — p contiene la dirección donde vive x.
+  Cuando hagas reversing, los punteros aparecen constantemente como
+  valores hex (ej. 0x7ffd3a2c).
+
+► Stack vs Heap
+  El stack es automático (variables locales, parámetros). El heap es
+  manual (malloc/free). En CTFs de pwn, la distinción es crítica:
+  los exploits atacan uno u otro con técnicas distintas.
+
+► Aritmética de punteros
+  p + 1 no suma 1 byte sino sizeof(*p) bytes. Entender esto explica
+  cómo se recorren arrays en memoria y cómo los desensambladores
+  calculan offsets.
+
+► Estructuras (struct) y su layout en memoria
+  Una struct es un bloque contiguo de bytes. Conocer el padding y
+  alignment te permite reconstruir estructuras de datos cuando
+  analizas binarios sin código fuente.
+
+// CTF relevance: leer el estado del stack y heap en GDB durante
+// análisis dinámico
+
+-------------------------------------------------------------
+
+► ¿Qué es un puntero?
+
+  Un puntero es una variable que contiene la dirección de memoria de otra variable que contiene al dato en un arreglo. Esto quiere decir, que el puntero apunta al espacio físico donde está el dato o la variable. Un puntero puede apuntar a un objeto de cualquier tipo, como por ejemplo, a una estructura o una función. Los punteros se pueden utilizar para referencia y manipular estructuras de datos, para referenciar bloques de memoria asignados dinámicamente y para proveer el paso de argumentos por referencias en las llamadas a funciones.
+
+  Muchas de las funciones estándares de C, trabajan con punteros, como es el caso del scanf o strcpy. Estas funciones reciben o devuelven un valor que es un puntero. Por ejemplo: A scanf se le pasa la dirección de memoria del dato a leer...
+
+  -----------------------
+  |   char a;           |
+  |   scanf ("%c",&a);  |
+  -----------------------
+
+  En este caso se le pasa la dirección de memoria de la variable a, la cual tiene reservado un espacio en la memoria por el compilador
+
+    Declarando punteros
+
+    Ya se dijo que un puntero es una variable que guarda la dirección de memoria de otra variable. Un puntero se declara igual que cualquier otra variable, pero anteponiendo un * (asterisco) antes del nombre de la variable.
+
+    Su sintaxis sería:
+
+    tipo *NombrePuntero = NULL; Se iguala a NULL para saber que no tiene asignada ninguna dirección.
+
+    Donde tipo es el tipo de dato al que referenciará este puntero, es decir, que si se necesita guardar la dirección de memoria de un dato int, se necesita un puntero de tipo int.
+
+    Explicación
+
+      ---------------------------------------------------------------------------------------------
+      |   #include <stdio.h>                                                                      |
+      |                                                                                           |
+      |   int main()                                                                              |
+      |   {                                                                                       |
+      |        int a=0; //Declaración de variable entera de tipo entero                           |
+      |        int *puntero; //Declaración de variable puntero de tipo entero                     |
+      |        puntero = &a; //Asignación de la dirección memoria de a                            |
+      |                                                                                           |
+      |        printf("El valor de a es: %d. \nEl valor de *puntero es: %d. \n",a,*puntero);      |
+      |        printf("La dirección de memoria de *puntero es: %p",puntero);                      |
+      |                                                                                           |
+      |        return 0;                                                                          |
+      |   }                                                                                       |
+      ---------------------------------------------------------------------------------------------
+
+      El operador *, nos permite acceder al valor de la dirección del puntero, en este caso nos permite acceder al valor que contiene a la variable a. De esta forma "a" y "*puntero" muestran el mismo dato, pero esto no quiere decir que sea lo mismo, uno es un entero y el otro un puntero.
+
+      La impresión con %p, es para poder imprimir la dirección de memoria en valor hexadecimal (0x...), también podemos imprimir: ...%p",&a) y funciona de la misma forma, y es lógico que tanto "a" como "puntero" tienen la misma dirección de memoria.
+
+    ¿Diferentes direcciones?
+
+    Tal vez notaste que en cada ejecución la dirección de memoria cambia, esto es porque es el sistema operativo quien está encargado de administrar la memoria y es éste quien dice qué espacios podrá tomar el programa.
+
+    Esto quiere decir que uno no puede asignarle una dirección de memoria a un puntero directamente, es decir yo no puedo hacer lo siguiente.
+
+      int *puntero=0xbfc5b1c8;
+
+    Esto no puedo ni debo hacerlo ya que yo no sé que está haciendo esta dirección de memoria, si el sistema la tiene o no disponible, etc... Pero sí puedo hacer esto:
+
+      int *puntero=NULL;
+
+    NULL, es el espacio en memoria con dirección 0, esto quiere decir que existe, lo que significa que le asignamos una dirección válida al puntero, pero el valor que tiene NULL no se nos permite modificarlo, ya que pertenece al sistema.
+
+    Operadores
+
+    • Operador de Dirección (&): Este nos permite acceder a la dirección de memoria de una variable.
+
+    • Operador de Indirección (*): Además de que nos permite declarar un tipo de dato puntero, también nos permite ver el VALOR que está en la dirección asignada.
+
+    • Incrementos (++) y Decrementos (--): Te darás cuenta que puedes usar un puntero como si de un array se tratase, es por esto que permite estos operadores.
+
+-------------------------------------------------------------
+
+► Stack vs Heap
+
+  Stack y Heap son dos áreas de memoria distintas en la ejecución de un programa, cada una con propósitos y características específicas.
+
+  "Stack"
+
+    • Almacenamiento: Usa un enfoque LIFO (Último en entrar, primero en salir).
+    • Manejo: Administrado automáticamente por el sistema; se asigna al llamar a una función y se libera al salir.
+    • Velocidad: Más rápido debido a la asignación y liberación sencilla mediante un puntero de pila.
+    • Tamaño: Fijo y limitado; puede causar un desbordamiento de pila (stack overflow) si se excede.
+    • Uso: Variables locales, parámetros de funciones y datos de control (como direcciones de retorno).
+    • Acceso: Solo accesible durante la ejecución de una función activa. 
+
+  "Heap"
+
+    • Almacenamiento: Memoria dinámica, sin orden fijo; asignada en bloques aleatorios.
+    • Manejo: Requiere gestión manual (en C/C++) o mediante recolector de basura (en Java, Python, etc.).
+    • Velocidad: Más lento debido a la complejidad de gestión y fragmentación.
+    • Tamaño: Más grande y flexible; puede crecer según sea necesario.
+    • Uso: Objetos, estructuras de datos grandes (listas enlazadas, árboles), datos que deben persistir más allá de una función.
+    • Acceso: Accesible desde cualquier parte del programa mientras se mantenga una referencia. 
+
+-------------------------------------------------------------
+
+► Aritmética de punteros
+
+  La aritmética de punteros es una característica poderosa en C que te permite manipular direcciones de memoria sumando o restando valores. Una de las aplicaciones más comunes de la aritmética de punteros es el recorrido de arrays. Utilizando punteros, podemos recorrer eficientemente arrays tanto en dirección hacia adelante como hacia atrás.
+
+    • Suma y resta: Al sumar o restar un entero a un puntero, éste se desplaza por un número de posiciones igual al valor entero multiplicado por el tamaño del tipo de datos. Por ejemplo, si int *ptr apunta a una dirección, ptr + 1 apuntará a la siguiente posición de memoria ocupada por un entero (normalmente 4 bytes). 
+
+    • Uso en arreglos: El nombre de un arreglo actúa como un puntero constante al primer elemento. Así, arr[i] es equivalente a *(arr + i), lo que permite recorrer arreglos usando aritmética de punteros. 
+
+    • Comparación de punteros: Se pueden comparar punteros usando operadores como ==, !=, <, >, <=, >=, pero solo si apuntan a elementos de la misma matriz o a una posición inmediatamente posterior al último elemento. 
+
+    • Operaciones permitidas: Solo se permiten suma y resta con enteros, y comparaciones entre punteros relacionados. No se permite sumar o restar dos punteros directamente, ya que esto produce un comportamiento indefinido. 
+
+-------------------------------------------------------------
+
+► Estructuras (struct) y su layout en memoria
+
+  Estructuras (struct) en C son tipos de datos definidos por el usuario que agrupan variables de diferentes tipos bajo un único nombre, permitiendo manejar datos relacionados de forma conjunta.  Internamente, una struct se almacena en memoria de forma contigua, con sus miembros almacenados en el orden en que se declararon.
+
+  "Los STRUCT son estructuras de datos que permiten agrupar variables de diferentes tipos en una sola entidad."
+
+    Layout en memoria de una struct
+
+  • Asignación contigua: Los miembros de una struct se almacenan en bloques consecutivos de memoria. 
+
+  • Relleno (padding): El compilador puede insertar bytes vacíos (relleno) entre miembros para alinearlos correctamente según sus tamaños. Esto mejora el rendimiento de acceso a memoria, ya que los procesadores acceden más rápido a datos alineados.
+
+    Por ejemplo, si una struct contiene un char (1 byte) seguido de un int (4 bytes), el compilador añadirá 3 bytes de relleno después del char para que el int comience en una dirección múltiplo de 4.
+
+  • Tamaño total: El tamaño de una struct es la suma del tamaño de todos sus miembros más el relleno necesario. Puedes verificarlo con sizeof(struct Nombre).

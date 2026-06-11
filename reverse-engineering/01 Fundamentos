@@ -1,0 +1,810 @@
+
+
+FASE 01 — C DESDE CERO: SINTAXIS Y ESTRUCTURA  [FUNDAMENTOS]
+-------------------------------------------------------------
+
+► Tipos de datos y tamaños en memoria
+  char (1B), short (2B), int (4B), long (8B). Lo que ya sabes de bits
+  se vuelve concreto aquí: un int son exactamente 32 bits en
+  representación complemento a 2. Aprender sizeof().
+
+► Variables, operadores y control de flujo
+  Aritmética, comparaciones, if/else, bucles for/while. Los operadores
+  &, |, ^, ~, <<, >> que ya conoces existen nativamente en C.
+
+► Funciones: declaración, tipos de retorno y el stack
+  En C toda función se declara indicando su tipo de retorno (void, int, 
+  float...), su nombre y sus parámetros con sus respectivos tipos. 
+  Investigar la diferencia entre definición, declaración y prototipo. 
+  Cada vez que se llama a una función, el programa crea un stack 
+  frame con sus variables locales y parámetros — este mecanismo es exactamente 
+  lo que verás reflejado en el desensamblado en fases posteriores.
+
+► Arrays y strings en C
+  Un string en C es un array de char terminado en \0 (byte nulo =
+  0x00 en hex). Entender esto es clave para reconocer strings en
+  memoria al hacer reversing.
+
+► Entorno de desarrollo y compilación básica con GCC
+  Antes de escribir cualquier programa en C, entender el flujo obligatorio: 
+  escribir el .c → compilar con gcc → ejecutar el binario resultante.
+  A diferencia de lenguajes interpretados, C requiere este paso intermedio
+  siempre. Investigar también las flags más usadas de gcc (-o, -g, -S, 
+  -Wall) y el uso básico de make.
+
+// CTF relevance: reconocer tipos y estructuras de control al leer
+// pseudocódigo en Ghidra/IDA
+
+-------------------------------------------------------------
+
+► Tipos de datos y tamaños en memoria
+
+  La importancia de los tipos de datos en C
+  
+  El lenguaje C es uno de los más adecuados para crear programas eficientes. La clave de esta eficiencia radica en la comprensión y el uso correcto de los tipos de datos. Los tipos de datos determinan el tipo y el rango de valores que una variable puede almacenar y están directamente relacionados con el uso eficiente de la memoria.
+
+  ---
+
+  Tipos de datos básicos en C
+
+  "Tipos enteros (int, short, long, long long)"
+  
+  En C, los tipos enteros incluyen int, short, long y long long. Cada uno difiere en rango y tamaño. Por ejemplo, el tipo int suele ocupar 4 bytes y puede almacenar valores entre -2147483648 y 2147483647, aunque este tamaño puede variar según el entorno.
+
+  • "short": normalmente 2 bytes, almacena valores de -32768 a 32767
+  • "long": normalmente 4 bytes, almacena valores de -2147483648 a 2147483647
+  • "long" long: normalmente 8 bytes, almacena valores de -9223372036854775808 a 9223372036854775807
+
+  "Tipos de punto flotante (float, double, long double)"
+
+  Los tipos de punto flotante se utilizan para almacenar valores con decimales. En C existen tres: float, double y long double.
+
+  • "float": precisión simple, tamaño de 4 bytes. Puede representar valores muy pequeños y muy grandes.
+  • "double": precisión doble, mayor exactitud que float, con tamaño de 8 bytes.
+  • "long double": precisión extendida, mayor que double, generalmente 8 bytes o más.
+
+  "Tipo carácter (char)"
+
+  El tipo char se utiliza para almacenar caracteres, pero en realidad funciona como un entero de 1 byte. Normalmente, char puede representar valores entre -128 y 127, aunque se puede declarar como con signo o sin signo.
+
+  ---
+
+  Detalles de los tipos de datos
+
+  "Detalles de los tipos enteros"
+
+  Los tipos enteros en C existen en versiones con signo y sin signo. Por defecto, int y short son con signo, pero pueden declararse como sin signo utilizando la palabra clave unsigned.
+
+  • "unsigned int": almacena valores de 0 a 4294967295
+  • "unsigned short": almacena valores de 0 a 65535
+  • "unsigned long": almacena valores de 0 a 4294967295
+
+  "Uso y consideraciones de short y long"
+
+  Al usar short, el tamaño de un entero suele reducirse a la mitad (por ejemplo, short int normalmente ocupa 2 bytes). En muchos casos, añadir long no cambia el tamaño de un entero, salvo long long que lo duplica.
+
+  "Diferencias entre signed y unsigned"
+
+  "signed" permite almacenar números negativos, mientras que unsigned no lo permite, pero amplía el rango positivo. Por ejemplo, "unsigned int" puede almacenar valores de 0 a 4294967295.
+
+  ---
+
+  Comprobar el tamaño de un tipo con sizeof
+
+  En C se puede usar el operador "sizeof" para verificar el tamaño en bytes de un tipo. Esto es útil al desarrollar en diferentes entornos.
+
+    #include <stdio.h>
+
+    int main(void){
+      printf("char : %dn", sizeof(char));
+      printf("int : %dn", sizeof(int));
+      printf("long int : %dn", sizeof(long int));
+      printf("float : %dn", sizeof(float));
+      printf("double : %dn", sizeof(double));
+
+      return 0;
+    }
+
+  ---
+
+  Modelos de datos y diferencias según el entorno
+
+  "Modelos de datos (LLP64, LP64, etc.)"
+
+  Los tipos de datos en C siguen diferentes modelos de datos según la plataforma y el compilador. Los más comunes son LLP64 y LP64.
+
+  • "LLP64": usado en entornos Windows de 64 bits. int = 32 bits, long = 32 bits, long long = 64 bits.
+  • "LP64": usado en sistemas Unix (Linux, macOS) de 64 bits. int = 32 bits, long y long long = 64 bits.
+
+  "Diferencias de tamaño según el sistema operativo"
+
+  En Windows y Unix, el mismo tipo de dato puede tener tamaños distintos. Ejemplo: en Windows de 64 bits, long ocupa 4 bytes, mientras que en Unix de 64 bits ocupa 8 bytes. Conocer estas diferencias es vital para el desarrollo multiplataforma.
+
+  "Diferencias entre entornos de 32 y 64 bits"
+
+  En sistemas de 64 bits, los tipos de datos pueden manejar rangos más amplios gracias a una mayor capacidad de memoria, especialmente en "long" y "long long".
+
+  ---
+
+  Ejemplos prácticos y consideraciones
+
+  "Consideraciones al elegir un tipo de dato"
+
+  Es necesario considerar el rango de valores y la eficiencia de memoria. Si no se usan números negativos, conviene emplear unsigned para ampliar el rango positivo.
+
+  "Selección según eficiencia de memoria y rendimiento"
+
+  Elegir tipos adecuados mejora la eficiencia de memoria. Ejemplo: short consume menos memoria que int, pero con menor rango.
+
+  "Comprobar si char es con signo o sin signo"
+
+  Para determinarlo se puede usar el macro "CHAR_MIN" de "limits.h", o en algunos compiladores el macro "__CHAR_UNSIGNED__".
+
+    ------------------------------------------------------
+    |   #include <stdio.h>                               |
+    |   #include <limits.h>                              |
+    |                                                    |
+    |   int main(void){                                  |
+    |       if (CHAR_MIN < 0) {                          |
+    |           printf("El tipo char es con signo\n");   |
+    |       } else {                                     |
+    |           printf("El tipo char es sin signo\n");   |
+    |       }                                            |
+    |       return 0;                                    |
+    |   }                                                |
+    ------------------------------------------------------
+
+  "Ejemplo en un programa y explicación de su salida"
+
+  El siguiente código declara variables de distintos tipos de datos y muestra sus valores y tamaños:
+
+    ------------------------------------------------------------------------------
+    |   #include <stdio.h>                                                       |
+    |                                                                            |
+    |   int main(void) {                                                         |
+    |       char c = 'A';                                                        |
+    |       int i = 100;                                                         |
+    |       long l = 1000L;                                                      |
+    |       float f = 3.14f;                                                     |
+    |       double d = 3.14159;                                                  |
+    |                                                                            |
+    |       printf("Valor de char: %c, Tamaño: %d bytes\n", c, sizeof(c));       |
+    |       printf("Valor de int: %d, Tamaño: %d bytes\n", i, sizeof(i));        |
+    |       printf("Valor de long: %ld, Tamaño: %d bytes\n", l, sizeof(l));      |
+    |       printf("Valor de float: %f, Tamaño: %d bytes\n", f, sizeof(f));      |
+    |       printf("Valor de double: %lf, Tamaño: %d bytes\n", d, sizeof(d));    |
+    |                                                                            |
+    |       return 0;                                                            |
+    |   }                                                                        |
+    ------------------------------------------------------------------------------
+
+  ---
+
+  Mejores prácticas
+
+  "Buenas prácticas en la selección de tipos"
+
+  La mejor práctica es elegir el tipo de dato en función del rango y el propósito. Si los valores son siempre positivos, usar unsigned. Para cálculos con decimales, usar "float" o "double".
+
+  "Uso adecuado según el entorno de desarrollo"
+
+  Como los tamaños de tipos cambian según el entorno, en desarrollo multiplataforma conviene usar enteros de tamaño fijo (int32_t, int64_t) para mayor portabilidad.
+
+  "Errores comunes y cómo evitarlos"
+
+  Un error frecuente es malinterpretar el rango y tamaño de los tipos. Por ejemplo, intentar almacenar un número muy grande en un int puede provocar overflow. Para evitarlo, se recomienda usar long long o comprobar con sizeof.
+
+  ---
+
+  Conclusión
+
+  Comprender los tipos de datos en C es esencial para crear programas eficientes y seguros. Conocer sus tamaños, rangos y diferencias según el entorno evita errores inesperados y optimiza el uso de memoria. Siguiendo las mejores prácticas, se mejora la legibilidad y portabilidad del código.
+
+-------------------------------------------------------------
+
+► Variables, operadores y control de flujo
+
+  "Variables"
+
+  En el lenguaje C, una variable es un nombre que representa una ubicación de memoria donde se almacena un valor que puede cambiar durante la ejecución del programa. Cada variable debe tener un tipo de dato que define el tipo de información que puede almacenar y el espacio en memoria que ocupa. 
+
+  Tipos de datos principales en C
+
+  • int: para números enteros (por ejemplo, int edad = 25;).
+  • float: para números decimales de precisión simple (por ejemplo, float precio = 19.99;).
+  • double: para números decimales de doble precisión (mayor exactitud que float).
+  • char: para caracteres individuales (por ejemplo, char inicial = 'A';).
+  • long, short, unsigned int, unsigned long long: variantes de enteros con distintos rangos y tamaños. 
+
+  Declaración y uso
+
+  Una variable se declara especificando su tipo y nombre:
+
+    int contador;
+    float temperatura;
+    char letra;   
+
+  Se puede inicializar al declararla:
+
+    int edad = 30;
+    float pi = 3.14159;   
+
+  Variables locales y globales
+
+  • Locales: se declaran dentro de una función y solo existen dentro de ella. 
+  • Globales: se declaran fuera de funciones y son accesibles desde cualquier parte del programa. 
+
+  Reglas para nombres de variables
+
+  • Deben comenzar con una letra o guion bajo (_).
+  • Pueden contener letras, dígitos y guiones bajos.
+  • Son sensibles a mayúsculas y minúsculas (edad ≠ Edad). 
+  • No pueden ser palabras reservadas del lenguaje (como int, return). 
+
+  Importancia de la inicialización
+
+  Es buena práctica inicializar variables para evitar valores indeterminados (basura en memoria). Las variables sin inicializar contienen datos aleatorios que pueden causar errores. 
+
+  ---
+
+  "Aritmética"
+
+  Operadores aritméticos básicos en C
+
+  Los operadores aritméticos básicos en C permiten realizar cálculos matemáticos fundamentales.  Incluyen:
+
+  • Suma (+): a + b
+  • Resta (-): a - b
+  • Multiplicación (*): a * b
+  • División (/): a / b
+  • Módulo (resto de división) (%): a % b (solo para operandos enteros) 
+
+  Prioridad y evaluación de expresiones
+
+  C sigue una jerarquía de precedencia al evaluar operaciones:
+
+  • Paréntesis () (más alta prioridad). 
+  • Multiplicación (*), División (/), Módulo (%) (evaluados de izquierda a derecha). 
+  • Suma (+) y Resta (-) (evaluados de izquierda a derecha). 
+
+  Por ejemplo, en a + b * c, primero se multiplica b * c, luego se suma con a. 
+
+  Comportamiento de la división
+
+  • División de enteros: El resultado es un entero truncado. Por ejemplo, 7 / 4 da 1. 
+  • División con flotantes: Si al menos uno de los operandos es de tipo float o double, el resultado es un número decimal. Por ejemplo, 7.0 / 4 da 1.75.
+
+  ---
+
+  "Comparaciones"
+
+  Operadores de comparación en C
+
+  Los operadores de comparación (o relacionales) en C se utilizan para comparar dos valores y evaluar si cumplen una relación como menor, mayor, igual, etc. Los operadores básicos son:
+
+  • ==: Igual a
+  • !=: Distinto de (no igual a)
+  • <: Menor que
+  • <=: Menor o igual que
+  • >: Mayor que
+  • >=: Mayor o igual que 
+  • ^: operador XOR (OR exclusivo) a nivel de bits.
+
+  Es crucial recordar que == se usa para comparar, mientras que = se usa para asignar valores.  Usar = en lugar de == en una condición es un error común y puede causar comportamientos inesperados. 
+
+  Resultado de las comparaciones
+
+  En C, el resultado de una expresión de comparación es un entero: 1 si la condición es verdadera, y 0 si es falsa. C no tiene un tipo booleano nativo, por lo que se usa este sistema de ceros y unos. 
+
+  Operadores lógicos
+
+  Para combinar condiciones, se usan operadores lógicos:
+
+  • &&: AND (y) — devuelve verdadero si ambas condiciones son verdaderas.
+  • ||: OR (o) — devuelve verdadero si al menos una condición es verdadera.
+  • !: NOT (no) — invierte el valor lógico de una expresión. 
+
+  Comparación de cadenas
+
+  No se puede usar == para comparar cadenas en C, ya que esto compara punteros, no el contenido. En su lugar, se deben usar funciones de la biblioteca <string.h>:
+
+  strcmp(str1, str2): Compara dos cadenas carácter por carácter. Devuelve:
+  • 0 si las cadenas son iguales.
+  • Un valor positivo si str1 es mayor que str2.
+  • Un valor negativo si str1 es menor que str2. 
+  • strncmp(str1, str2, n): Compara solo los primeros n caracteres. Es más segura y evita desbordamientos. 
+
+  ---
+
+  "if/else"
+
+  "if-else" en C es una estructura de control fundamental que permite tomar decisiones en un programa según el resultado de una condición.  Si la condición evaluada dentro del if es verdadera (diferente de cero), se ejecuta el bloque de código dentro del if. Si es falsa (cero), se ejecuta el bloque del else. 
+
+    if (condición) {
+        // código a ejecutar si la condición es verdadera
+    } else {
+        // código a ejecutar si la condición es falsa
+    }   
+
+  if/else if/else:
+
+    if (condición1) {
+        // bloque 1
+    } else if (condición2) {
+        // bloque 2
+    } else {
+        // bloque por defecto
+    }   
+
+  ---
+
+  "bucles for/while"
+
+  Bucle For:
+
+  En C, bucle for es la sintaxis más adecuada para procesos donde el número de repeticiones está predeterminado. Por ejemplo, en casos como «mostrar los números del 1 al 100 uno a uno» o «repetir el proceso solo 10 veces», bucle for es simple y claro.
+
+    #include 
+
+    ------------------------------------------
+    |   int main() {                         |
+    |       for (int i = 1; i <= 10; i++) {  |
+    |           printf("%d\n", i);           |
+    |       }                                |
+    |       return 0;                        |
+    |   }                                    |
+    ------------------------------------------
+
+    Ventajas de usar el bucle for
+
+    • Si el número de repeticiones es claro, el código se acorta
+    • Se pueden resumir la inicialización, condición y actualización en una línea, por lo que es fácil de leer
+    • Se combina bien con arrays y es adecuado para procesar elementos secuencialmente
+
+
+  Bucle While
+
+  while es una construcción para repetir el procesamiento mientras se cumple una condición. A diferencia de for, es adecuado cuando el número de repeticiones no es claro, o cuando se continúa el procesamiento según la entrada del usuario o el estado de datos externos, entre otros casos. Por ejemplo, en procesos como “repetir hasta que el usuario ingrese un valor correcto”, while es intuitivo.
+
+    -------------------------------
+    |   #include                  |
+    |                             |
+    |   int main() {              |
+    |       int i = 1;            |
+    |       while (i <= 10) {     |
+    |           printf("%d        |
+    |   ", i);                    |
+    |           i++;              |
+    |       }                     |
+    |       return 0;             |
+    |   }                         |
+    -------------------------------
+
+
+  Do...while
+
+  do...while es, entre los 3 tipos de estructuras de bucle utilizables en C, la que tiene la única característica de «ejecutar el procesamiento al menos una vez». En el while habitual, si la primera evaluación de la condición es false, el procesamiento no se ejecuta ni una sola vez, pero en la do...while, el bloque de procesamiento se ejecuta primero y luego se verifica la condición. Por lo tanto, es adecuado para situaciones como «querer aceptar al menos una entrada del usuario» o «querer ejecutar al menos una vez el procesamiento de lectura de archivos».
+
+    -----------------------------------
+    |   #include                      |
+    |                                 |
+    |   int main() {                  |
+    |       int i = 1;                |
+    |       do {                      |
+    |           printf("%d\n", i);    |
+    |           i++;                  |
+    |       } while (i <= 10);        |
+    |       return 0;                 |
+    |   }                             |
+    -----------------------------------
+
+
+    En C también se usan las sentencias "break" y "continue"
+
+  https://www.digibeatrix.com/c/es/c-language-basics/c-language-syntax-guide/
+
+  ---
+
+  "Los operadores &, |, ^, ~, <<, >>"
+
+  Los operadores son símbolos que realizan cálculos u operaciones sobre valores.
+
+    Ejemplos de clasificación:
+
+  • Operadores aritméticos: +, -, *, /, %
+  • Operadores de comparación: ==, !=, <, >, <=, >=
+  • Operadores lógicos: &&, ||, !
+  • Operadores de asignación: =, +=, -=
+
+  ---
+
+  "Control de flujo"
+
+  En C las instrucciones o proposiciones se terminan con ; . Las instrucciones se pueden agrupar con { … } para dar lugar a proposiciones compuestas o bloques.
+
+  Las instrucciones de control de flujo son las que permiten tomar decisiones y controlar por dónde fluye la ejecución del programa. En el caso de C son:
+
+    • if – else if – else.
+    • switch – case.
+    • while.
+    • for.
+    • do – while.
+    • break y continue.
+    • goto y etiquetas.
+
+-------------------------------------------------------------
+
+► Funciones: declaración, tipos de retorno y el stack
+
+  "Funciones"
+
+  En la programación en C, una función es un bloque de código diseñado para realizar una tarea específica. Las funciones son fundamentales para organizar el código, evitar repeticiones y mejorar la estructura del programa. Usar funciones correctamente aumenta la reutilización del código y ayuda a reducir errores.
+
+  Un programa en C esta compuesto por una o varias funciones. Un programa siempre contiene una función llamada main que es el punto de entrada del programa. Una función incluye en su interior un cierto código que tiene un determinado proposito. De esta forma, al llamar a la función se ejecutará el código que contiene realizando una determinada tarea. Al usar funciones evitamos repetir en nuestro programa el mismo código o código similar una y otra vez. Ese conjunto de instrucciones que utilizamos frecuentemente, lo incluimos en una función. Las funciones también aportan claridad y legibilidad al código. Además, permiten verificar el código con más facilidad. Al dividir un programa grande en funciones es más fácil establecer pruebas que verifiquen que cada función realiza su labor correctamente.
+
+    "Declaración de funciones"
+
+  En C, el "tipo de función" se refiere en realidad al tipo de dato que la función devuelve al finalizar su ejecución. No existen categorías cerradas de funciones, sino que una función puede retornar cualquier tipo de dato válido en el lenguaje.
+
+    1. Tipo Vacío (void)
+
+      • Se utiliza cuando la función no devuelve ningún valor. Es común para procedimientos que solo imprimen texto o modifican variables globales.
+
+        void imprimirMensaje (char* texto) { ... }
+
+    2. Tipos Numéricos Básicos
+
+    Son los más comunes y se utilizan para cálculos matemáticos o estados lógicos.
+
+      • int: Enteros (el estándar para contar o identificar estados).
+
+        int calcularSuma (int a, int b) { ... }
+
+      • float: Números de punto flotante de precisión simple.
+
+        float obtenerPromedio (float n1, float n2) { ... }
+
+      • double: Números de punto flotante de doble precisión.
+
+        double calcularAreaCirculo (double radio) { ... }
+
+      • char: Un solo carácter (técnicamente un entero pequeño).
+
+        char obtenerInicial (char* nombre) { ... }
+
+    3. Modificadores de Tipos Básicos
+
+    Se puede combinar los anteriores con calificadores para ajustar el rango de memoria:
+
+      • short int / long int / long long int
+
+        long int calcularFactorial (int n) { ... }
+
+        short int obtenerEdad (void) { ... }
+
+      • unsigned int / unsigned char (solo valores positivos).
+
+        unsigned int obtenerIdUsuario (void) { ... }
+
+      • long double
+
+        long double calcularPrecisionAstronomica (double valor) { ... }
+
+    4. Tipos de Datos Derivados (Punteros)
+
+    Una función puede devolver una dirección de memoria. Esto es fundamental para manejar arreglos o estructuras dinámicas.
+
+      • int*, char*, void*, etc.
+
+        int* buscarElemento (int valor, int* arreglo) { ... }
+
+        char* copiarCadena (char* origen) { ... }
+
+        void* reservarMemoria (size_t tamaño) { ... }
+
+    5. Tipos Definidos por el Usuario
+
+    Si has creado tus propias estructuras, la función puede devolver una instancia completa de ellas.
+
+      • struct: Devuelve una estructura definida previamente.
+
+        struct Usuario crearPerfil (char* nombre, int edad) { ... }
+
+      • union: Devuelve una unión.
+
+        union Dato convertirDato (int valor) { ... }
+
+      • enum: Devuelve un valor de una enumeración (internamente un entero).
+
+        enum Color obtenerColorFavorito (void) { ... }
+
+    6. Tipos Definidos con typedef
+
+    Cualquier alias creado con typedef (como size_t, bool de <stdbool.h>, o tipos personalizados) puede ser el tipo de retorno de una función.
+
+      size_t calcularLongitud (const char* cadena) { ... }
+
+      bool esPar (int numero) { ... }
+
+      MiTipoPersonalizado procesarDatos (int x) { ... }
+
+    "Dato importante": En C, una función no puede devolver otra función directamente, ni tampoco puede devolver un arreglo (array) de forma directa; para estos casos, siempre se debe devolver un puntero.
+
+    Visión general de la biblioteca estándar de C
+
+  La biblioteca estándar de C es una colección de funciones incorporadas que ayudan a los programadores a realizar diversas operaciones de manera eficiente. Tareas comunes como la manipulación de cadenas, el procesamiento de entrada/salida, la gestión de memoria y los cálculos matemáticos están cubiertas por la biblioteca estándar. Utilizar estas funciones ahorra tiempo, evita reinventar la rueda y garantiza un código fiable.
+
+    Cómo usar la biblioteca estándar
+
+  Para usar funciones de la biblioteca estándar, es necesario incluir los archivos de encabezado correspondientes. Los encabezados contienen las declaraciones y prototipos de las funciones. Al incluirlos al inicio de tu programa, puedes usar libremente las funciones proporcionadas.
+
+    --------------------------
+    |   #include <stdio.h>   |
+    |   #include <stdlib.h>  |
+    |   #include <string.h>  |
+    --------------------------
+
+    Funciones de manipulación de cadenas
+
+    • "strcpy": Copia la cadena origen al búfer de destino especificado.
+
+      --------------------------------------------------------
+      |   #include <stdio.h>                                 |
+      |   #include <string.h>                                |
+      |                                                      |
+      |   int main() {                                       |
+      |       char source[] = "Hello, World!";               |
+      |       char destination[50];                          |
+      |       strcpy(destination, source);                   |
+      |       printf("Copied string: %sn", destination);     |
+      |       return 0;                                      |
+      |   }                                                  |
+      --------------------------------------------------------
+
+    • "strcat" Concadena dos cadenas.
+
+      -------------------------------------------------------
+      |   #include <stdio.h>                                |
+      |   #include <string.h>                               |
+      |                                                     |
+      |   int main() {                                      |
+      |       char str1[50] = "Hello";                      |
+      |       char str2[] = ", World!";                     |
+      |       strcat(str1, str2);                           |
+      |       printf("Concatenated string: %sn", str1);     |
+      |       return 0;                                     |
+      |   }                                                 |
+      -------------------------------------------------------
+
+    • "strlen" Devuelve la longitud de una cadena.
+
+      ---------------------------------------------------
+      |   #include <stdio.h>                            |
+      |   #include <string.h>                           |
+      |                                                 |
+      |   int main() {                                  |
+      |       char str[] = "Hello, World!";             |
+      |       size_t length = strlen(str);              |
+      |       printf("String length: %zun", length);    |
+      |       return 0;                                 |
+      |   }                                             |
+      ---------------------------------------------------
+
+      Funciones de entrada/salida
+
+      C proporciona varias funciones para operaciones estándar de entrada y salida.
+
+        ------------------------------------
+        |   printf                         |
+        |   #include <stdio.h>             |
+        |                                  |
+        |   int main() {                   |
+        |       printf("Hello, World!n");  |
+        |       return 0;                  |
+        |   }                              |
+        ------------------------------------
+
+        scanf: Su propósito principal es leer datos ingresados por el usuario y almacenarlos en variables
+
+        -----------------------------------------------
+        |   #include <stdio.h>                        |
+        |                                             |
+        |   int main() {                              |
+        |       int number;                           |
+        |       printf("Enter a number: ");           |
+        |       scanf("%d", &number);                 |
+        |       printf("You entered: %dn", number);   |
+        |       return 0;                             |
+        |   }                                         |
+        -----------------------------------------------
+
+        fgets
+
+        -------------------------------------------------
+        |   #include <stdio.h>                          |
+        |                                               |
+        |   int main() {                                |
+        |       char buffer[100];                       |
+        |       printf("Enter a string: ");             |
+        |       fgets(buffer, sizeof(buffer), stdin);   |
+        |       printf("You entered: %sn", buffer);     |
+        |       return 0;                               |
+        |   }                                           |
+        -------------------------------------------------
+
+      
+      Funciones de gestión de memoria
+
+      C utiliza las siguientes funciones para la asignación dinámica de memoria:
+
+      "malloc": se utiliza para asignar memoria dinámica en tiempo de ejecución.  Esta función reserva un bloque de memoria contiguo en el montón (heap) y devuelve un puntero de tipo void* al inicio de ese bloque. Si la asignación falla (por ejemplo, por falta de memoria), devuelve NULL
+
+        -----------------------------------------------------
+        |   #include <stdio.h>                              |
+        |   #include <stdlib.h>                             |
+        |                                                   |
+        |   int main() {                                    |
+        |       int *ptr = malloc(5 * sizeof(int));         |
+        |       if (ptr == NULL) {                          |
+        |           printf("Failed to allocate memory.n");  |
+        |           return 1;                               |
+        |       }                                           |
+        |       printf("Memory successfully allocated.n");  |
+        |       free(ptr);                                  |
+        |       return 0;                                   |
+        |   }                                               |
+        -----------------------------------------------------
+
+      "free": se utiliza para liberar memoria dinámica que fue previamente asignada con malloc, calloc o realloc.  Su propósito principal es devolver la memoria al sistema operativo para que pueda ser reutilizada, evitando fugas de memoria.
+
+        -------------------------------------------
+        |   #include <stdlib.h>                   |
+        |                                         |
+        |   int main() {                          |
+        |       int *ptr = malloc(sizeof(int));   |
+        |       free(ptr);                        |
+        |       return 0;                         |
+        |   }                                     |
+        -------------------------------------------
+
+  "Stack"
+
+  El Stack (o pila) es una región de la memoria RAM que el programa utiliza para gestionar de forma automática las variables locales y las llamadas a funciones.
+
+  Funciona bajo el principio LIFO (Last In, First Out), lo que significa que el último dato en entrar es el primero en salir.
+
+    ¿Cómo funciona en C?
+    
+  Cada vez que llamas a una función, el compilador reserva un bloque de memoria en el stack llamado Stack Frame (marco de pila).
+
+    • Entrada (Push): Al llamar a una función, se "apilan" sus argumentos, la dirección de retorno y sus variables locales.
+
+    • Salida (Pop): Cuando la función termina (return), su Stack Frame se libera automáticamente y el control vuelve a la función anterior.
+
+    Características clave
+
+    • Gestión Automática: No necesitas usar malloc() o free(). El compilador reserva y libera la memoria por ti.
+
+    • Velocidad: Es extremadamente rápido porque el acceso a la memoria se realiza mediante un puntero de pila (Stack Pointer).
+
+    • Tamaño Limitado: El stack tiene un tamaño fijo y pequeño. Si declaras un arreglo gigante (ej. int arr[1000000]) o tienes una recursividad infinita, provocarás un Stack Overflow.
+
+    • Alcance (Scope): Las variables en el stack solo existen mientras la función que las creó esté ejecutándose. Una vez que la función termina, esos datos se consideran "basura".
+
+-------------------------------------------------------------
+
+► Arrays y strings en C
+
+  "Arrays"
+
+  Los arreglos son una forma de almacenar datos que permiten contener una serie de valores del mismo tipo, cada uno de los valores contenidos tiene una posición asociada que se usará para accederlos. Está posición o índice será siempre un número entero positivo.
+
+  En C la cantidad de elementos que podrá contener un arreglo es fijo, y en principio se define cuando se declara el arreglo. Los arreglos se pueden declarar de la siguiente forma:
+
+    tipo_elemento nombre[largo];
+
+  Esto declara la variable "nombre" como un arreglo de "tipo_elementos" que podrá contener "largo" cantidad de elementos, y cada uno de estos elemento podrá contener un valor de tipo "tipo_elemento".
+
+    double valores[128];
+
+  En este ejemplo declaramos un arreglo de 128 elementos del tipo double, los índices de los elementos irían entre 0 (para el primer elemento y 127 para el último).
+
+  De la misma forma que con las otras declaraciones de variables que hemos visto se le puede asignar un valor iniciar a los elementos.
+
+  O también se pueden declarar:
+
+  	tipo_elemento nombre[largo]={valor_0, valor_1, valor_2};
+
+  En caso estamos asignadole valores a los primeros 3 elementos del arreglo nombre. Notar que largo debe ser mayor o igual a la cantidad de valores que le estamos asignando al arreglo, en el caso de ser la misma cantidad no aporta información, por lo que el lenguaje nos permite escribir:
+
+  	tipo_elemento nombre[]={valor_0, valor_1, valor_2};
+
+    • De la misma forma que venimos usando arreglos de tipos básicos, podemos tener arreglos de arreglos.
+
+  En resumen, suponiendo que v[n] es un arreglo de cualquier tipo de dato con n cantidad de posiciones, al arreglo v se le aplican las siguientes reglas:
+
+    • La primera posición siempre será v[0]
+    • La última posición es v[n-1]
+    • En versiones previas a C99 n es una constante definida antes de la declaración de v[n]
+
+  https://es.wikibooks.org/wiki/Programaci%C3%B3n_en_C/Vectores
+
+  ---
+
+  "Strings"
+
+  Las cadenas de caracteres (también llamadas cadenas o strings) son un tipo particular de vectores, que como su nombre lo dice son vectores de char, con la particularidad que tienen una marca en el fin del mismo (el caracter '\0'), además el lenguaje nos permite escribirlas como texto dentro de comillas dobles si son simples no.
+
+  Ejemplos:
+
+    char cadena_hola[]="Hola";
+  
+	  char otro_hola[]={'H','o','l','a','\0'}; // Igual al anterior
+  
+	  char vector[]={'H','o','l','a'}; // Un vector de 4 elementos, con los elementos 'H','o','l' y 'a'
+  
+	  char espacio_cadena[1024]="Una cadena en C";
+  
+	  char cadena_vacia[]="";
+
+  Cómo vimos anteriormente al declarar un vector se define la cantidad de elementos que puede contener, en el caso de las cadenas se debe tener en cuenta el espacio adicional necesario para el \0. Viendo el ejemplo, tanto cadena_hola y otro_hola tienen un largo 5 y cadena_vacia tiene un largo de 1.
+
+  También vimos anteriormente que al usar vectores debemos tener en cuenta su largo, y así es que el largo o cantidad de elemento lo necesitamos en todas las funciones que definimos usando vectores y lo recibimos como un parámetro más en estas, en el caso de las cadenas al tener una marca de fin podemos prescindir del largo y procesar una cadenas hasta llegar a la marca de fin.
+
+  Entre las funciones que provee la biblioteca estándar de C, las más importantes son:
+
+    largo = strlen(cadena) // Para obtener el largo de una cadena
+
+    strcpy(destino, origen) // Copia el contenido de origen en destino
+                            // destino debe ser lo suficientemente grande
+
+    strcat(destino, origen) // Agrega el contenido de origen al final de destino
+                            // destino debe ser lo suficientemente grande
+
+    resultado = strcmp(cadena1, cadena2) // Compara dos cadenas
+              // devuelve un valor menor, igual o mayor que 0 según si cadena1 es menor,
+              // igual o mayor que cadena2, respectivamente. 
+
+    posicion = strchr(cadena, caracter) // Devuelve la posición en memoria de la primer
+              // aparición de caracter dentro de cadena
+
+    posicion = strstr(cadena,subcadena) // Devuelve la posición en memoria de la primer 
+              // aparición de subcadena dentro de cadena
+
+  ---
+
+  "Especificadores de formato"
+
+	• "%c": Es un especificador de formato para datos "char", puede ser usado para inputs y outputs formateados.
+
+	• "%d": (signed) Se usa para tipos de datos "int" en estado "signed".
+
+	• "%i": (signed) Para "int" signed.
+
+	• "%u": (unsigned) Se usa para tipos de datos "int" en estado "unsigned", pueden ser negativos o positivos.
+
+	• "%f": Especificador de formato para "float".
+
+		- "%e" o "%E": Se usa para formato "float" en valor exponencial.
+
+		- "%g" o "%G": Para "float" con presición.
+
+	• "%o": (unsigned) Se usa para formatos "octal".
+
+	• "%x": Se usa para formato string en hexadecimal. ("%x" muestra las letras en minúsculas mientras que "%X" en mayúsculas).
+
+	• "%s": Se usa para imprimir o tomar "strings".
+
+	• "%p": Se usa para imprimir una dirección/puntero.
+
+	• "%n": Es un especificador especial que no imprime nada.
+
+  Ejemplos:
+
+	• "%496c": Imprime un carácter, pero reserva un ancho de 496 espacios.
+
+	• "%1$n": 
+		
+		- "%n" Es un especificador especial que no imprime nada. En su lugar, toma el número total de caracteres impresos hasta ese momento (500, ver ejemplo anterior) y lo escribe en la dirección de memoria que se le pase.
+
+		- "1$": Le dice que use el primer argumento de la pila como destino (500).

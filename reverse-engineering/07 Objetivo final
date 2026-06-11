@@ -1,0 +1,31 @@
+
+FASE 07 — CTF EN LA PRÁCTICA  [OBJETIVO FINAL]
+-----------------------------------------------
+
+► pwntools — scripting de exploits en Python
+  La librería estándar para automatizar exploits en CTFs. Conectar
+  a servicios remotos, enviar payloads, leer respuestas. Con lo que
+  sabes de Python y bitwise ops, aprenderás esto muy rápido.
+
+► Crackmes — retos de reversing puros
+  Binarios cuyo objetivo es encontrar una contraseña o serial válido.
+  No hay explotación de memoria, solo reversing puro. Plataformas:
+  crackmes.one, reversing.kr. El mejor punto de entrada para CTF
+  reversing.
+
+► Metodología de análisis de un binario CTF
+  1. file + checksec
+  2. strings
+  3. Análisis estático en Ghidra
+  4. Identificar función principal y lógica de validación
+  5. Análisis dinámico en GDB
+  6. Construir exploit o solución
+
+► Plataformas para practicar progresivamente
+  Empezar con picoCTF (diseñado para estudiantes, excelente).
+  Luego pwn.college (módulos estructurados de binary exploitation).
+  Después HackTheBox y CTFtime.org para competiciones reales.
+
+// CTF relevance: picoCTF → pwn.college → HackTheBox → CTFtime
+
+-------------------------------------------------------------

@@ -1,0 +1,188 @@
+
+===================================================
+
+Herramientas de observación
+
+===================================================
+
+Estas no modifican la red; la revelan.
+
+🔹 Wireshark
+
+Qué practicas:
+
+• Encapsulación real (Ethernet → IP → TCP/UDP → aplicación)
+• ARP, DNS, ICMP, TCP handshake
+• Broadcast, retransmisiones, latencia
+
+Cuándo usarlo:
+
+• Desde FASE 2 en adelante
+• Especialmente fuerte en FASE 3, 4 y 5
+
+Ejercicio típico:
+
+• Capturar tráfico al hacer:
+
+   ◇ un ping
+   ◇ una consulta DNS
+   ◇ una carga de página
+
+• Identificar capa por capa qué ocurre
+
+---------------------------------------------------
+
+🔹 tcpdump
+
+Qué practicas:
+
+• Captura de tráfico en terminal
+• Filtros básicos
+• Lectura rápida de paquetes
+
+Valor añadido:
+
+• Te obliga a entender el paquete sin interfaz gráfica
+• Muy útil para consolidar conceptos
+
+Herramientas de diagnóstico (interactuar con la red)
+
+Aquí sí generas tráfico.
+
+---------------------------------------------------
+
+🔹 ping
+
+Qué practicas:
+
+• ICMP
+• Alcance de red
+• Latencia
+
+Aprendizaje clave:
+
+• Un ping fallido no siempre significa “no hay red”.
+
+---------------------------------------------------
+
+🔹 traceroute / tracert
+
+Qué practicas:
+
+• Enrutamiento
+• Saltos intermedios
+• TTL
+
+Ejercicio típico:
+
+• Comparar rutas a distintos destinos
+• Entender dónde se pierde el paquete
+
+---------------------------------------------------
+
+🔹 netstat / ss
+
+Qué practicas:
+
+• Puertos
+• Conexiones activas
+• Estados TCP
+
+Esto conecta red con sistema operativo.
+
+Herramientas de simulación (crear redes sin hardware)
+
+Estas son las más poderosas para aprender.
+
+---------------------------------------------------
+
+🔹 Cisco Packet Tracer
+
+Qué practicas:
+
+• Topologías de red
+• Enrutamiento
+• VLAN
+• DHCP
+• NAT
+• ACL
+
+Por qué es clave:
+
+• Puedes construir redes completas:
+
+   ◇ domésticas
+   ◇ de oficina
+   ◇ corporativas
+
+Cuándo usarlo:
+
+• Desde FASE 3 en adelante
+• Ideal para FASE 4, 5 y 7
+
+---------------------------------------------------
+
+🔹 GNS3
+
+Qué practicas:
+
+• Redes realistas
+• Enrutamiento avanzado
+• Integración con sistemas reales
+
+Diferencia con Packet Tracer:
+
+• Más real
+• Más complejo
+• Más exigente
+
+Recomendado cuando ya tengas base sólida.
+
+Herramientas de exploración y análisis
+
+---------------------------------------------------
+
+🔹 nmap
+
+Qué practicas:
+
+• Descubrimiento de hosts
+• Puertos abiertos
+• Servicios expuestos
+
+Cuándo usarlo:
+
+• A partir de FASE 7 (seguridad)
+• Con enfoque ético y controlado
+
+Herramientas mentales (sí, también cuentan)
+
+No todo es software.
+
+---------------------------------------------------
+
+🔹 Diagramas de red (draw.io, papel)
+
+Qué practicas:
+
+• Visualización
+• Relación entre dispositivos
+• Flujo de tráfico
+
+Ejercicio potente:
+
+• Dibuja una red y explica el recorrido de un paquete.
+
+---------------------------------------------------
+
+🔹 “Explicarlo en voz alta”
+
+Qué practicas:
+
+• Coherencia
+• Dominio conceptual
+• Detección de vacíos
+
+Si no puedes explicarlo sin trabarte, aún no está firme.
+
+---------------------------------------------------

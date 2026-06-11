@@ -1,0 +1,218 @@
+
+===================================================
+
+	FASE 1 – Fundamentos absolutos
+
+===================================================
+
+	Objetivo: entender qué es una red y quién participa.
+
+	Conceptos
+
+• Host
+• Red de área local (LAN)
+• Red de área local inalámbrica (WLAN)
+• Red de acceso
+
+	Qué se debe entender aquí
+
+• Qué diferencia a un host de un dispositivo de red
+• Qué significa estar “en la misma red”
+• Por qué una red Wi-Fi no es “magia”, sino una LAN con otro medio
+
+	Bloques que se anexan:
+
+• Bloque A – Modelos y arquitectura (introducción)
+• Bloque B – Protocolos esenciales (visión general)
+
+	Qué estudiar del bloque en esta fase:
+
+• Qué es una capa
+• Diferencia entre OSI y TCP/IP
+• Qué significa “encapsular”
+
+---------------------------------------------------
+
+	"¿Qué es una red?"
+
+Una red informática es un sistema que conecta dos o más equipos o dispositivos para que compartan datos, recursos y servicios. Estas conexiones se pueden establecer mediante cables físicos, como los de fibra óptica, o de forma inalámbrica con señales de radio. Las redes varían según su tipo y escala, desde redes de área local (LAN) pequeñas hasta redes grandes de área amplia (WAN).
+
+El concepto de red informática se remonta al final de la década de los 60 con el desarrollo de ARPANET, la primera red informática operativa. Fundada por el Departamento de Defensa de los Estados Unidos, ARPANET se diseñó para permitir a las instituciones de investigación intercambiar información de forma rápida y fiable. Esta red sentó las bases de lo que conocemos como internet, la red informática más grande y compleja que existe.
+
+	"¿Quién participa en una red?"
+
+En una red informática participan varios elementos clave que interactúan para permitir la comunicación y el intercambio de recursos. Los principales participantes son los dispositivos conectados, conocidos como clientes o terminales, que incluyen computadoras, teléfonos móviles, tablets y otros equipos que generan y consumen información. Estos dispositivos se conectan a través de un medio de transmisión, que puede ser alámbrico (como cables de par trenzado, coaxial o fibra óptica) o inalámbrico (como redes Wi-Fi, Bluetooth o microondas).
+
+Además, los servidores son componentes esenciales que proporcionan recursos como almacenamiento, servicios de impresión, acceso a internet o aplicaciones. A diferencia de los clientes, los servidores suelen estar encendidos permanentemente y no dependen de un operador humano para su funcionamiento. En arquitecturas cliente-servidor, los clientes solicitan servicios al servidor, que luego responde con la información solicitada.
+
+Otros participantes clave incluyen dispositivos de red como enrutadores, conmutadores y puntos de acceso, que gestionan la conectividad y el tráfico de datos entre los dispositivos. También intervienen los protocolos de red, que son conjuntos de reglas que definen cómo se transmite la información, hacia dónde se dirige y quién puede recibirla. Finalmente, los administradores de red son profesionales que planifican, instalan, configuran, mantienen y aseguran la red, garantizando su funcionamiento eficiente y seguro.
+
+---------------------------------------------------
+
+		--- CONCEPTOS ---
+
+	- "Host" -
+
+1) 
+El término host o anfitrión se usa en informática para referirse a las computadoras u otros dispositivos (tabletas, móviles, portátiles) conectados a una red que proveen y utilizan servicios de ella. Los servidores deben utilizar anfitriones para tener acceso a la red y pueden, a su vez, pedir los mismos servicios a otras máquinas conectadas a la red. Los anfitriones son, por tanto, dispositivos monousuario o multiusuario que ofrecen servicios de transferencia de archivos, conexión remota, servidores de base de datos, servidores web, etc.
+
+2) 
+Un host, en el contexto de la tecnología, la informática y las comunicaciones, se refiere a un dispositivo, sistema informático o red que proporciona recursos o servicios a otros dispositivos o usuarios. Actúa como un eje central o servidor que permite la comunicación y facilita el intercambio de datos e información. Un host puede ser una máquina física o una entidad virtual dentro de una red.
+
+ - ¿Cómo facilita la comunicación un host?
+
+Un host desempeña un papel vital a la hora de permitir la comunicación entre diferentes dispositivos o usuarios dentro de una red. Actúa como un punto central donde los datos se recogen, procesan y distribuyen a los destinatarios previstos. Cuando envías una solicitud o accedes a un sitio web, por ejemplo, tu dispositivo se conecta al servidor anfitrión, que recupera la información solicitada y te la devuelve.
+
+ - ¿Qué servicios puede prestar un host?
+
+Un host puede proporcionar una amplia gama de servicios dependiendo de su propósito y configuración. Algunos de los servicios más comunes que ofrecen son alojamiento web, alojamiento de correo electrónico, alojamiento de archivos, alojamiento de bases de datos, alojamiento de juegos y alojamiento en la nube. Cada servicio cumple una función específica y permite a los usuarios acceder y utilizar los recursos proporcionados por el host.
+
+	- "Red de área local (LAN)" -
+
+1)
+Una red de área local (LAN) es una red contenida dentro de una pequeña zona geográfica, normalmente dentro de un mismo edificio. Las redes WiFi domésticas y las redes de pequeñas empresas son algunos ejemplos comunes de LAN.
+
+Las LAN también pueden ser bastante grandes, aunque si ocupan varios edificios, a menudo es más preciso clasificarlas como redes de área amplia (WAN) o redes de área metropolitana (MAN)
+
+2)
+Una red de área local o LAN (local area network) es una red de computadoras que permite la comunicación y el intercambio de datos entre diferentes dispositivos a nivel local, ya que está limitada a distancias cortas. Por esta razón, esta red se utiliza para hogares privados, tales como una casa o un apartamento, y en empresas.
+
+ - ¿Cómo funcionan las LAN?
+
+Las redes LAN funcionan conectando sus dispositivos a través de un router y una red centrales. Piense en dispositivos como equipos, impresoras y teléfonos como destinos y en la red como las caminos que conectan estos destinos.
+
+Su router se encarga de su red LAN doméstica y puede usar Ethernet y/o wifi para conectar dispositivos. Algunas organizaciones establecen varias LAN para gestionar el acceso entre departamentos. Pueden usar uno o varios enrutadores o conmutadores de red para permitir una entrega de paquetes eficaz y segura entre redes de área local Ethernet.
+
+ - ¿Qué componentes forman una LAN?
+
+Para que las redes LAN funcionen y permitan que los dispositivos se comuniquen entre sí, se necesitan muchos componentes diferentes. Cada dispositivo de su red tiene una NIC o tarjeta de interfaz de red que permite a su dispositivo dirigirse a otros dispositivos con tarjetas NIC y, a su vez, ser direccionado por ellos. Entre los componentes que pueden formar parte de una LAN se incluyen:
+
+• Conmutadores o puntos de acceso para conectar dispositivos de forma física o inalámbrica
+• Routers para la comunicación de red externa
+• Cortafuegos para impedir que intrusos de otras redes accedan a su LAN
+• Repetidores de señal para ampliar las señales wifi
+
+	- "Red de área local inalámbrica (WLAN)" -
+
+Una red de área local inalámbrica, también conocida como WLAN (del inglés wireless local area network), es una red inalámbrica de comunicación para distancias cortas y funciona mediante ondas de radio o infrarrojas. Con los rápidos avances de Internet, ya no era necesario utilizar cableado como las redes tradicionales.
+
+	- "Red de acceso" -
+
+1)
+Red de acceso hace mención a aquella infraestructura de la red de comunicaciones que conecta a los usuarios finales o abonados con algún proveedor de servicios (siempre y cuando se encuentren en el área de cobertura del mismo) y es complementaria al núcleo de red. Muchos de los avances tecnológicos que se pueden percibir directamente en el área de las telecomunicaciones corresponden a esta parte de la red, la misma que puede subdividirse en red de distribución/agregación y red de último kilómetro. Esta denominación es independiente de los medios o protocolos utilizados.
+
+2)
+Una red de acceso es la infraestructura de red que conecta a los usuarios finales o abonados con un proveedor de servicios de telecomunicaciones, actuando como el enlace entre el usuario y el núcleo de red. Este segmento de red se extiende desde la central telefónica o el nodo del proveedor hasta la vivienda o ubicación del usuario, y se conoce comúnmente como el "último kilómetro" o "bucle de abonado". Las redes de acceso pueden ser cableadas (como cobre, fibra óptica o cable coaxial) o inalámbricas (como Wi-Fi, 3G, 4G o 5G), y su principal función es proporcionar conectividad para servicios de voz, datos e Internet.
+
+---------------------------------------------------
+
+	- "Qué es una capa" -
+
+Buscar como: “Qué es el modelo de capas en redes”
+
+1)
+En las tecnologías informáticas, las capas de red son un marco conceptual que permite comprender cómo se estructura una red informática y cómo se interrelacionan las distintas tecnologías para posibilitar las comunicaciones de red. En la actualidad, se hace referencia a dos modelos de capa de red: el modelo de interconexión de sistemas abiertos (OSI) y el modelo TCP/IP son los más comunes.
+
+Existen otras capas de red, como UDP e ICMP, que se ejecutan en redes IP, así como el modelo RINA (Recursive InterNetwork Architecture). El modelo TCP/IP se conocía como modelo del Departamento de Defensa (DoD), modelo DARPA o modelo ARPANET, pero se cambió debido a la percepción de que se trataba de servicios gubernamentales y no de estándares para un uso más amplio.
+
+ - ¿Por qué es necesario un marco de capa de red?
+Las redes informáticas son tecnologías muy complejas en las que intervienen varios tipos de software, sistemas operativos, ordenadores, routers, conmutadores, firewalls y conexiones, entre otros. Un marco que divida toda esta tecnología en diferentes categorías o capas ayuda a organizar las comunicaciones del sistema y a solucionar los problemas de forma más eficaz. El marco de capa de red también mejora la interoperabilidad de los proveedores al crear estándares para que los dispositivos se comuniquen entre sí. Las capas ayudan a los proveedores a adoptar estándares y protocolos que garanticen la coherencia en la forma en que la tecnología de una capa interactúa con la tecnología de las capas superiores e inferiores.
+
+"Supongamos que Bob y Alice están conectados a la misma red de área local (LAN) y que Bob quiere enviar un mensaje a Alice. Como Bob está en la misma red que Alice, podría enviarlo directamente a su ordenador a través de la red. Sin embargo, si Alice está en una LAN diferente a varios kilómetros de distancia, el mensaje de Bob se tendrá que dirigir y enviar a la red de Alice antes de que pueda llegar a su ordenador, lo que es un proceso de la capa de red."
+
+	- "Diferencia entre OSI y TCP/IP" -
+
+ - ¿Qué es el modelo OSI?
+El modelo OSI es un modelo conceptual que representa la pila de protocolos de red. Sus siete capas se centran más en las distintas funciones que se realizan para que las comunicaciones de red funcionen que en la tecnología en sí.
+
+Cada capa del modelo OSI cumple una función importante, y la información se intercambia entre las capas en forma de unidades de datos de protocolo (PDU), que difieren en función de la capa. Las siete capas del modelo OSI se pueden denominar por nombre o número y, de arriba hacia abajo, incluyen:
+
+#7. Aplicación: Conecta directamente con la aplicación del usuario final, proporcionando diversos servicios (navegación, correo electrónico, etc.).
+#6. Presentación: Traduce los datos entre los formatos utilizados por una aplicación cuando transmite datos a través de la red. También gestiona el cifrado y la compresión de datos.
+#5. Sesión: Responsable de la gestión de la sesión, la sincronización y la organización del tráfico.
+#4. Transporte: Responsable de garantizar que los datos se transfieren de forma completa y fiable entre redes.
+#3. Red: Enruta, reenvía y direcciona paquetes entre redes.
+#2. Enlace de datos: Gestiona la transferencia de datos entre dispositivos de la red y corrige los errores de la capa física.
+#1. Físico: Incluye los componentes físicos que conectan el dispositivo (cables, routers, etc.).
+
+	- "¿Qué es el modelo TCP/IP?" -
+El modelo TCP/IP es un modelo de red que se basa en la estructura de la pila de protocolos de red. Cada una de las cuatro capas del modelo TCP/IP es visible dentro de un paquete de red TCP/IP.
+
+Estas cuatro capas incluyen:
+
+• Aplicación: La capa de aplicación combina las capas de aplicación, Presentación y Sesión de OSI y es responsable de los protocolos de aplicación de alto nivel, la representación y la gestión de sesiones.
+• Transporte: La capa de transporte se asigna a la capa de transporte OSI y es responsable de la conectividad de extremo a extremo, la integridad de los datos y el control de flujo.
+• Internet: Al igual que la capa roja del modelo OSI, la capa TCP/IP de Internet gestiona el enrutamiento y el reenvío de paquetes.
+• Enlace de datos: La capa de enlace de datos del modelo TCP/IP se corresponde con las capas de enlace de datos y física del modelo OSI y es responsable de las conexiones físicas y lógicas entre dispositivos.
+
+
+1)
+El modelo OSI (Interconexión de Sistemas Abiertos) y el modelo TCP/IP son dos arquitecturas de red que describen cómo se comunican los dispositivos en una red, aunque difieren en varios aspectos clave. El modelo OSI fue desarrollado por la ISO (Organización Internacional de Normalización) y consta de siete capas: Física, Enlace de datos, Red, Transporte, Sesión, Presentación y Aplicación. Este modelo es teórico, conceptual y genérico, diseñado para ser independiente de protocolos específicos, lo que lo hace útil para el estudio, la enseñanza y el diagnóstico de problemas de red.
+ 
+En contraste, el modelo TCP/IP fue desarrollado por el Departamento de Defensa de EE. UU. (DoD) y posteriormente por ARPANET, y se compone de cuatro capas (aunque algunos lo describen como cinco): Capa de Aplicación, Capa de Transporte, Capa de Internet y Capa de Acceso a la Red. Es un modelo práctico y basado en protocolos reales, diseñado para resolver problemas específicos de comunicación en Internet. TCP/IP es el estándar utilizado universalmente en Internet, y sus protocolos, como TCP y IP, son los fundamentos de la transmisión de datos en redes globales.
+
+2)
+Tanto el modelo OSI como el TCP/IP están diseñados para proporcionar una estructura para pensar y debatir sobre el tráfico de red. Sin embargo, los dos modelos tienen algunas diferencias significativas, que incluyen:
+
+• Capas: El modelo OSI tiene siete capas diferentes construidas en torno a las distintas funciones que debe realizar el tráfico de red. El TCP/IP tiene un total de cuatro capas que están ligadas directamente a protocolos específicos que existen en el tráfico de red.
+• Aplicabilidad en el mundo real: El modelo OSI está diseñado como un modelo conceptual de referencia, lo que significa que no se corresponde directamente con los protocolos de red del mundo real. Por el contrario, el modelo TCP/IP se basa en protocolos estándar utilizados para crear conexiones de red.
+• Dependencia del protocolo: El modelo TCP/IP se basa en protocolos específicos diseñados para lograr un objetivo particular. El modelo OSI es independiente del protocolo, lo que permite su uso con cualquier pila de protocolos.
+• Tipos de tráfico: El modelo OSI es un modelo general que admite tanto el tráfico de red orientado a la conexión como el tráfico sin conexión. El modelo TCP/IP está diseñado específicamente para el tráfico TCP orientado a la conexión.
+
+ - Qué significa “encapsular”
+
+1)
+En redes de ordenadores, encapsulación es un método de diseño modular de protocolos de comunicación en el cual las funciones lógicas de una red son abstraídas ocultando información a las capas de nivel superior.
+La encapsulación es una característica en la mayoría de modelos de redes, incluyendo el modelo OSI y la familia de protocolos TCP/IP.
+
+2)
+El encapsulamiento es un concepto fundamental en las redes de computadoras, esencial para la transmisión eficiente y segura de información. Este proceso consiste en la adición de información adicional (o metadatos) a los datos originales para que puedan viajar de forma efectiva a través de la red.
+
+ - ¿Cómo Funciona el Proceso de Encapsulamiento?
+En una red, los datos se transmiten en unidades conocidas como paquetes (o tramas, según la capa). Cada paquete contiene información crucial sobre su origen, destino y contenido. El encapsulamiento amplía esta información para garantizar que el paquete se dirija y entregue correctamente.
+
+El proceso implica añadir principalmente dos componentes a los datos originales:
+
+• Cabecera (Header): Contiene datos de control esenciales, como las direcciones de origen y destino, así como instrucciones sobre cómo debe ser transmitido el paquete.
+• Pie de página (Trailer): Generalmente contiene información de verificación de errores (como la secuencia de verificación de tramas o FCS), utilizada para asegurar que el paquete se transmita sin corrupción de datos.
+
+Una vez que los datos originales han sido "vestidos" con la cabecera y el pie de página, se convierten en el paquete encapsulado, listo para su transmisión. Al llegar a su destino, el proceso inverso, conocido como desencapsulamiento, elimina estas capas adicionales para recuperar la información original.
+
+---------------------------------------------------
+
+1. ¿Qué diferencia fundamental existe entre un host y un dispositivo de red?
+   
+   La diferencia fundamental que existe entre un Host y un dispositivo de red es la función o rol que cumple cada uno, el Host es el dispositivo que proporciona servicios como la transferencia de archivos, conexión remota, servidores, bases de datos, etc. A los otros dispositivos conocidos como dispositivos de red.
+   
+2. ¿Por qué dos dispositivos conectados por Wi-Fi siguen perteneciendo a una LAN?
+   
+   Se dice que dos dispositivos conectados por Wi-Fi siguen perteneciendo a una LAN que en realidad se llama WLAN es porque esta no cambia la naturaleza de la red local, el router o punto de acceso los integra en la misma red local; lo que la WLAN soluciona es la conexión mediante cables, ya que en esta última la conexión es mediante señales de radiofrecuencia. 
+   
+3. ¿Qué significa exactamente “estar en la misma red”?
+   
+   “Estar en la misma red” significa que dos o más dispositivos conectados al mismo router o punto de acceso compartirán la misma IP, además estos dispositivos conectados a la misma red tendrán la posibilidad de comunicarse entre sí sin tener que acceder a internet.
+   
+4. ¿Por qué una red necesita distinguir entre dispositivos finales y dispositivos intermedios?
+   
+   Una red necesitará distinguir entre dispositivos finales y dispositivos intermedios para que la información se provea al dispositivo correcto, los dispositivos finales son los host quienes enviarán o recibirán el mensaje según sea necesario, por otra parte los dispostivos intermedios son quienes se encargan de redirigir dicha información al dispositivo que envía o recibe el mensaje (aparte del host) a quienes podríamos llamar dispositivos de red.
+   
+   En resúmen la red tendrá que distinguir entre los dispositivos finales e intermedios para que la información viaje de forma segura, ordenada y orientada al destino correcto.
+   
+5. ¿Por qué se dice que una red Wi-Fi no es “Internet”?
+   
+   Wi-Fi e Internet son conceptos diferentes, Wi-Fi es el medio inalámbrico que permite a los dispositivos conectarse a un router (o a una red) formado en una LAN, y este NO GARANTIZA la conexión a internet, fácilmente se podría usar una red Wi-Fi sin internet para formar una LAN.
+   
+6. ¿Qué problema resuelve dividir un sistema de red en capas?
+   
+   La interoperabilidad de las redes informáticas es muy compleja, dividir un sistema de red en capas hace más eficaz la comunicación entre dispositivos, estandarizar estas categorías en diferentes capas ayuda a que los dispositivos tengan la capacidad de entenderse entre unos y otros.
+   
+7. ¿Por qué una aplicación no necesita saber si usa cable o Wi-Fi para comunicarse?
+   
+   Una aplicación no necesita saber si se usa cable o Wi-Fi para comunicarse porque, en principio, de esto se encargará el sistema operativo y el Kernel; si por cada aplicación que necesite saber cómo está establecida la conexión para comunicarse se necesitarían un sinfín de Drivers y antenas o conectories para hacer la “transformación” del tipo de comunicación.
+   
+   Para efectos prácticos, una aplicación no necesita saber si se usa cable o Wi-Fi porque esto conllevaría a la implementación extra de muchas herramientas innecesarias.
+   
+Criterio de cierre:
+Puede explicarse con palabras textuales sin usar términos como TCP, IP, Ethernet.
+
+---------------------------------------------------

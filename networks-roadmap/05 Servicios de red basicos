@@ -1,0 +1,254 @@
+===================================================
+
+        FASE 5 – Servicios de red básicos
+
+===================================================
+
+	Objetivo: entender cómo se automatiza la red.
+
+	Conceptos
+
+• Protocolo de configuración dinámica de host (DHCP)
+• Traducción de direcciones de red (NAT)
+
+	Qué se debe dominar
+
+• Por qué no asignas IPs a mano
+• Cómo múltiples dispositivos salen a Internet con una sola IP pública
+
+	Bloques que se anexan:
+
+• Bloque B – Protocolos esenciales
+• Bloque C – Direccionamiento
+
+	Qué estudiar del bloque en esta fase:
+
+• DHCP en profundidad
+• NAT
+• Relación NAT ↔ IP pública/privada
+• Impacto del NAT en protocolos
+
+---------------------------------------------------
+
+		--- Cómo se automatiza la red ---
+
+La automatización de redes consiste en utilizar software y scripts para gestionar, configurar, supervisar y probar dispositivos y servicios de red de forma automática, eliminando la necesidad de intervención manual en cada tarea.
+ Este proceso abarca desde el aprovisionamiento de routers y switches hasta la implementación de políticas de seguridad y la monitorización del tráfico.
+
+Para automatizar una red, se pueden emplear diferentes enfoques. Uno de ellos es la automatización basada en la interfaz de línea de comandos (CLI), donde se definen secuencias de comandos en archivos de texto, conocidos como scripts de shell, que se ejecutan de forma simultánea con un solo comando.
+ Estos scripts pueden encadenar eventos según el éxito o fracaso de comandos anteriores, utilizando operadores como && o ||.
+
+Otro enfoque más avanzado es la automatización basada en software, que utiliza plataformas con interfaces de usuario para simplificar la ejecución de tareas sin necesidad de escribir secuencias de comandos manualmente.
+ Estas soluciones se basan en interfaces de programación de aplicaciones (API) para comunicarse con dispositivos de red, permitiendo la gestión en entornos on-premises, en la nube pública, privada o híbridos.
+ Herramientas como Red Hat Ansible Automation Platform permiten empaquetar interfaces, plugins e inventarios en playbooks que se pueden seleccionar, programar y ejecutar para automatizar configuraciones, seguridad y organización de la red.
+
+Además, se pueden implementar flujos de trabajo específicos como la automatización del aprovisionamiento, que permite integrar nuevos dispositivos con sus configuraciones y recursos necesarios sin intervención humana, o la automatización basada en intenciones, que utiliza inteligencia artificial y machine learning para comprender las necesidades del negocio y ajustar automáticamente las políticas de red para mantener niveles de servicio.
+
+La automatización también se aplica a la seguridad de la red, automatizando tareas como el análisis de vulnerabilidades, la detección de intrusiones y la respuesta a incidentes.
+ Con la integración de IA y ML, las herramientas pueden evaluar el rendimiento de la red y ajustar configuraciones automáticamente, aprendiendo de experiencias pasadas para mejorar con el tiempo.
+
+En resumen, la automatización de redes se logra mediante la definición de reglas y políticas que son ejecutadas por herramientas de automatización, lo que permite gestionar de forma más rápida, precisa y escalable la infraestructura de red.
+
+---------------------------------------------------
+
+		--- CONCEPTOS ---
+
+	- "Protocolo de configuración dinámica de host (DHCP)" -
+
+El Protocolo de configuración dinámica de host (DHCP) es un protocolo de gestión de red que permite asignar automáticamente direcciones IP y otros parámetros de configuración de red a dispositivos conectados a una red IP mediante una arquitectura cliente-servidor. Su implementación actual para IPv4 está definida en la RFC 2131 (marzo de 1997), mientras que para IPv6 se describe en la RFC 3315 (julio de 2003).
+
+El DHCP elimina la necesidad de una configuración manual de direcciones IP, lo cual es especialmente útil en redes grandes donde el proceso sería tedioso y propenso a errores. Al permitir la asignación dinámica de direcciones IP, DHCP facilita la conectividad y comunicación entre dispositivos, especialmente en entornos donde los dispositivos se conectan y desconectan con frecuencia, como redes Wi-Fi en oficinas o universidades.
+
+ El servidor DHCP posee una lista de direcciones IP dinámicas y las asigna a los clientes según van quedando libres, manteniendo un registro de quién ha usado cada dirección, durante cuánto tiempo y a quién se le asignó posteriormente.
+
+El proceso de asignación de direcciones IP mediante DHCP sigue una secuencia de cuatro mensajes: descubrimiento, oferta, solicitud y reconocimiento. En primer lugar, el cliente envía un mensaje DHCPDISCOVER a la dirección de difusión 255.255.255.255, utilizando el puerto 68, con la dirección IP del cliente como 0.0.0.0, para buscar un servidor DHCP. El servidor responde con un mensaje DHCPOFFER, que contiene una dirección IP disponible, una máscara de subred, una puerta de enlace predeterminada y otros parámetros de red. El cliente luego envía un mensaje DHCPREQUEST para aceptar la oferta, y el servidor responde con un DHCPACK, confirmando la asignación de la dirección IP y los parámetros de red.
+
+El protocolo DHCP incluye tres métodos de asignación de direcciones IP: asignación manual (estática), asignación automática y asignación dinámica.
+ La asignación dinámica es la más común y permite la reutilización de direcciones IP, ya que el administrador de red define un rango de direcciones conocido como "pool", y el servidor asigna una dirección de este rango al dispositivo durante un período de tiempo establecido. Durante este periodo, el dispositivo puede usar la dirección IP asignada, y si el dispositivo se desconecta, la dirección se vuelve disponible para otros dispositivos.
+ 
+ Además de asignar direcciones IP, el servidor DHCP puede configurar otros parámetros de red, como la máscara de subred, la puerta de enlace predeterminada, los servidores DNS, el nombre de dominio, el servidor NTP, el servidor SMTP, el servidor TFTP y el nombre del servidor de nombres de Windows (WINS).
+ Algunas implementaciones incluso pueden actualizar el DNS asociado con los servidores para reflejar nuevas direcciones IP mediante el protocolo de actualización de DNS definido en el RFC 2136.
+
+El DHCP es un componente vital en la gestión de redes modernas, y su uso es fundamental en sistemas operativos como Windows 98 y posteriores, donde se utiliza el "Automatic Private Internet Protocol Addressing" (APIPA) cuando DHCP no puede asignar una dirección IP.
+ Además, múltiples fabricantes y organizaciones han implementado DHCP en sus productos, incluyendo Microsoft, Cisco, Sun Microsystems y el Consorcio de Software de Internet (ISC), que publicó el ISC DHCP Server en 1997.
+
+	- "Traducción de direcciones de red (NAT)" -
+
+La traducción de direcciones de red (NAT) es una técnica que permite que múltiples dispositivos en una red privada se comuniquen con redes externas, como Internet, utilizando una o varias direcciones IP públicas. Esta tecnología traduce las direcciones IP privadas de los dispositivos internos a una dirección IP pública cuando el tráfico sale de la red, y realiza la traducción inversa cuando el tráfico de retorno llega al enrutador o firewall. NAT se implementa comúnmente en routers y firewalls, actuando como intermediario que modifica las cabeceras de los paquetes IP.
+
+El principal objetivo de NAT es conservar el espacio de direcciones IPv4, que es limitado con solo aproximadamente 4.300 millones de direcciones posibles, frente a más de 20.000 millones de dispositivos conectados a Internet. Al permitir que varios dispositivos compartan una sola dirección IP pública, NAT evita el agotamiento de direcciones IPv4 y mejora la escalabilidad de las redes. Además, NAT proporciona una capa de seguridad al ocultar las direcciones IP internas de los dispositivos de la red privada, dificultando que los atacantes accedan directamente a ellos desde Internet.
+
+Existen varios tipos de NAT. La NAT estática asigna una dirección IP interna a una dirección IP externa de forma uno a uno, y se utiliza principalmente para servidores que deben ser accesibles desde Internet, como servidores web o de correo.
+ La NAT dinámica asigna direcciones IP internas a un grupo de direcciones IP externas, creando un mapeo uno a muchos, y se usa comúnmente en redes que requieren conectividad saliente a Internet.
+ La traducción de dirección de puerto (PAT), un tipo de NAT dinámica, permite que múltiples dispositivos compartan una sola dirección IP pública mediante la asignación de puertos únicos a cada sesión. Esto es especialmente común en redes domésticas, donde miles de dispositivos pueden conectarse a Internet usando una única dirección IP pública.
+
+El proceso de NAT implica que, cuando un dispositivo interno envía una solicitud a Internet, el router o firewall reemplaza la dirección IP de origen con su propia dirección IP pública y asigna un número de puerto único para identificar la sesión. Este mapeo se almacena en una tabla de NAT, que se utiliza para redirigir el tráfico de retorno al dispositivo correcto. Si no hay puertos disponibles para asignar, el paquete puede perderse. Además, NAT puede ayudar a prevenir conflictos de direcciones IP dentro de una red local, ya que las direcciones privadas no son enrutables en Internet.
+
+En resumen, NAT es una solución fundamental para la gestión eficiente de direcciones IP, la escalabilidad de redes IPv4 y la mejora de la seguridad, permitiendo que redes privadas se conecten de forma segura y eficiente a Internet.
+
+---------------------------------------------------
+
+	- "DHCP en profundidad" -
+
+El protocolo de configuración dinámica de host (DHCP) es un sistema para asignar direcciones de protocolo de Internet (IP) a cada dispositivo de red (conocido como host) en la red de una organización. Un host puede ser un ordenador de escritorio, un portátil, una tableta, un dispositivo móvil, un cliente ligero u otros tipos de dispositivos. Cada host debe tener una dirección IP para comunicarse con otros dispositivos a través de Internet. El protocolo de red DHCP asigna direcciones automáticamente, en lugar de requerir que los administradores de red realicen asignaciones manuales. El DHCP también es responsable de asignar automáticamente nuevas direcciones IP cuando los dispositivos se mueven a nuevas ubicaciones en la red. Además de las direcciones IP, un servicio DHCP asigna parámetros de configuración como direcciones del sistema de nombres de dominio (DNS), máscaras de subred y puertas de enlace predeterminadas que son esenciales para las comunicaciones de red.
+
+¿Cómo funciona el protocolo de configuración dinámica de host?
+Cuando un dispositivo (también llamado cliente DHCP) se une a la red, transmite un mensaje de "detección de DHCP" a la subred de la red, solicitando una dirección IP junto con otra información de configuración. Cuando los servidores DHCP de la red reciben el mensaje de detección DHCP, responden con ofertas DHCP que pueden incluir una dirección IP seleccionada de un grupo de direcciones IP, junto con parámetros de red e información DHCP como servidores DNS, máscara de subred, puerta de enlace predeterminada y duración del arrendamiento de la dirección IP. Aunque un cliente DHCP puede recibir varias respuestas, selecciona solo una de las direcciones IP ofrecidas y envía un mensaje de vuelva confirmando qué oferta acepta. El servidor DHCP reconoce la aceptación con un mensaje que contiene los detalles de configuración de IP finales confirmados, que el cliente utiliza para configurar su interfaz de red. Con DHCP, a la mayoría de los clientes se les ofrece un arrendamiento por un periodo de tiempo específico y pueden renovarlo solicitando una ampliación del servidor. Cuando un cliente sale de una red, envía un mensaje de liberación de DHCP que permite saber al servidor que la dirección IP está ahora libre y que se puede reasignar.
+
+Componentes del protocolo de configuración dinámica de host
+• Servidor DHCP: Los servidores DHCP asignan automáticamente direcciones IP de un grupo de direcciones disponibles a los dispositivos que se conectan a una red. Los servidores DHCP también proporcionan parámetros de configuración de red adicionales, incluidas máscaras de subred, puertas de enlace predeterminadas y servidores DNS. El DHCP puede distinguir diferentes dispositivos de la red mediante un dirección de control de acceso a medios (MAC).
+
+• Cliente DHCP: Los clientes son dispositivos que se conectan a una red y reciben información de configuración de un servidor DHCP. Los clientes pueden ser ordenadores, portátiles, dispositivos móviles o cualquier otro dispositivo que necesite una conexión.
+   
+ - Proceso conocido como protocolo de enlace DHCP:
+
+   1. Descubrir: El cliente desea conectarse a Internet y envía una transmisión para encontrar servidores DHCP disponibles.
+   2. Oferta: El servidor DHCP recoge la transmisión del cliente y luego responde con las direcciones IP y opciones de configuración disponibles. 
+   3. Solicitud: El cliente solicita una de las direcciones IP ofrecidas y envía una solicitud a otros clientes de la red, para ver si alguno de ellos ya está utilizando la dirección IP que desea. En caso contrario el cliente podrá tomarlo.
+   4. Reconocimiento: El servidor DHCP reconoce la solicitud de información del cliente y envía un paquete de datos que incluye la duración del contrato de arrendamiento (cuánto tiempo el cliente puede conservar la dirección IP) y cualquier otra información que el cliente necesite para utilizar esta dirección IP.
+
+• Retransmisión DHCP: Las retransmisiones DHCP permiten la comunicación entre clientes y servidores DHCP.
+
+• Grupo de direcciones IP: Estas son las colecciones de direcciones IP disponibles en un servidor DHCP para su asignación a dispositivos.
+
+• Subredes: Las subredes son porciones más pequeñas de una red IP, a las que se hacen solicitudes para simplificar la gestión de la red. Una máscara de subred ayuda a que el tráfico de Internet llegue a su destino más rápido. Divide una dirección IP en dos partes para identificar qué parte es el host (o cliente) y qué parte es la red. Una máscara de subred también define el rango de direcciones IP que se pueden utilizar dentro de una red o subred.
+
+• Arrendamiento: Los arrendamientos son el tiempo que son válidas la dirección IP y la información de configuración recibidas de un servidor DHCP. Cuando un arrendamiento caduca, un dispositivo puede solicitar la renovación al servidor DHCP.
+
+• Servidores DNS: Los servidores DHCP también pueden proporcionar información del servidor DNS (sistema de nombres de dominio) a los clientes DHCP, lo que les permite resolver los nombres de dominio para las direcciones IP.
+
+• Puerta de enlace predeterminada (Gateway): Una puerta de enlace predeterminada es donde se dirigen los paquetes cuando un destino está fuera de una red local.
+
+ - Ventajas del DHCP
+
+• Configuración confiable: Configurar direcciones IP manualmente puede provocar errores. Por ejemplo, si escribe el número incorrecto o asigna el mismo número a dos dispositivos. Automatizar el proceso con DHCP reduce esos errores.
+• Menos trabajo para los administradores de red: Los administradores de red necesitarían mucho tiempo y recursos para configurar manualmente las direcciones IP en redes grandes. DHCP hace que las cosas funcionen de manera más eficiente.
+• Modificaciones en tiempo real: Los administradores pueden realizar cambios en las opciones de DHCP en una red incluso mientras el servidor DHCP se está ejecutando y asignando direcciones IP.
+• Es gratis: Para la mayoría de las redes, implementar DHCP no conlleva ningún costo adicional.
+Admite varios dispositivos en una red: DHCP te permite conectarte y navegar por la web en cualquier dispositivo que elijas y aún así tener una experiencia perfecta.
+
+ - Desventajas del DHCP
+
+• Seguridad: Los servidores DHCP no tienen forma de autenticar a los clientes que solicitan direcciones IP. De esta forma, los clientes pueden obtener acceso a direcciones IP no autorizadas haciéndose pasar por un cliente diferente.
+• Punto único de fracaso: Si una red tiene un solo servidor DHCP y falla, los clientes no pueden acceder a la web.
+• Agentes de retransmisión necesarios: Los servidores DHCP deben tener agentes de retransmisión para poder comunicarse con la red porque los datos DHCP no pueden viajar a través del enrutador.
+• Sin IP estática: Las computadoras que están conectadas a una red con DHCP implementado no se pueden usar como servidores porque su dirección IP siempre cambia.
+
+	- "NAT" -
+
+ - Definición de traducción de direcciones de red
+
+La traducción de direcciones de red (NAT) es un proceso que permite que una dirección IP única represente un grupo completo de computadoras. En la traducción de direcciones de red, un dispositivo de red, a menudo un enrutador o un firewall NAT, asigna a una computadora o computadoras dentro de una red privada una dirección pública. De esta manera, la traducción de direcciones de red permite que un único dispositivo actúe como intermediario o agente entre la red local, privada y la red pública que es Internet. El objetivo principal de NAT es conservar la cantidad de direcciones IP públicas en uso, tanto para objetivos económicos como de seguridad.
+
+ - ¿Qué es la traducción de direcciones de red?
+
+La traducción de direcciones de red (NAT) conserva las direcciones IP al permitir que las redes IP privadas que utilizan direcciones IP no registradas se conecten a Internet. Antes de que NAT reenvíe paquetes entre las redes que conecta, traduce las direcciones de red internas privadas en direcciones legales y globalmente únicas.
+
+Las configuraciones NAT pueden revelar solo una dirección IP para una red completa al mundo exterior como parte de esta capacidad, ocultando efectivamente toda la red interna y brindando seguridad adicional. La traducción de direcciones de red generalmente se implementa en entornos de acceso remoto, ya que ofrece la doble función de conservación de direcciones y seguridad mejorada.
+
+ - Cómo funciona la traducción de direcciones de red
+
+La traducción de direcciones de red permite que un solo dispositivo, como un firewall NAT o un enrutador NAT u otro dispositivo de traducción de direcciones de red, actúe como agente entre la red pública y las redes privadas —Internet y cualquier red local. Esto permite que un grupo completo de dispositivos esté representado por una única dirección IP única cuando hacen algo fuera de su red.
+
+NAT funciona como la recepcionista de una gran empresa, con instrucciones específicas sobre qué llamadas y visitantes deben mantenerse alejados, esperar o enviar y adónde deben ir. Por ejemplo, puede decirle a la recepcionista que no reenvíe ningún visitante o llamada sin su solicitud hasta que esté esperando algo específico; luego puede dejar instrucciones sobre cómo dejar pasar esa comunicación con el cliente en particular.
+
+El cliente llama al número principal de la empresa, porque ese número público es el único que alguien conoce. Le dicen a la recepcionista que necesitan hablar con usted, y la recepcionista:
+	a. Verifica las instrucciones y sabe que desea que se reenvíe la llamada, y 
+	b. Combina su extensión con una lista para enviar la información al lugar correcto. La persona que llama nunca recibe su línea privada.
+
+La traducción de direcciones de red funciona de manera similar. La solicitud llega a la dirección IP pública y al puerto, y las instrucciones NAT la envían a donde debe ir sin revelar las direcciones IP privadas de los destinos.
+
+ - Ejemplo de traducción de direcciones de red NAT
+
+Como ejemplo de traducción de direcciones de red NAT, es posible que un host interno desee comunicarse con una dirección de servidor web de traducción de direcciones de red de destino en el mundo exterior. Para una mayor comunicación, enviará un paquete de datos al enrutador de puerta de enlace NAT de la red.
+
+El enrutador de puerta de enlace NAT determina si el paquete cumple la condición para la traducción aprendiendo la dirección IP de origen del paquete y buscándola en la tabla. Puede localizar hosts autenticados para fines de traducción de red interna en su lista de control de acceso (ACL) y luego completar la traducción, produciendo una dirección IP global interna a partir de la dirección IP local interna.
+
+Finalmente, el enrutador de puerta de enlace NAT enrutará el paquete al destino después de guardar la traducción en la tabla NAT. El paquete vuelve a la dirección IP global del enrutador cuando el servidor web de Internet vuelve a la solicitud. Volviendo a la tabla NAT, el enrutador puede determinar qué dirección IP traducida corresponde a qué dirección global, traducirla a la dirección local interna y entregar el paquete de datos al host en su dirección IP. El paquete de datos se descarta si no se encuentra ninguna coincidencia.
+
+ - Tipos de traducción de direcciones de red
+
+• Traducción de direcciones de red estática SNAT: SNAT asigna direcciones IP no registradas utilizando la traducción de direcciones de red 1 a 1 para que coincidan con las direcciones IP registradas. Es especialmente útil cuando es necesario acceder a un dispositivo desde fuera de la red.
+• Traducción dinámica de direcciones de red DNAT: Esta forma de NAT selecciona un objetivo de un grupo de direcciones IP registradas y asigna una dirección IP no registrada a la versión registrada.
+• Traducción inversa de direcciones de red RNAT: RNAT permite a los usuarios conectarse a sí mismos mediante Internet o una red pública.
+• Sobrecarga de traducción de direcciones de red NAT: Esto también se conoce como sobrecarga NAT, NAT multiplexada a nivel de puerto, NAT de dirección única o traducción de dirección de puerto (PAT). Esta forma de NAT dinámica utiliza diferentes puertos para asignar múltiples direcciones IP privadas, locales y no registradas a una única dirección IP registrada y distinguir qué tráfico pertenece a qué dirección IP NAT. En términos de traducción de direcciones de puerto versus traducción de direcciones de red, PAT suele ser más rentable cuando muchos usuarios están conectados a Internet a través de una sola dirección IP pública.
+• Traducción de direcciones de red superpuestas NAT: La NAT superpuesta puede ocurrir cuando dos organizaciones cuyas redes usan direcciones IP RFC 1918 se fusionan, o cuando las direcciones IP registradas se asignan a múltiples dispositivos o se usan de otro modo en más de una red interna. En ambos casos, las redes necesitan comunicarse y la(s) organización(es) utilizan NAT superpuestos para lograrlo sin tener que volver a reacondicionar todos los dispositivos.
+   
+   El enrutador NAT intercepta direcciones y mantiene una tabla de ellas para poder reemplazarlas con direcciones IP únicas registradas. El enrutador de traducción de direcciones de red debe traducir direcciones IP externas registradas a aquellas exclusivas de la red privada y traducir direcciones IP internas a direcciones únicas registradas. Podría lograrlo utilizando DNS para implementar NAT dinámico o mediante NAT estático.
+   
+   En el contexto de traducción de direcciones de red, la red interna, comúnmente denominada dominio stub, suele ser una red LAN de área local que utiliza direcciones IP internamente. La mayor parte del tráfico de red del dominio stub es local y permanece dentro de la red interna. Un dominio stub puede incluir direcciones IP tanto registradas como no registradas.
+   
+ - Enrutador NAT
+Al utilizar la sobrecarga NAT, un enrutador NAT crea una red de direcciones IP para una red LAN de área local y conecta la red pública que es Internet a esa red LAN. El enrutador ejecuta el NAT permitiendo la comunicación entre WAN o Internet y los dispositivos host o computadoras en la red LAN. Debido a que los enrutadores NAT parecen ser un host único con una dirección IP única para Internet, se utilizan para industrias de pequeña escala y fines domésticos.
+
+Ventajas de la traducción de direcciones de red
+• Conservación de direcciones: NAT conserva las direcciones IP que están registradas legalmente y evita su agotamiento.
+• Seguridad en la traducción de direcciones de red: NAT ofrece la posibilidad de acceder a Internet con mayor seguridad y privacidad ocultando la dirección IP del dispositivo de la red pública, incluso al enviar y recibir tráfico. La limitación de velocidad NAT permite a los usuarios limitar la cantidad máxima de operaciones NAT simultáneas en un enrutador y limitar la velocidad de la cantidad de traducciones NAT. Esto proporciona más control sobre el uso de direcciones NAT, pero también se puede utilizar para limitar los efectos de gusanos, virus y ataques de denegación de servicio (DoS). La implementación dinámica de NAT crea automáticamente un firewall entre la red interna e Internet. Algunos enrutadores NAT ofrecen registro y filtrado de tráfico.
+• Flexibilidad: NAT proporciona flexibilidad; por ejemplo, se puede implementar en un entorno LAN inalámbrico público. El mapeo entrante o NAT estático permite que dispositivos externos inicien conexiones a computadoras en el dominio stub en algunos casos.
+• Simplicidad: Elimina la necesidad de renumerar direcciones cuando una red cambia o se fusiona.
+La traducción de direcciones de red le permite crear un host virtual dentro de la red para coordinar el equilibrio de carga TCP para los servidores de red internos.
+• Velocidad: En comparación con los servidores proxy, NAT es transparente tanto para las computadoras de destino como para las de origen, lo que permite un trato directo más rápido. Además, los servidores proxy normalmente funcionan en la capa de transporte o capa 4 del modelo de referencia OSI o superior, lo que los hace más lentos que la traducción de direcciones de red, que es un protocolo de capa de red o capa 3.
+• Escalabilidad: NAT y el protocolo de configuración dinámica de host (DHCP) funcionan bien juntos, y el servidor DHCP distribuye direcciones IP no registradas para el dominio stub de la lista según sea necesario. Ampliar es más fácil, ya que puede aumentar el rango disponible de direcciones IP que configura el DHCP para dejar espacio para computadoras de red adicionales de inmediato en lugar de solicitar más direcciones IP a la IANA a medida que aumentan las necesidades.
+• Multi-homing:Múltiples conexiones a Internet, llamadas multihoming, ayudan a mantener una conexión confiable y reducen la posibilidad de un apagado en caso de una conexión fallida. Esto también permite equilibrar la carga al reducir la cantidad de computadoras que utilizan una sola conexión. Las redes multihogar a menudo se conectan a varios ISP, cada uno de los cuales asigna un rango de direcciones IP o una única dirección IP a la organización. Los enrutadores utilizan la traducción de direcciones de red para enrutar entre redes utilizando diferentes protocolos de traducción de direcciones de red. En una red multihomed, el enrutador utiliza parte del conjunto de protocolos TCP/IP, el protocolo de puerta de enlace fronteriza (BGP), para comunicarse; el lado del dominio stub utiliza BGP o IBGP interno, y los enrutadores se comunican entre sí mediante BGP o EBGP externo.El multihoming redirige todos los datos a través de otro enrutador en caso de que falle una de las conexiones a un ISP.
+
+ - Desventajas de la traducción de direcciones de red
+
+• Consumo de recursos: La traducción de direcciones de red es una tecnología que consume recursos de memoria y espacio de procesador, porque debe traducir direcciones IPv4 para todos los datagramas IPv4 entrantes y salientes y conservar los detalles de la traducción en la memoria.
+• Retrasos: Los retrasos en la ruta son causados por resultados de traducción que provocan retrasos en la conmutación de la ruta.
+• Funcionalidad: Algunas aplicaciones y tecnologías no funcionarán como se esperaba con NAT habilitado.
+• Trazabilidad: La traducción de direcciones de red complica los protocolos de tunelización. IPsec es el protocolo seguro recomendado para la traducción de direcciones de red.
+• Problema de capas: Un enrutador es un dispositivo para la capa de red, pero como dispositivo NAT es necesario manipular la capa de transporte en forma de números de puerto.
+
+	- "Relación NAT ↔ IP pública/privada" -
+
+La relación entre NAT (Traducción de Direcciones de Red) y las direcciones IP pública y privada se basa en la función de NAT como intermediario que permite la comunicación entre redes con direcciones IP privadas y la Internet global, que requiere direcciones IP públicas. Cuando un dispositivo dentro de una red privada, como un hogar o una empresa, envía una solicitud a Internet, el router, que generalmente está configurado con NAT, traduce la dirección IP privada del dispositivo a la dirección IP pública asignada al router, permitiendo así el acceso a recursos externos.
+ Esta traducción se realiza para que el tráfico saliente use una dirección IP pública, que es única y enrutable en Internet.
+
+Al recibir una respuesta del servidor externo, el router NAT realiza la operación inversa: traduce la dirección IP pública de vuelta a la dirección IP privada original del dispositivo que realizó la solicitud y reenvía la respuesta al dispositivo correcto.
+ Este proceso permite que múltiples dispositivos en una red privada compartan una sola dirección IP pública, ya que NAT también gestiona los puertos para distinguir entre las diferentes conexiones simultáneas.
+
+En resumen, NAT actúa como un puente entre las direcciones IP privadas, que se utilizan dentro de redes locales para la comunicación interna, y las direcciones IP públicas, que se usan para la comunicación con Internet.
+ Esta traducción es esencial para el funcionamiento de redes domésticas y empresariales, ya que permite el acceso a Internet con un número limitado de direcciones IP públicas, optimizando el uso de recursos de direccionamiento.
+
+ - Impacto del NAT en protocolos
+
+La traducción de direcciones de red (NAT) tiene un impacto significativo en el funcionamiento de diversos protocolos y aplicaciones, especialmente aquellos que dependen del direccionamiento de extremo a extremo. Aunque NAT mejora la escalabilidad de IPv4 y proporciona una capa de seguridad al ocultar direcciones IP internas, también puede interferir con protocolos que incluyen información de direcciones IP en la carga útil de los paquetes, como FTP, SIP, H.323 o ciertas aplicaciones de seguridad que utilizan firmas digitales, ya que el cambio de dirección IP de origen puede hacer que estas aplicaciones fallen.
+ Además, el NAT puede deteriorar la funcionalidad de servicios en tiempo real como VoIP y complicar el tunneling, dificultando la resolución de problemas debido a la pérdida de trazabilidad IP.
+ 
+• Interferencia con protocolos de comunicación directa: Protocolos como VoIP, FTP y algunos videojuegos en línea pueden presentar problemas de conectividad o funcionamiento incorrecto debido a que NAT modifica las direcciones IP en los encabezados, lo que interfiere con la información de origen y destino que estos protocolos requieren.
+• Problemas con la integridad de los datos: Algunas aplicaciones dependen de la consistencia del direccionamiento desde el origen hasta el destino. Cuando NAT cambia la dirección IP de origen antes de que el paquete llegue a su destino, puede causar fallos en verificaciones de integridad, como las firmas digitales.
+• Dificultad en el tunneling y la resolución de problemas: El uso de múltiples saltos de NAT complica el seguimiento de paquetes, ya que cada cambio de dirección dificulta la trazabilidad, lo que impacta negativamente en la resolución de incidencias.
+• NAT y la transición a IPv6: Con la adopción de IPv6, que ofrece un espacio de direcciones prácticamente ilimitado, la necesidad técnica de NAT disminuye, aunque sigue siendo utilizado en entornos híbridos para garantizar compatibilidad entre IPv4 e IPv6, especialmente mediante tecnologías como NAT64.
+
+---------------------------------------------------
+
+1. ¿Qué problema resuelve DHCP?
+   
+   El protocolo DHCP resuelve el problema de tener que asignar IPs de forma manual a los dispositivos que se conectan a una red, estableciendo la conexión de forma automática mediante pasos para que ocurra el handshake entre los dispositivos y el enrutador.
+   
+2. ¿Por qué asignar IPs manualmente no escala?
+   
+   Asignar direcciones de IP a dispositivos es un proceso grande y laborioso, sobretodo en redes grandes con múltiples dispostivios y subredes. Dado que cada dispositivo requiere una configuración individual, el esfuerzo aumenta con el número de dispositivos. Además si este proceso no se maneja con precaución puede desencadenar una serie de errores de conexión y conectividad.
+   
+3. ¿Qué es NAT y por qué es necesario?
+   
+   Es una técnica que permite que múltiples dispositivos conectados a una red puedan tener acceso a internet a través de la asignación de una IP pública para todos los dispositivos de la red, que a su vez tienen cada uno una IP privada diferente basada en la máscara de red. Básicamente es una traducción de las direcciones IP privadas a la dirección IP pública.
+   
+   Es necesario porque permite que se reduzcan la cantidad de IPs públicas para la conexión al exterior de una misma red.
+   
+4. ¿Cómo es posible que muchos dispositivos compartan una sola IP pública?
+   
+   Esto es posible gracias a la NAT, que permite que múltiples dispositivos conectados a una red se conecten a redes exteriores a través de una única IP pública.
+   
+5. ¿Qué impacto tiene NAT en la visibilidad de los dispositivos?
+   
+   Tiene un impacto significativo ya que traduce las múltiples direcciones de IP privadas a una única o pocas direcciones de IP pública, ocultando las privadas frente a redes exteriores. Esto mejora la seguridad ya que no expone la IP privada de cada dispositivo de cara a redes externas.
+   
+6. ¿Qué diferencia hay entre IP interna e IP externa?
+   
+   Esta pregunta es un poco redundante y de cierta forma está ligada a la explicación de IPs públicas y privadas. Las IP interna o IP privada son aquellas direcciones que se asignan a los dispositivos en una red, se asignan a través del protocolo DHCP y se traducen mediante NAT. La IP externa o IP pública es la dirección que proporcionan los enrutadores a los paquetes enviados desde cada dispositivo en la red para establecer una conexión con otras redes externas, teniendo que los frames lleguen a las direcciones de destino usando la dirección proporcionada por el enrutador, cuando estas solicitudes reciben una respuesta, el mismo router se encargará, mediante el mismo protocolo DHCP en entregar esta respuesta al dispositivo que la ha solicitado.
+   
+Criterio de cierre:
+Puedes explicar cómo una red privada accede a Internet.
+
+---------------------------------------------------

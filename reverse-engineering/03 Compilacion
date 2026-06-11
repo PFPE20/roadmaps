@@ -1,0 +1,199 @@
+
+FASE 03 — COMPILACIÓN Y EL PROCESO DE BUILD  [TOOLCHAIN]
+---------------------------------------------------------
+
+► De código fuente a binario: las 4 etapas
+  Preprocesador → Compilador → Ensamblador → Linker. Saber que
+  "gcc -o programa main.c" hace todo esto automáticamente, pero
+  poder detenerlo en cada fase (-E, -S, -c).
+
+► Niveles de optimización del compilador
+  -O0 (sin optimización, ideal para aprender) vs -O2/-O3 (el
+  compilador reorganiza, inlinea y elimina código). Los CTFs suelen
+  usar binarios con optimización — el Assembly puede verse muy
+  diferente al C original.
+
+► Símbolos, stripped y unstripped binaries
+  Un binario "stripped" no tiene nombres de funciones ni variables.
+  La mayoría de CTFs te dan binarios stripped — necesitas inferir
+  qué hace cada función por su comportamiento.
+
+► ELF: anatomía de un binario Linux
+  Header, secciones (.text, .data, .bss, .plt, .got). Con readelf y
+  objdump puedes inspeccionar cualquier binario antes de abrirlo en
+  un decompilador.
+
+// CTF relevance: usar readelf/objdump como primer paso al recibir
+// un binario CTF (file, checksec, strings)
+
+-------------------------------------------------------------
+
+► De código fuente a binario: las 4 etapas
+
+  Preprocesador → Compilador → Ensamblador → Linker.
+
+  El proceso de transformar código fuente en un binario ejecutable consta de cuatro etapas principales: preprocesamiento, compilación, enlace y generación del ejecutable final. Cada una de estas fases desempeña un papel clave en la conversión del código legible por humanos a instrucciones que la máquina puede ejecutar directamente. 
+
+  El proceso de convertir código fuente en un programa ejecutable implica varias herramientas clave: preprocesador, compilador, ensamblador y linker, cada una con una función específica. 
+
+    • Preprocesador: Antes de que el compilador actúe, el preprocesador procesa directivas como #include y #define, expandiendo macros, incluyendo archivos y eliminando comentarios. Genera un archivo de entrada limpio para el compilador. 
+
+    • Compilador: Traduce el código fuente en un lenguaje de alto nivel (como C o C++) en código ensamblador, un lenguaje de bajo nivel que es más cercano al código máquina pero aún legible por humanos.  Este paso incluye análisis léxico, sintáctico y semántico.
+
+    • Ensamblador: Convierte el código ensamblador generado por el compilador en código máquina binario, produciendo un archivo objeto (por ejemplo, .o o .obj).  Este archivo contiene instrucciones en formato que la CPU puede ejecutar directamente, pero aún no es un programa completo. 
+
+    • Linker (Enlazador): Combina uno o más archivos objeto y bibliotecas (como libc) para crear un archivo ejecutable final (por ejemplo, .exe, .out).  Su trabajo clave es resolver referencias a funciones y símbolos entre archivos, asignar direcciones de memoria reales y unificar todas las partes del programa. 
+
+-------------------------------------------------------------
+
+► Niveles de optimización del compilador
+
+  Los niveles de optimización del compilador son opciones que controlan el grado de mejora del rendimiento y eficiencia del código generado, equilibrando velocidad de compilación, tamaño del ejecutable y rendimiento en tiempo de ejecución. 
+
+    Niveles de Optimización Comunes
+
+  • -O0: Sin optimización. Compilación rápida, útil para depuración. El código generado es más grande y lento. 
+
+  • -O1: Optimizaciones básicas. Mejora moderada del rendimiento sin aumentar significativamente el tiempo de compilación. 
+
+  • -O2: Optimización estándar. Recomendado para la mayoría de los casos. Mejora el rendimiento sin comprometer el tamaño del código ni el tiempo de compilación excesivamente. 
+
+  • -O3: Optimizaciones agresivas. Máximo rendimiento, pero con mayor tiempo de compilación y posible aumento del tamaño del código. Puede alterar el comportamiento en algunos casos. 
+
+  • -Os: Optimización de tamaño. Reduce el tamaño del ejecutable, ideal para entornos con recursos limitados. 
+
+    Consideraciones Clave
+
+  • Tiempo de compilación: A mayor nivel de optimización, mayor el tiempo de compilación. 
+
+  • Depuración: Usar niveles como -O2 con flags como -g permite depuración efectiva. 
+
+  • Pruebas: Siempre validar el comportamiento del código después de optimizar, especialmente con -O3. 
+
+  • Arquitectura: Flags como -march=native o -mtune=native optimizan para la CPU actual. 
+
+  • Perfilado: Herramientas como gprof, valgrind o perf ayudan a medir el impacto real de las optimizaciones. 
+
+
+-------------------------------------------------------------
+
+► Símbolos, stripped y unstripped binaries
+
+  "Símbolos"
+
+  Son metadatos que asocian direcciones de memoria con nombres legibles, como funciones (main, calculate_sum) o variables (user_input).  Estos datos se generan durante la compilación si se usan banderas como -g en GCC/Clang y son esenciales para depurar, ya que permiten a herramientas como GDB o Valgrind mostrar nombres de funciones y números de línea en lugar de direcciones crípticas. 
+
+  "Binarios Strippeados vs. No Strippeados"
+
+  Un binario no strippeado (unstripped) contiene todos los símbolos y la información de depuración.  Es útil durante el desarrollo porque facilita el análisis, la depuración y la detección de errores de enlazado. En contraste, un binario strippeado ha tenido esta información eliminada mediante herramientas como strip o objcopy, con el fin de reducir su tamaño y dificultar el análisis inverso. 
+
+    • Impacto en tamaño: El stripping puede reducir significativamente el tamaño del binario. Por ejemplo, un binario de 288 MB sin stripping puede reducirse a 12 MB cuando se eliminan tanto la información de depuración como los símbolos. 
+
+    • Ejecución: El rendimiento en tiempo de ejecución no se ve afectado, ya que los símbolos no se cargan en memoria durante la ejecución (excepto los símbolos dinámicos necesarios para el enlazado). 
+
+    • Depuración: Depurar un binario strippeado es difícil, ya que las trazas de pila muestran solo direcciones (0x401149) en lugar de nombres de funciones. 
+    
+
+  "Recuperación de Símbolos en Binarios Strippeados"
+
+  Aunque el stripping elimina los símbolos del binario principal, es posible "deshacer" parcialmente este proceso si se dispone de un archivo de símbolos separado (por ejemplo, .debug o .sym).  Este archivo se puede generar antes del stripping usando objcopy --only-keep-debug.
+
+    Para restaurar los símbolos:
+
+  1. Extraer la información de depuración del binario original:
+
+    objcopy --only-keep-debug binario_no_strippeado binario.debug
+
+  2. Vincular el binario strippeado al archivo de símbolos:
+
+    objcopy --add-gnu-debuglink=binario.debug binario_strippeado
+
+  3. GDB o Valgrind podrán entonces cargar automáticamente los símbolos si el archivo .debug está en la misma ruta o en directorios estándar como /usr/lib/debug. 
+
+  "Uso de Herramientas en Binarios Strippeados"
+
+  Incluso sin símbolos, herramientas como nm, objdump, readelf y GDB siguen siendo útiles:
+
+  • nm -D muestra símbolos dinámicos (.dynsym), necesarios en tiempo de ejecución.
+
+  • objdump -d permite desensamblar secciones de código.
+
+  • En GDB, se puede usar x/20i $rip para ver instrucciones desde el puntero de instrucción actual.
+
+  • Herramientas como Pwndbg o BinDiff mejoran la experiencia al integrar descompiladores (como Binary Ninja) para inferir nombres de funciones y estructuras. 
+
+
+-------------------------------------------------------------
+
+► ELF: anatomía de un binario Linux
+
+  El formato ELF (Executable and Linkable Format) es el estándar utilizado en Linux y sistemas tipo Unix para almacenar archivos ejecutables, objetos (.o), bibliotecas compartidas (.so) y volcados de memoria (core dumps).  Es el sucesor de formatos antiguos como a.out y COFF, y proporciona una estructura flexible y portable para la ejecución y el enlazado de programas.
+
+  Estructura básica de un archivo ELF
+
+  Un archivo ELF está compuesto por tres componentes principales que permiten al sistema operativo cargarlo, enlazarlo y ejecutarlo correctamente:
+
+    1. Cabecera ELF (ELF Header)
+    2. Tabla de cabeceras de programa (Program Header Table)
+    3. Tabla de cabeceras de sección (Section Header Table) 
+
+  La cabecera ELF es el punto de entrada para cualquier herramienta que analice el archivo. Contiene información crítica como:
+
+    • La marca mágica 0x7F 'E' 'L' 'F', que identifica el archivo como ELF.
+
+    • El tipo de archivo: ejecutable (EXEC), biblioteca compartida (DYN), o objeto relocatable (REL).
+
+    • La arquitectura objetivo (por ejemplo, EM_X86_64 para 64 bits).
+
+    • Los offsets hacia la tabla de segmentos y la tabla de secciones. 
+
+  ---
+
+  Secciones y segmentos
+
+  Aunque relacionados, secciones y segmentos cumplen funciones distintas:
+
+    • Segmentos: Unidades que el cargador del sistema utiliza para mapear el binario en memoria. Se describen en la Program Header Table. 
+
+    • Secciones: Divisiones lógicas usadas durante el enlazado y depuración. Se describen en la Section Header Table. 
+
+  ---
+
+  Secciones comunes en un binario ELF
+
+  Sección	Propósito
+
+    • .text:	Código ejecutable del programa.
+    • .data:	Datos inicializados (variables globales y estáticas con valor).
+    • .bss:	Datos no inicializados (reservados en memoria, pero no ocupan espacio en disco).
+    • .rodata:	Datos de solo lectura (por ejemplo, cadenas constantes).
+    • .plt:	Procedure Linkage Table: código para llamar a funciones en bibliotecas dinámicas.
+    • .got:	Global Offset Table: direcciones de funciones y variables externas resueltas en tiempo de ejecución.
+    • .symtab:	Tabla de símbolos (nombres de funciones y variables) usada en enlazado y depuración.
+    • .strtab:	Tabla de cadenas asociada a .symtab.
+    • .dynsym:	Tabla de símbolos para enlazado dinámico.
+    • .dynstr:	Tabla de cadenas asociada a .dynsym.
+    • .init / .fini:	Código que se ejecuta al inicio y final del programa.
+
+  ---
+
+  Carga y ejecución en Linux
+
+  Cuando se ejecuta un binario ELF:
+
+    1. El sistema lee la cabecera ELF para verificar su validez.
+    2. El cargador dinámico (ld-linux.so) mapea los segmentos en memoria según los permisos (lectura, escritura, ejecución). 
+    3. Si el binario es dinámico, se invoca el linker en tiempo de ejecución para resolver las dependencias con bibliotecas compartidas (por ejemplo, libc.so). 
+    4. Se ejecuta el código de inicialización (.init, constructores).
+    5. El control se transfiere a la función _start (no main directamente), que luego llama a main.
+
+  ---
+
+  Herramientas para analizar ELF
+
+    • readelf: Muestra información detallada sobre la estructura del binario.
+    • objdump: Desensambla código y muestra secciones.
+    • nm: Lista símbolos definidos en el binario.
+    • file: Identifica el tipo de archivo (incluyendo si es ELF).
+    • ldd: Muestra las bibliotecas dinámicas dependientes.
+    • strip: Elimina símbolos para reducir tamaño o ocultar información. 

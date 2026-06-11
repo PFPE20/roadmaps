@@ -1,0 +1,12 @@
+
+    FUNCTIONS WEAKNESSES:
+
+  INPUT:
+
+read    "Most permisive" - "Readsraw bytes"
+gets    "No bounds checking" - "Doesn't checks buffer lenght" - "\x0a (newline)" - "\x00 (nullbyte - implicit at the end)"
+scanf   "Buffer Overflow" - "Whitespaces" - "\x09 (tab) \t" - "\x0a (newline)" - "\x0d (CR) \n" - "\x20 (space)"
+fgets   "Prevents Buffer Overflow" - "\x0a (newline)" - "EOF (End Of File - Max capacity)"
+strcpy  ""
+strcat  ""
+

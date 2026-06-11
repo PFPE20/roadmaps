@@ -1,0 +1,190 @@
+
+===================================================
+
+        FASE 4 – Enrutamiento (cómo llegan los paquetes)
+
+===================================================
+
+	Objetivo: entender cómo un paquete sale de tu red y llega a otra.
+
+	Conceptos
+
+• Router
+• Tabla de enrutamiento
+• Red privada virtual (VPN)
+
+	Qué se debe entender
+
+• Qué diferencia a un router de un switch
+• Qué es una ruta por defecto
+• Por qué una VPN no es solo “seguridad”, sino tunelización
+
+	Bloques que se anexan:
+
+• Bloque D – Enrutamiento
+• Bloque A – Arquitectura (refuerzo)
+
+	Qué estudiar del bloque en esta fase:
+
+• Tablas de enrutamiento
+• Ruta por defecto
+• Diferencia router vs switch
+• Enrutamiento estático
+• Mención conceptual de OSPF y BGP
+
+---------------------------------------------------
+
+		--- Cómo un paquete sale de tu red y llega a otra ---
+
+Cuando un paquete sale de una red y llega a otra, primero se divide la información en unidades más pequeñas llamadas paquetes, cada uno con una dirección de origen y destino, junto con otros datos de control.
+ El dispositivo que envía el paquete, lo envía a un enrutador, que es el primer dispositivo de red intermedio.
+ El enrutador examina la dirección IP de destino del paquete y consulta su tabla de enrutamiento para determinar la mejor ruta hacia el destino.
+ Esta tabla puede ser estática (configurada manualmente) o dinámica (actualizada automáticamente mediante protocolos de enrutamiento).
+
+Una vez que el enrutador determina la interfaz de salida, realiza un proceso llamado desencapsulación, eliminando el encabezado y el tráiler de la trama de capa 2, y luego encapsula el paquete IP en una nueva trama de enlace de datos adecuada para la interfaz de salida.
+ Este proceso de reenvío, conocido como switching de paquetes, implica que el paquete se mueve de un enrutador a otro a través de la red, con cada dispositivo intermedio tomando decisiones basadas en su propia tabla de enrutamiento.
+ Los paquetes pueden tomar rutas diferentes en cada salto, dependiendo de la congestión, la disponibilidad de enlaces o las métricas de red como el retraso o el ancho de banda.
+
+Durante este recorrido, las direcciones de enlace de datos (como las direcciones MAC) cambian en cada salto, mientras que las direcciones IP de capa 3 permanecen sin modificar.
+ Este proceso se repite hasta que el paquete llega al enrutador final que está directamente conectado a la red de destino. En ese punto, el paquete se entrega al dispositivo final, donde los paquetes se reensamblan en su forma original para que la aplicación pueda usar la información completa.
+ Este sistema permite una transmisión eficiente, resiliente y escalable, ya que los paquetes pueden redirigirse automáticamente si una ruta falla, garantizando la llegada de los datos incluso en condiciones adversas.
+
+---------------------------------------------------
+
+		--- CONCEPTOS ---
+
+	- "Router" -
+
+Un router es un dispositivo que conecta dos o más redes y permite que los datos se transfieran entre ellas, actuando como un puente entre redes locales y el internet.
+ Su función principal es establecer la mejor ruta para que cada paquete de datos llegue a su destino, utilizando una tabla de encaminamiento que determina el camino más eficiente.
+ Los routers crean una red local, ya sea cableada o inalámbrica, y distribuyen la conexión a internet a múltiples dispositivos, asignándoles direcciones IP únicas.
+ Además, actúan como un guardián de la red, gestionando el tráfico, protegiendo contra amenazas mediante funciones de firewall y permitiendo el acceso controlado a internet.
+
+	- "Tabla de enrutamiento" -
+
+Una tabla de enrutamiento es una estructura de datos fundamental que almacena información sobre las rutas disponibles para enviar paquetes de datos desde su origen hasta su destino en una red informática.
+ Funciona como un "mapa de rutas" que guía a los dispositivos de red, como routers y hosts, para determinar el mejor camino a seguir, basándose en la dirección IP de destino del paquete.
+ Cada entrada en la tabla contiene campos clave como la red de destino, la máscara de subred, la dirección del siguiente salto (puerta de enlace), la interfaz de salida y una métrica que indica el costo o la eficiencia de la ruta.
+ Estas tablas pueden ser estáticas, configuradas manualmente por un administrador de red, o dinámicas, actualizadas automáticamente mediante protocolos de enrutamiento que intercambian información entre routers.
+
+	- "Red privada virtual (VPN)" -
+
+Una red privada virtual (RPV), también conocida como VPN (Virtual Private Network), es una tecnología de red que permite extender de forma segura una red local sobre una red pública o no controlada, como Internet.
+ Esta conexión se establece mediante un túnel virtual que encapsula y, en muchos casos, cifra los datos que viajan entre los extremos, protegiendo así la confidencialidad, integridad y autenticidad de la información.
+
+La VPN permite a los usuarios acceder a recursos de una red corporativa o personal desde ubicaciones remotas, como oficinas, hogares o hoteles, como si estuvieran físicamente conectados a la red privada.
+ Esto se logra mediante protocolos como PPTP, L2TP, IPsec, SSL/TLS o SSH, que garantizan la seguridad mediante cifrado y autenticación.
+
+Además de proteger el acceso remoto, las VPN se utilizan para conectar sucursales de una empresa mediante Internet, reemplazando enlaces costosos de red privada.
+ También permiten a los usuarios enmascarar su dirección IP, ocultar su ubicación geográfica y proteger sus actividades en línea frente a vigilancia, piratería o interceptación, especialmente en redes Wi-Fi públicas.
+
+En resumen, una red privada virtual crea una conexión segura y privada sobre una red pública, combinando la funcionalidad de una red privada con la flexibilidad de una red pública.
+
+---------------------------------------------------
+
+	- "Tablas de enrutamiento" -
+
+Cuando un router recibe un paquete, examina la dirección IP de destino y consulta su tabla de enrutamiento. Esta tabla contiene entradas con información como la dirección IP de destino, la máscara de red y la interfaz de salida. La decisión sobre la ruta se toma basándose en reglas y protocolos de enrutamiento configurados en el router.
+
+Diferentes protocolos de enrutamiento, como RIP, OSPF y BGP, facilitan el intercambio de información entre routers para mantener actualizada la tabla de enrutamiento. Cada ruta en la tabla tiene una métrica asociada que indica el “coste” de esa ruta, basado en factores como la velocidad de la conexión o la distancia. El router elige la ruta con la métrica más baja como la mejor opción.
+
+La actualización dinámica de la tabla de enrutamiento es importante en entornos de red que son cambiantes. Los routers intercambian información constantemente para adaptarse a cambios en la tipología de red. Además, existen dos tipos principales de enrutamiento: estático, donde las rutas se configuran de manera manual por el usuario, y dinámico, donde los routers intercambian información de manera automática para actualizar sus tablas sin necesidad de que el administrador de redes intervenga. De este modo, la tabla de enrutamiento es como un mapa que guía el flujo de datos a través de la red, basándose en la información actualizada y las métricas de la ruta para mejorar la eficiencia de la red.
+
+Hay que tener en cuenta que una tabla de enrutamiento cuenta con una lista de rutas a redes ya conocidas. Esto se consigue a través de las redes conectadas de manera directa, rutas estáticas y los diferentes protocolos de enrutamiento dinámico.
+
+	- "Componentes de una tabla de enrutamiento" -
+
+Una tabla de este tipo contiene toda la información necesaria para hacer que uno o varios paquetes de datos puedan viajar a través de la red utilizando el mejor camino. Así, se garantiza su llegada al destino, siempre que se utilicen protocolos de la capa de transporte orientados a conexión, como TCP, ya que TCP sí nos garantiza que un paquete llega al destino correctamente. Es bueno recordar que cada paquete de datos contiene, valga la redundancia, datos adicionales que nos ayudan a saber respecto a la dirección de IP origen y la IP de destino, entre otra información que va en la cabecera.
+
+Citemos como ejemplo a un router, este tipo de dispositivos cuentan con una (o varias) tabla de enrutamiento. Lo que hace dicha tabla es permitir que dicho dispositivo pueda mandar el paquete de datos al siguiente salto, es decir, ante la próxima interfaz de red con la que pueda encontrarse. Sin embargo, esto depende únicamente de la manera que hemos configurado nuestros dispositivos de redes. En este caso, los routers.
+
+ - Los componentes de una tabla de enrutamiento son:
+
+• Red de destino: esto corresponde a la red de destino donde deberá ir el paquete de datos.
+• Máscara de subred: es la que se utiliza para definir la máscara de subred de la red a la que debemos ir.
+• Distancia administrativa: es la que identifica la fiabilidad del origen de la ruta. Por ejemplo, los valores más bajos son los que indican el origen de ruta preferido.
+• Siguiente salto: en inglés a esto se lo conoce como next hop. Es la dirección de IP de la interfaz de red por donde viajará el paquete de datos, para seguir con su camino hasta el final.
+• Interfaz de salida: es la interfaz de red por donde deben salir los paquetes, para posteriormente llegar finalmente al destino.
+• Route timestamp: en este caso es el que identifica el tiempo que ha pasado desde que se ha conseguido descubrir la ruta en cuestión.
+• Métricas: tienen varias aplicaciones. Una de ellas consiste en indicar el número mínimo de saltos hasta la red de destino, o simplemente el «coste» para llegar hasta la red de destino, y sirve para dar prioridad.
+
+ - Los tipos de rutas que se pueden almacenar en una tabla de enrutamiento son:
+
+• Conectadas directamente
+• Rutas remotas
+• De host
+• Rutas por defecto
+• El destino
+
+	- "Función de un router en la red" -
+
+1. Recibe el paquete de datos.
+2. Busca cuál es la dirección de destino.
+3. Verifica la tabla de enrutamiento que tiene configurada.
+4. Procede a enviar el paquete a destino por la mejor ruta posible.
+
+Más información: https://www.redeszone.net/tutoriales/redes-cable/tabla-enrutamiento-router-que-es/#296545-que-es-la-tabla-de-enrutamiento
+
+	- "Ruta por defecto" -
+
+Una ruta estática por defecto, predeterminada o de último recurso es un tipo especial de ruta estática que se utiliza cuando no se conoce una ruta hasta un destino determinado, o cuando no es posible almacenar en la tabla de enrutamiento la información relativa a todas las rutas posibles.
+
+Un ejemplo de utilización de una ruta estática por default puede ser cuando un router tiene configurada una ruta  por defecto hacia el exterior como única salida/entrada del sistema autónomo al que pertenece, los demás routers adyacentes a este aprenderán ese camino gracias a la redistribución que el protocolo hará dentro del sistema autónomo.
+
+	- "Diferencia router vs switch" -
+
+Un router y un switch son dispositivos esenciales en una red, pero cumplen funciones distintas. El router opera en la capa de red del modelo OSI y se encarga de enrutar paquetes de datos entre diferentes redes, utilizando direcciones IP para determinar la mejor ruta de entrega. Es fundamental para conectar una red local (LAN) con otra red, como internet, y permite la comunicación entre redes separadas. Además, los routers suelen incluir funciones de seguridad como firewalls, control de acceso y gestión de ancho de banda.
+
+Por otro lado, un switch opera en la capa de enlace de datos del modelo OSI y se utiliza para conectar múltiples dispositivos dentro de una misma red local (LAN). Su función principal es enviar paquetes de datos directamente al dispositivo de destino utilizando direcciones MAC, lo que mejora la eficiencia y reduce la congestión de la red. Cada puerto del switch tiene su propio dominio de colisión, lo que permite una transmisión más rápida y segura en comparación con un hub.
+
+En resumen, mientras el switch gestiona el tráfico interno dentro de una red local, el router dirige el tráfico entre redes diferentes. Es común que ambos dispositivos se utilicen juntos: el router proporciona conectividad con internet y gestiona la red general, mientras que el switch ofrece una conexión local de alta velocidad entre dispositivos.
+ Algunos dispositivos modernos combinan las funciones de router, switch y punto de acceso WiFi en un solo equipo.
+
+	- "Enrutamiento estático" -
+
+El enrutamiento estático es una técnica de enrutamiento en la que un administrador de red configura manualmente las rutas de red en los routers mediante tablas estáticas, especificando de forma explícita la dirección de red de destino, la máscara de subred, la dirección IP del siguiente salto o la interfaz de salida, y opcionalmente la distancia administrativa.
+ A diferencia del enrutamiento dinámico, las rutas estáticas no se actualizan automáticamente cuando cambia la topología de la red, por lo que requieren intervención manual del administrador para mantener su precisión.
+ Esta técnica es especialmente útil en redes pequeñas o con topologías simples y estables, donde se espera que los parámetros de la red permanezcan constantes, y ofrece mayor seguridad ya que las rutas no se anuncian a través de la red.  Además, consume menos recursos de CPU, memoria y ancho de banda, ya que no se requieren protocolos para calcular ni comunicar rutas.
+
+	- "Mención conceptual de OSPF y BGP" -
+
+• OSPF (Open Shortest Path First): este protocolo es uno de los mejores que existen en la actualidad, es muy rápido y eficiente, es ideal para redes medianas, grandes y muy grandes. OSPF lo suelen utilizar los operadores que tienen cientos de routers. Además, este protocolo nos permite subdividir el sistema autónomo en pequeñas áreas, con el objetivo de optimizar aún más el intercambio de información entre los routers.
+   
+• BGP (Border Gateway Protocol): es el protocolo de enrutamiento principal que hace que Internet funcione, permitiendo el intercambio de información de enrutamiento entre sistemas autónomos (AS), que son redes independientes administradas por entidades como proveedores de servicios de internet (ISP), empresas o gobiernos. BGP actúa como un sistema de navegación global, analizando todas las rutas disponibles para determinar la mejor ruta para que los datos viajen desde su origen hasta su destino, tomando en cuenta atributos como la longitud de la ruta, políticas de red configuradas por administradores y condiciones de red.
+
+---------------------------------------------------
+
+1. ¿Por qué una red necesita un router?
+   
+   Una red necesita un router porque actúa como punto central que conecta y gestiona la comunicación entre dispositivos y redes, asegurando que los datos se envíen correctamente a destino. Sin el router los dispositivos no podrían compartir una única conexión a Internet ni comunicarse entre sí. El router asigna IP privada a cada dispositivo conectado lo que permite que todos accedan a internet a través de una única IP pública proporcionada por el ISP. Además dirige el tráfico de red, seleccionando la mejor ruta, tablas y protocolos de enrutamiento para optimizar el rendimiento. También tiene firewalls que proveen seguridad a la red. En entornos domésticos crea una red Wi-Fi inalámbrica permitiendo que los dispositivos se conecten.
+   
+2. ¿Qué información utiliza un router para decidir por dónde enviar un paquete?
+   
+   Para decidir por dónde enviar un paquete el router lee las cabeceras (headers) donde se encuentra la IP de destino y revisa sus tablas de enrutamiento, en esta última va a encontrar la mejor ruta para enviar la información dependiendo de factores como los hops de las rutas, el ancho de banda, distancia administrativa, etc...
+   
+3. ¿Qué es una ruta por defecto y cuándo se usa?
+   
+   La ruta por defecto es un tipo de ruta estática que el router va a usar cuando no se encuentre/conozca la ruta hasta un destino predeterminado, también cuando no sea posible almacenar en la tabla de enrutamiento la información relativa a las rutas posibles.
+   
+   Cabe destacar que siempre la ruta por defecto será hacia el ISP, es decir, el primer hop lo dará hacia el router del ISP.
+   
+4. ¿Por qué un switch no puede reemplazar a un router?
+   
+   Un switch no puede reemplazar a un router porque, en principio, sus funciones son diferentes. Además ambos operan en capas distintas del modelo OSI.
+   
+   Un switch se usa para conectar dispositivos en una red. El router se usa para conectar esa red con otras redes o directamente a internet.
+   
+   Se puede dar el caso de switches que operen en la misma capa del modelo OSI que el router, pero esto se suele dar más para manipular VLANs que para conectar a otras redes.
+   
+5. ¿Qué ocurre con un paquete cuando su destino no está en la red local?
+   
+   El dispositivo, por defecto, enviará el paquete al gateway, si este a su vez no conoce el destino lo enviará al próximo router (próximo hop), y se vuelve a ejecutar lo mismo, si este segundo no lo conoce vuelve a dar otro salto y así sucesivamente, si ninguno conoce la red de destino simplemente el paquete se pierde.
+   
+6. ¿Por qué Internet necesita múltiples routers intermedios?
+   
+   Se podrían necesitar múltiples routers intermedios para ampliar la cobertura de la señal, para esos sitios en donde la recepción no es tan buena, o directamente no llega. También para mejorar la gestión del tráfico y reducir la carga de un sólo router lo que significa mejorar la velocidad y estabilidad de la conexión. En ámbitos de seguridad es útil ya que separa las redes y se distribuyen de una manera más eficiente.
+
+Criterio de cierre:
+Puedes describir el recorrido de un paquete fuera de tu red local.
+
+---------------------------------------------------

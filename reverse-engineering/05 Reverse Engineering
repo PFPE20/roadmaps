@@ -1,0 +1,167 @@
+
+FASE 05 — HERRAMIENTAS DE REVERSE ENGINEERING  [TOOLING]
+---------------------------------------------------------
+
+► GDB — depurador dinámico
+  Ejecutar un binario paso a paso, inspeccionar registros y memoria
+  en tiempo real. Comandos esenciales: run, find, break, next, step,
+  x (examine memory), info. Usar GDB con pwndbg o peda
+  para CTFs.
+
+► Ghidra — decompilador estático (gratis)
+  Desarrollado por la NSA. Convierte Assembly de vuelta a pseudocódigo
+  C. Ideal para empezar. Aprender a renombrar funciones y variables
+  para reconstruir el código original.
+
+► ltrace / strace — trazado de llamadas
+  strace muestra las llamadas al sistema operativo (abrir archivos,
+  leer, escribir). ltrace muestra llamadas a funciones de librería
+  (strcmp, printf...). Muy útiles en CTFs para entender qué hace un
+  binario sin desensamblarlo.
+
+► strings, file, checksec
+  Primeros pasos al recibir un binario CTF: file identifica el tipo,
+  strings extrae texto legible (a veces la flag está ahí!), checksec
+  muestra qué protecciones tiene (NX, ASLR, canary, PIE).
+
+// CTF relevance: flujo estándar → checksec → strings → Ghidra
+// (estático) → GDB (dinámico)
+
+-------------------------------------------------------------
+
+► GDB — depurador dinámico
+
+  GDB Se invoca con:
+
+    gdb <archivo binario>
+
+    gdb -q <archivo binario> → no imprime el mensaje introductorio.
+
+  ---
+
+  "help"
+
+    help <comando>
+
+  Se usa para obtener información sobre los comandos.
+
+  ---
+
+  "r" → run
+
+  Corre el programa.
+
+  ---
+
+  "f" → find
+
+  Se utiliza para buscar una secuencia específica de bytes en el espacio de memoria de un programa depurado.
+
+    find [/size] start_addr, end_addr, val1 [, val2, ...]
+
+    f main → comando simple
+
+  - /size: (Opcional) Define el tamaño de cada valor de búsqueda. Puede ser b (byte), h (halfword/2 bytes), w (word/4 bytes) o g (giant word/8 bytes). Si se omite, GDB usa el tamaño por defecto del tipo de dato en el lenguaje de origen.
+
+  - start_addr, end_addr: El rango de memoria donde realizar la búsqueda. 
+
+  - val1, val2...: La secuencia de bytes o cadenas a buscar. Las cadenas deben ir entre comillas dobles "..." y GDB incluye automáticamente el terminador nulo \0. 
+
+  ---
+
+  "b" → breakpoint
+
+  Poner breakpoint en funciones
+
+    b *<address>
+
+    b main → comando simple
+
+  ---
+
+  "s" → step
+
+  ejecuta una instruccion.  Si hay una llamada a una funcion, se detiene en la primera instruccion de esa funcion.
+
+  ---
+
+  "n" → next
+
+  ejecuta una instruccion.  Si  hay llamadas a funciones, se las ejecuta completamente sin detenerse.
+
+  ---
+
+	"x" → Examine
+  
+		x/<n><f><u> <address>
+
+	• n: Cantidad de unidades a mostrar.
+
+	• f: Formato (x para hexadecimal, d para decimal, i para instrucciones).
+
+	• u: Tamaño de la unidad (b byte, h halfword, w word, g giant/8 bytes).
+
+	• address: Dirección donde se quiere buscar.
+
+  ---
+
+	"info"
+
+  es un grupo de comandos que permite obtener detalles sobre el estado actual del programa en depuración
+
+  - info breakpoints: Lista todos los puntos de interrupción configurados, mostrando su número, estado (habilitado/deshabilitado) y ubicación. 
+
+  - info threads: Muestra una lista de los hilos (threads) conocidos por el depurador y sus identificadores.
+
+  - info args: Imprime los argumentos pasados a la función correspondiente al frame de pila actual. 
+
+  - info locals: Muestra los valores de las variables locales de la función examinada en el frame actual. 
+
+  ---
+
+	"p"
+
+  print
+
+  ---
+
+	"set disassembly-flavor intel"
+
+  Cambia el ouput de default (AT&T) a Intel
+
+  ---
+
+	"si"
+
+  (stepi) se utiliza para ejecutar la siguiente instrucción de máquina en ensamblador.
+
+  ---
+
+	"ni"
+
+  (nexti) salta sobre las llamadas a funciones
+
+
+https://www.welivesecurity.com/es/recursos-herramientas/gdb-debugger-programas-en-linux/
+
+https://users.dcc.uchile.cl/~lmateu/CC41C/gdb.txt
+
+-------------------------------------------------------------
+
+  Algunos flags útiles de GCC:
+
+  Arquitectura x32:
+
+    -m32: Compila el programa en arquitectura x32
+
+    -no-pie: Compila el binario sin soporte de Position Independent Executable, forzando direcciones fijas en 0x0804xxxx en x86 de 32 bits.
+
+-------------------------------------------------------------
+
+  Comando para que UN SÓLO BINARIO SE EJECUTE SIN ASRL:
+
+    setarch $(uname -m) -R /ruta/al/binario [ARGS]
+
+  También se puede establecer una variable:
+
+    NOASRL=(setarch $(uname -m) -R)

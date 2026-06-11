@@ -1,0 +1,114 @@
+Assembly Mnemonics
+Description of x86 Assembly Instructions
+
+Mnemonic	Description
+
+ADC	Add With Carry
+ADD	Arithmetic Addition
+AND	Logical And
+CALL	Procedure Call
+CBW	Convert Byte to Word
+CLC	Clear Carry
+CLD	Clear Direction Flag
+CLI	Clear Interrupt Flag
+CMC	Complement Carry Flag
+CMP	Compare
+CMPS	Compare String
+CWD	Convert Word to Double
+DEC	Decrement
+DIV	Divide
+HLT	Halt CPU
+IDIV	Signed Integer Division
+IMUL	Signed Multiply
+IN	Input Byte or Word From Port
+INC	Increment
+INS	Input String from Port
+INT	Interrupt
+INTO	Interrupt on Overflow
+IRET	Interrupt Return
+JCXZ	Jump if Register CX is Zero
+JMP	Unconditional Jump
+LDS	Load Pointer Using DS
+LEA	Load Effective Address
+LES	Load Pointer Using ES
+LODS	Load String
+LOOP	Decrement CX and Loop
+LOOPE	Loop While Equal
+LOOPNZ	Loop While Not Zero
+MOV	Move Byte or Word
+MOVL  Move the address of var into number register %eax 
+MOVS	Move String
+MUL	Unsigned Multiply
+NEG	Two's Complement Negation
+NOP	No Operation
+NOT	One's Compliment Negation
+OR	Inclusive Logical OR
+OUT	Output Data to Port
+OUTS	Output String to Port
+POP	Pop Word off Stack
+POPA	Pop All Registers off Stack
+POPF	Pop Flags off Stack
+PUSH	Push Word onto Stack
+PUSHA	Push All Registers onto Stack
+PUSHF	Push Flags onto Stack
+RCL	Rotate Through Carry Left
+RCR	Rotate Through Carry Right
+REP	Repeat String Operation
+REPE	Repeat Equal
+REPNE	Repeat Not Equal
+RET	Return From Procedure
+ROL	Rotate Left
+ROR	Rotate Right
+SAL	Shift Arithmetic Left
+SAR	Shift Arithmetic Right
+SBB	Subtract with Borrow
+SCAS	Scan String
+SHL	Shift Logical Left
+STC	Set Carry
+STD	Set Direction Flag
+STI	Set Interrupt Flag
+STOS	Store String
+SUB	Subtract
+TEST	Test For Bit Pattern
+XCHG	Exchange Register/Memory with Register
+XLAT	Translate Byte in AL Using Table in Memory
+XOR	Exclusive OR
+
+
+Jxx - Jump Instructions Table
+Jump Condition Meanings for Assembly
+
+Mnemonic	Meaning Jump Condition
+
+JA	Jump if Above CF=0 and ZF=0
+JAE	Jump if Above or Equal CF=0
+JB	Jump if Below CF=1
+JBE	Jump if Below or Equal CF=1 or ZF=1
+JC	Jump if Carry CF=1
+JCXZ	Jump if CX Zero CX=0
+JE	Jump if Equal ZF=1
+JG	Jump if Greater ZF=0 and SF=OF
+JGE	Jump if Greater or Equal SF=OF
+JL	Jump if Less SF != OF
+JLE	Jump if Less or Equal ZF=1 or SF != OF
+JMP	Unconditional Jump
+JNA	Jump if Not Above CF=1 or ZF=1
+JNAE	Jump if Not Above or Equal CF=1
+JNB	Jump if Not Below CF=0
+JNBE	Jump if Not Below or Equal CF=0 and ZF=0
+JNC	Jump if Not Carry CF=0
+JNE	Jump if Not Equal ZF=0
+JNG	Jump if Not Greater ZF=1 or SF != OF
+JNGE	Jump if Not Greater or Equal SF != OF
+JNL	Jump if Not Less SF=OF
+JNLE	Jump if Not Less or Equal ZF=0 and SF=OF
+JNO	Jump if Not Overflow OF=0
+JNP	Jump if No Parity PF=0
+JNS	Jump if Not Signed SF=0
+JNZ	Jump if Not Zero ZF=0
+JO	Jump if Overflow OF=1
+JP	Jump if Parity PF=1
+JPE	Jump if Parity Even PF=1
+JPO	Jump if Parity Odd PF=0
+JS	Jump if Signed SF=1
+JZ	Jump if Zero ZF=1

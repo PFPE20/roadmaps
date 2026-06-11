@@ -1,0 +1,167 @@
+
+===================================================
+
+        FASE 6 – Acceso a Internet (lado del proveedor)
+
+===================================================
+
+	Objetivo: entender qué pasa después del router.
+
+	Conceptos
+
+• Línea de abonado digital (DSL)
+• Línea de abonado digital asimétrica (ADSL)
+• Router ADSL
+
+	Qué debes entender
+
+• Qué parte es tu red y cuál es del ISP
+• Por qué la subida suele ser más lenta que la bajada
+• Qué hace realmente el módem
+
+	Bloques que se anexan:
+
+• Bloque D – Enrutamiento
+• Bloque A – Arquitectura
+
+	Qué estudiar del bloque en esta fase:
+
+• Red de acceso
+• DSL / ADSL
+• Frontera cliente–proveedor
+• Qué ocurre “después del router”
+
+---------------------------------------------------
+
+		- "Qué pasa después del router" -
+
+1. Encaminamiento por múltiples saltos
+
+El encaminamiento por múltiples saltos se refiere al proceso mediante el cual un paquete de datos atraviesa varios routers o nodos intermedios para alcanzar su destino final en una red. Cada salto representa el paso de un paquete a través de un router, lo que equivale a pasar por una nueva red intermedia. Este tipo de encaminamiento es fundamental en redes de conmutación de paquetes, donde se busca determinar el mejor camino desde el origen hasta el destino.
+
+La métrica más comúnmente utilizada para evaluar rutas en este contexto es el número de saltos, que indica cuántos routers debe atravesar el paquete para llegar a su destino. Un camino con un menor número de saltos generalmente se considera más eficiente, aunque no necesariamente es el más rápido, ya que no tiene en cuenta factores como el retardo, el ancho de banda o el nivel de tráfico. Por ejemplo, el protocolo RIP (Routing Information Protocol) utiliza únicamente el número de saltos como métrica, y establece un límite máximo de 15 saltos, más allá del cual el destino se considera inalcanzable.
+
+Existen diferentes técnicas de encaminamiento que manejan múltiples saltos de forma distinta. En el encaminamiento por vectores de distancia, como RIP, cada router comparte su tabla de rutas con sus vecinos, y los destinos se calculan basándose en la distancia total (número de saltos) anunciada por los vecinos más la distancia al router. En cambio, el encaminamiento por estado de enlaces, como OSPF, permite a cada router conocer la topología completa de la red, lo que mejora la adaptabilidad a cambios, aunque consume más memoria y capacidad de red.
+
+Además, en ciertos casos, como el enrutamiento multitrayectoria de igual coste (ECMP), una entrada en la tabla de enrutamiento puede tener múltiples saltos siguientes, permitiendo la distribución de paquetes a través de varias rutas para mejorar la eficiencia y redundancia. Esto es especialmente útil en redes modernas que requieren alta disponibilidad y rendimiento.
+
+2. NAT y traducción de direcciones
+
+La traducción de direcciones de red (NAT) es una tecnología fundamental que permite que múltiples dispositivos en una red local (LAN) compartan una única dirección IP pública para comunicarse con redes externas, como Internet. Este proceso es crucial para conservar las direcciones IP públicas, que son un recurso limitado, y mejora la seguridad al ocultar las direcciones IP privadas de los dispositivos internos frente a entidades externas. NAT funciona modificando la información de las direcciones IP en las cabeceras de los paquetes cuando estos atraviesan un dispositivo como un router o un cortafuegos.
+
+(REVISAR FASE 5 PARA LEER MÁS SOBRE NAT)
+
+3. Rutas y camino variable
+
+En el contexto de Internet, el término "rutas" se refiere a los caminos que los paquetes de datos siguen desde un origen hasta un destino a través de una red. Estas rutas son determinadas por tablas de encaminamiento que contienen información sobre cómo llegar a diferentes redes, utilizando prefijos de direcciones IP para identificar las redes destino. El proceso de encaminamiento, o routing, implica el uso de algoritmos para calcular el camino más eficiente, considerando factores como el costo, la carga de los enlaces y la topología de la red.
+
+Un concepto clave en el encaminamiento es el uso de algoritmos como el de Dijkstra, que se emplea para encontrar el camino más corto entre nodos en una red modelada como un grafo. Este algoritmo permite a los routers calcular rutas óptimas basadas en costos no negativos asociados a los enlaces. Además, existen protocolos de encaminamiento dinámico como RIP (Routing Information Protocol), que utiliza el vector de distancia para intercambiar información con vecinos directos y actualizar las tablas de ruteo periódicamente o cuando ocurren cambios.
+
+En contraste, el estado del enlace, como en OSPF (Open Shortest Path First), permite una convergencia más rápida al difundir información sobre el estado de los enlaces a todos los nodos de la red, lo que mejora la escalabilidad y la precisión del encaminamiento. Las rutas pueden ser estáticas, configuradas manualmente por un administrador, o dinámicas, aprendidas automáticamente mediante protocolos de encaminamiento.
+
+Por otro lado, el término "camino variable" puede interpretarse en el contexto de rutas parametrizadas en aplicaciones web, como en frameworks como Angular, donde las rutas pueden incluir parámetros dinámicos que permiten la navegación entre diferentes vistas según los valores recibidos. Por ejemplo, una ruta como coches/:marca/:modelo acepta cualquier combinación de marca y modelo, permitiendo una navegación flexible dentro de la aplicación. Sin embargo, este uso de "camino variable" es específico del desarrollo web y no se relaciona directamente con el encaminamiento de paquetes en Internet.
+
+4. Entrega no garantizada (best effort)
+
+El mecanismo de entrega de mejor esfuerzo, también conocido como "best-effort delivery", designa un tipo de servicio de red en el que la red no puede garantizar que los datos lleguen a su destino ni ofrecer al usuario una determinada calidad de servicio (QoS) en sus comunicaciones. En una red de mejor esfuerzo, todos los usuarios reciben el mejor servicio posible en ese momento, lo que significa que obtendrán distintos anchos de banda y tiempos de respuesta en función del volumen de tráfico en la red. Este modelo se asemeja al reparto diario de correo postal, donde el cartero hace todo lo posible por entregar la carta, pero no se garantiza su entrega ni se informa al remitente si finalmente llegó.
+
+El protocolo IP, que sustenta la mayor parte de las comunicaciones en Internet, proporciona un servicio de datagramas no fiable o de mejor esfuerzo, ya que no garantiza la recepción de todos los paquetes. No ofrece mecanismos para determinar si un paquete alcanza su destino, solo verifica la integridad de los datos mediante sumas de comprobación en las cabeceras de los paquetes. Esta falta de garantías puede provocar que lleguen al destinatario paquetes dañados, duplicados o fuera de orden, e incluso que algunos paquetes se pierdan durante la transmisión. Por esta razón, la fiabilidad de la comunicación generalmente se delega en protocolos de capas superiores, como TCP en la capa de transporte.
+
+Dentro de la pila de protocolos de red, ejemplos de servicios best-effort incluyen HDLC y Ethernet en la capa de enlace, IP en la capa de red, y UDP y UDP-Lite en la capa de transporte. Aunque estos servicios pueden ofrecer una corrección de errores básica o cierta tolerancia a fallos en la transmisión, como en el caso de CSMA/CD, no pueden garantizar en todo caso la entrega efectiva de los datos. Este modelo presenta limitaciones para aplicaciones multimedia y de tiempo real, como videoconferencia o streaming de vídeo, que requieren tiempos de respuesta bajos y bajo retraso, ya que la pérdida de paquetes o los retrasos pueden afectar gravemente la experiencia del usuario.
+
+En respuesta a estas limitaciones, han surgido alternativas más fiables diseñadas para ofrecer calidad de servicio (QoS) y robustez en las comunicaciones, como los Servicios Diferenciados (DiffServ) y Servicios Integrados (IntServ), que proporcionan un servicio de red que garantiza la entrega final de los datos. Asimismo, redes como la telefonía fija no operan con el modelo de mejor esfuerzo, sino con conmutación de circuitos, donde se reservan recursos antes de establecer una llamada, garantizando un ancho de banda constante y evitando interrupciones por sobrecarga.
+
+---------------------------------------------------
+
+		--- CONCEPTOS ---
+
+	- "Línea de abonado digital (DSL)" -
+
+La línea de abonado digital (DSL, por sus siglas en inglés Digital Subscriber Line) es una familia de tecnologías que proporcionan acceso a Internet mediante la transmisión de datos digitales a través del par trenzado de hilos de cobre convencionales de la red telefónica básica, utilizando frecuencias más altas que las empleadas en las conversaciones telefónicas tradicionales para transmitir datos simultáneamente con el servicio de voz. Esta tecnología permite una conexión de banda ancha, ofreciendo velocidades significativamente superiores a las de las conexiones por módem tradicionales, ya que no requiere el "marcado" telefónico y permite navegar por Internet mientras se realizan llamadas. Las variantes más comunes incluyen ADSL (asimétrica), SDSL (simétrica) y VDSL (de muy alta velocidad), donde ADSL se caracteriza por tener una capacidad de descarga mayor que la de subida, lo cual se ajusta al uso típico de la mayoría de los usuarios que descargan más contenido del que envían.
+
+La tecnología DSL aprovecha el ancho de banda no utilizado en las líneas telefónicas, dividiendo las frecuencias en canales separados para voz y datos, lo que evita interferencias mutuas. Para lograr esto, se requiere el uso de un módem DSL en el hogar que convierte los datos digitales de los dispositivos en señales que pueden viajar por la línea telefónica, y un filtro (splitter o microfiltro) que separa la señal de voz de la de datos. Aunque la velocidad y la calidad de la conexión dependen de factores como la distancia entre el usuario y la central telefónica, la calidad del cableado y el tipo de plan contratado, DSL sigue siendo una opción ampliamente disponible, especialmente en zonas donde no hay acceso a fibra óptica o cable. Además, su principal ventaja radica en que utiliza la infraestructura existente de telefonía, lo que reduce costos y tiempos de instalación para los proveedores y usuarios.
+
+	- "Línea de abonado digital asimétrica (ADSL)" -
+
+La línea de abonado digital asimétrica (ADSL, por sus siglas en inglés Asymmetric Digital Subscriber Line) es una tecnología de acceso a Internet de banda ancha que utiliza el par de cobre de la red telefónica básica convencional (RTB) o línea de abonado (Red Telefónica Conmutada, PSTN) para transmitir datos digitales. Esta tecnología permite la transmisión simultánea de voz y datos a través de la misma línea telefónica, ya que utiliza bandas de frecuencia separadas: la voz opera en la banda de 300 a 3400 Hz, mientras que los datos se transmiten en frecuencias más altas, generalmente desde los 25 kHz hasta cerca de 1,1 MHz. Para evitar interferencias, se requiere la instalación de un filtro (splitter o discriminador) que separa la señal telefónica convencional de la señal modulada de ADSL.
+
+La característica principal de ADSL es su naturaleza asimétrica, lo que significa que la capacidad de descarga (desde la red hacia el usuario) es significativamente mayor que la de subida (desde el usuario hacia la red). Esta configuración responde al patrón de uso típico de los usuarios finales, que descargan más información (como contenido web, videos en streaming o archivos) de la que suben. Las velocidades máximas dependen de la versión de la tecnología y de factores como la distancia a la central telefónica y la calidad del cableado de cobre. Las velocidades típicas varían desde 1,5 hasta 8 Mbit/s en descarga y de 16 a 640 kbit/s en subida para la versión estándar ADSL, mientras que las mejoras como ADSL2 y ADSL2+ pueden alcanzar hasta 12 Mbit/s y 24 Mbit/s en descarga, respectivamente, con hasta 3,5 Mbit/s en subida.
+
+ADSL2 y ADSL2+ incorporan mecanismos avanzados de modulación y gestión de recursos que mejoran la resistencia al ruido y la atenuación, permitiendo distancias de hasta 9 km desde la central. Sin embargo, el rendimiento real está limitado por la distancia: el límite teórico es de hasta 10 km, pero en la práctica, la calidad del servicio comienza a degradarse más allá de los 5,5 km, y el límite real suele estar alrededor de los 3 km. Además, la tecnología requiere que el cable de cobre no esté compartido con otros servicios que puedan causar interferencias, y que el par de cobre cumpla con ciertos estándares de calidad de señal.
+
+Una de las principales ventajas de ADSL es que aprovecha la infraestructura existente de la red telefónica, lo que reduce significativamente los costos de implementación para los operadores y acelera la disponibilidad del servicio para los usuarios. También permite el uso simultáneo de Internet y llamadas telefónicas sin interrupciones.
+ A pesar de su eficiencia en relación costo-beneficio, ADSL tiene limitaciones frente a tecnologías más modernas como la fibra óptica o el cablemódem, que ofrecen mayores anchos de banda y son menos susceptibles a interferencias y atenuación.
+
+En resumen, ADSL sigue siendo una opción viable para muchos usuarios, especialmente en áreas donde la infraestructura de fibra óptica no está disponible, gracias a su capacidad de ofrecer conexiones de banda ancha confiables y económicas.
+
+	- "Router ADSL" -
+
+Un router ADSL es un dispositivo electrónico que permite a los equipos de una red local acceder a Internet a través de una línea telefónica fija con servicio ADSL.
+ También conocido como módem ADSL o módem/router ADSL, integra múltiples funciones en un solo aparato, actuando como módem, enrutador, puerta de enlace, conmutador y punto de acceso inalámbrico. Este dispositivo modula las señales de datos para transmitirlas por la línea telefónica de cobre y demodula las señales recibidas para que los equipos de la red local puedan interpretarlas.
+
+El router ADSL proporciona acceso a Internet a una red local (LAN) mediante una línea telefónica convencional, permitiendo compartir la conexión entre varios dispositivos. Funciona mediante la transmisión de datos digitales en una banda de frecuencias más alta que la utilizada para las conversaciones telefónicas convencionales (300 a 3400 Hz), lo que permite hablar por teléfono y navegar por Internet al mismo tiempo. Para evitar interferencias, se requiere el uso de microfiltros en cada toma telefónica donde se conecten dispositivos como teléfonos o fax.
+
+El router ADSL cuenta con una interfaz RJ-11 para conectar la línea telefónica y uno o varios conectores RJ-45 para la red cableada LAN, además de una interfaz Wi-Fi para crear una red inalámbrica. También incluye funciones avanzadas como servidor DHCP, encriptación, firewall y filtrado de paquetes, lo que mejora la seguridad y gestión de la red. Aunque el ADSL es más económico que tecnologías como la fibra óptica, sus velocidades de descarga y subida son inferiores y pueden verse afectadas por la distancia entre el hogar y la central telefónica.
+
+---------------------------------------------------
+
+	- "Red de acceso" -
+
+La red de acceso es la infraestructura de la red de comunicaciones que conecta a los usuarios finales o abonados con algún proveedor de servicios, actuando como complemento del núcleo de red. Esta parte de la red se encarga de brindar conexión desde el dispositivo del usuario hasta el proveedor de servicios, y puede subdividirse en redes de distribución/agregación y de último kilómetro. Puede implementarse mediante diversos medios físicos, como cobre, fibra óptica, cable coaxial o tecnologías inalámbricas, y se clasifica según el medio de transmisión y el ancho de banda ofrecido. En el caso de las redes móviles, la red de acceso por radio (RAN) es la sección que conecta dispositivos como teléfonos inteligentes con la red principal mediante ondas de radio.
+
+	- "DSL / ADSL" -
+
+DSL (Digital Subscriber Line), conocida como línea de abonado digital, es una familia de tecnologías que permite la transmisión de datos digitales a través de líneas telefónicas convencionales de cobre, utilizando el par trenzado existente entre el domicilio del usuario y la central telefónica. Esta tecnología permite el acceso a Internet de banda ancha, ofreciendo velocidades superiores a las de las conexiones por módem tradicional, ya que utiliza frecuencias más altas que las empleadas para la voz telefónica, lo que permite transmitir datos y realizar llamadas simultáneamente.
+
+ADSL (Asymmetric Digital Subscriber Line), o línea de abonado digital asimétrica, es una variante específica de DSL que se caracteriza por tener velocidades de descarga (desde Internet hacia el usuario) significativamente más altas que las de subida (desde el usuario hacia Internet). Esta asimetría se adapta a los patrones típicos de uso del usuario doméstico, que generalmente descarga más contenido (como videos, música o páginas web) que sube. ADSL es la tecnología DSL más comúnmente instalada y ampliamente disponible, especialmente en áreas urbanas y rurales donde la infraestructura de fibra óptica aún no está extendida.
+
+En resumen, DSL es un término genérico que engloba varias tecnologías de acceso a Internet mediante líneas telefónicas, mientras que ADSL es una de sus formas más populares, diseñada para ofrecer altas velocidades de descarga con menor capacidad de subida, ideal para actividades como streaming, navegación web y descargas.
+
+	- "Frontera cliente–proveedor" -
+
+En el contexto de Internet, los términos "cliente", "proveedor" y "frontera" se refieren a roles y relaciones dentro de la infraestructura de red, especialmente en el intercambio de tráfico y conectividad.
+
+Un proveedor de Internet (ISP) es una empresa que ofrece acceso a Internet a sus clientes, proporcionando conectividad total con el resto de Internet mediante servicios de tránsito. Este tránsito es un servicio de pago que permite a los clientes anunciar sus direcciones IP a través del protocolo BGP (Border Gateway Protocol) para que el tráfico llegue a su red.
+
+Un cliente es una red o organización que se conecta a un proveedor de tránsito para obtener acceso a Internet. El cliente puede ser una empresa, un centro de datos o incluso otro ISP. El acuerdo entre el cliente y su proveedor de tránsito define cómo se gestiona el tráfico y las direcciones IP.
+
+El término frontera se refiere a los routers o puntos de interconexión que gestionan el flujo de tráfico entre diferentes redes, especialmente entre sistemas autónomos (AS) distintos. Un router de frontera es un dispositivo que opera en la "frontera" de una red, conectando una red interna con otras redes externas, como entre dos ISPs o entre un ISP y una gran organización. Estos routers utilizan protocolos especializados como BGP para enrutar el tráfico por la mejor ruta posible entre redes.
+
+Además, en el contexto de puntos de intercambio de Internet (IXP), las redes pueden establecer acuerdos de emparejamiento directo, donde el tráfico se intercambia sin coste entre ellas. Este tipo de relación también ocurre en la frontera entre redes, permitiendo una transferencia más eficiente y con menor latencia. Cuando una red decide terminar este acuerdo, se produce un proceso llamado desemparejamiento, que puede afectar el flujo de tráfico.
+
+En resumen, el cliente depende del proveedor para acceder a Internet, mientras que la frontera representa los puntos de conexión y gestión del tráfico entre redes, donde se utilizan protocolos como BGP para asegurar una transmisión eficiente.
+
+---------------------------------------------------
+
+1. ¿Dónde termina tu red y dónde comienza la del proveedor?
+   
+   La línea de la red privada y la red del proveedor se encuentra en el punto de demarcación, también conocido como demarc. Es un punto físico donde comienza la red privada del cliente y finaliza la red del proveedor. Este demarc actúa como una línea divisoria crítica en la red, telefonía pública y los equipos locales de clientes.
+   
+   Este límite define las responsabilidades: todo lo que está hasta el demarc es responsabilidad del ISP, incluyendo el punto, mientras que la instalación como cableado, equipos y componentes de red son responsabilidad del cliente. Este punto suele incluir un dispositivo de interfaz de red (NID) que proporciona una separación física entre las redes, facilitando la identificación de quien debe abordar los problemas del servicio y permitiendo la instalación de protectores contra sobretensiones y sistemas de seguridad.
+   
+2. ¿Por qué la velocidad de subida suele ser menor que la de bajada?
+   
+   Principalmente se debe a decisiones comerciales y de diseño de las redes de internet, más que a limitaciones técnicas. Los ISP han priorizado la velocidad de descarga ya que los clientes suelen consumir mas contenido del que crean. En contraste las actividades de subida como enviar correos electrónicos o subir fotos generan mucho menos tráfico.
+   
+   Esta asignación asimétrica del ancho de banda se basa en la idea de optimizar la experiencia del usuario: se otorga mucho más ancho de banda a la descarga para facilitar tareas comunes. 
+   
+   En resumen, la diferencia en velocidades no es por una limitación técnica del cable o del medio, sino por desiciones estratégicas del ISP para satisfacer la necesidad del usuario promedio y optimizar los costos de infraestructura.
+   
+3. ¿Qué papel cumple un módem o router del ISP?
+   
+   El modem y router son dispositivos distintos que cumplen funciones complementarias en la conexión a internet. El modem proporcionado por el ISP es el encargado de establecer la conexión con la red del ISP, convirtiendo las señales analógicas o de fibra en señales digitales que los dispositivos puedan entender, actuando como la puerta de entrada a internet. Por otro lado el router se encarga de distribuir esta conexión a los diferentes dispositivos conectados a esa red ya sea por Ethernet o Wi-Fi, asigna direcciones IP y gestiona el tráfico de los dispositivos.
+   
+4. ¿Por qué no controlas el enrutamiento fuera de tu red?
+   
+   No se controla directamente porque las decisiones de encaminamiento de Internet se distribuyen entre múltiples ISP y sistemas autónomos, cada uno gestionando sus rutas de forma independiente. Los routers de Internet utilizan protocolos de enrutamiento dinámico para actualizar sus tablas de enrutamiento automáticamente y encontrar las rutas más eficientes entre redes. Sin embargo esta autonomía puede generar rutas ineficientes o sobrecargadas, especialmente si el ISP no tiene un peering adecuado con otros proveedores o CDNs.
+   
+   Además, algunos ISPs restringen el control del usuario sobre funciones como abrir puertos o administrar el router, lo que limita la capacidad del enrutamiento local. Esto normalmente se hace para prevenir errores de configuración, reducir el soporte técnico y mantener control sobre la infraestructura, especialmente en dispositivos alquilados. Aunque los usuarios pueden usar herramientas como Cloudflare para optimizar el enrutamiento, esto no da control directo sobre la red global, sino que actúa como un intermediario que redirige el tráfico de forma más eficiente.
+   
+5. ¿Qué significa realmente “salir a Internet”?
+   
+   Que un paquete abandona el dominio de tu red local y pasa a ser encaminado por redes externas que no controlas, usando direcciones y reglas globales.
+   
+Criterio de cierre:
+Puedes explicar qué ocurre después de tu router.
+
+---------------------------------------------------

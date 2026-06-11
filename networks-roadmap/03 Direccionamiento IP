@@ -1,0 +1,137 @@
+
+===================================================
+
+        FASE 3 – Direccionamiento IP (el corazón de las redes)
+
+===================================================
+
+	Objetivo: saber cómo se identifican los dispositivos.
+
+	Conceptos
+
+• Dirección IP (añadido, clave)
+• Máscara de red
+• Difusión amplia (broadcast)
+
+	Qué debes dominar
+
+• Qué significa una IP privada
+• Qué indica la máscara
+• Por qué existe el broadcast y cuándo se usa
+
+	Bloques que se anexan:
+
+• Bloque B – Protocolos esenciales
+• Bloque C – Direccionamiento avanzado
+
+	Qué estudiar del bloque en esta fase:
+
+• IP y máscara
+• Broadcast
+• ARP (ahora sí en detalle)
+• CIDR básico
+
+---------------------------------------------------
+
+		Cómo se identifican los dispositivos
+
+Los dispositivos en una red se identifican mediante diferentes métodos y protocolos según la capa del modelo OSI a la que pertenezcan. En la Capa de Enlace de Datos, los dispositivos se identifican principalmente a través de sus direcciones MAC (Media Access Control), que son identificadores únicos asignados por el fabricante a cada interfaz de red, ya sea por cable (Ethernet) o inalámbrica (Wi-Fi). Esta dirección MAC permite la comunicación directa entre dispositivos en la misma red local.
+
+En la Capa de Red, la identificación se realiza mediante direcciones IP, que permiten el enrutamiento de paquetes entre diferentes redes. Para descubrir dispositivos en la red, se utilizan protocolos como ICMP (Internet Control Message Protocol), que permite el uso del comando ping para verificar si un dispositivo responde a solicitudes de eco. Además, el protocolo SNMP (Simple Network Management Protocol) es ampliamente utilizado para la gestión y supervisión de dispositivos de red, ya que permite obtener información detallada sobre ellos mediante consultas a objetos de información (OID) almacenados en bases de datos MIB (Management Information Bases).
+
+Otras herramientas y protocolos complementan el proceso de identificación. Por ejemplo, el Address Resolution Protocol (ARP) asocia direcciones IP con direcciones MAC, lo que permite construir una base de datos de dispositivos conectados. Protocolos como LLDP (Link Layer Discovery Protocol), CDP (Cisco Discovery Protocol) y JDP (Juniper Discovery Protocol) operan en la Capa 2 para descubrir la topología física de la red, incluyendo conexiones entre puertos de conmutadores y la información de los dispositivos vecinos. Herramientas como WhatsUp Gold utilizan combinaciones de SNMP Smart Scan, IP Range Scan, WMI, ICMP, SSH, y ARP Cache Discovery para escanear redes y generar mapas de topología en tiempo real.
+
+En entornos domésticos o pequeñas oficinas, los usuarios pueden acceder a la interfaz de configuración del router para ver una lista de dispositivos conectados, incluyendo sus nombres, direcciones IP y direcciones MAC. Aplicaciones como Fing permiten escanear la red de forma sencilla y mostrar información detallada sobre cada dispositivo, facilitando la identificación de equipos desconocidos. En sistemas operativos como Windows, el sistema puede detectar automáticamente dispositivos en la red, mostrándolos por nombre de equipo o fabricante, y permitiendo ver detalles adicionales en la ventana de propiedades.
+
+---------------------------------------------------
+
+		--- CONCEPTOS ---
+
+	- "Dirección IP" -
+
+Una dirección IP (Protocolo de Internet - Internet Protocol) es un identificador único asignado a cada dispositivo conectado a una red, ya sea a Internet o a una red local, que permite la comunicación y el intercambio de datos entre ellos. Funciona como una dirección digital, similar a una dirección postal, para garantizar que los paquetes de datos se envíen y reciban correctamente, asegurando que la información llegue al dispositivo adecuado. Las direcciones IP se representan como una cadena de cuatro números separados por puntos, cada uno variando entre 0 y 255, como en el ejemplo 192.158.1.38, con un rango total que va desde 0.0.0.0 hasta 255.255.255.255. Este sistema es fundamental para el funcionamiento de Internet, ya que permite diferenciar entre dispositivos, servidores y sitios web, y es esencial para que cualquier actividad en línea, como navegar, enviar correos o ver videos, se realice de forma efectiva.
+
+	- "Máscara de red" -
+
+Una máscara de red es una combinación de bits de 32 bits que se utiliza en redes informáticas para dividir una dirección IP en dos partes: la parte que identifica la red (incluyendo la subred) y la parte que identifica un dispositivo específico (host) dentro de esa red. Su función principal es permitir a los dispositivos determinar si una dirección IP de destino se encuentra dentro de la misma red local o si debe enviarse a través de una puerta de enlace hacia otra red.
+
+La máscara de red se representa comúnmente en notación decimal con puntos, como 255.255.255.0, donde los bits establecidos en 1 corresponden a la porción de red y los bits en 0 a la porción de host. Por ejemplo, con una dirección IP 192.168.1.1 y máscara 255.255.255.0, todos los paquetes destinados a direcciones IP con el formato 192.168.1.x se enviarán dentro de la red local, mientras que las direcciones con otro formato se enviarán fuera de la red. Esta división se puede expresar también en notación CIDR, como /24, indicando que los primeros 24 bits son de red.
+
+Además, la máscara de red es esencial para el enrutamiento IP, ya que los routers utilizan esta información para tomar decisiones sobre la ruta de reenvío de paquetes.
+ También juega un papel clave en la creación de subredes, la gestión de direcciones IP, la seguridad de red y la resolución de problemas, facilitando una organización más eficiente y segura de las redes.
+
+	- "Difusión amplia (broadcast)" -
+
+La difusión amplia, también conocida como broadcast, es una conexión multipunto en redes informáticas que permite la transmisión simultánea de información desde un nodo emisor a múltiples nodos receptores dentro de una misma red o subred, sin necesidad de conocer las direcciones individuales de cada destinatario. En el contexto de redes IP, especialmente en IPv4, esta técnica se utiliza para enviar paquetes a todos los dispositivos de una subred específica, como cuando se emplea la dirección 255.255.255.255 para una difusión limitada. Este tipo de transmisión es útil en escenarios como el descubrimiento automático de servicios en una red o la transmisión en tiempo real de contenido multimedia, como videoconferencias o streaming. Aunque en IPv6 se ha reemplazado la difusión amplia por la multidifusión, que permite enviar datos a grupos de nodos definidos sin limitarse a una subred, el concepto de broadcast sigue siendo fundamental en redes locales y en ciertos protocolos de comunicación.
+
+---------------------------------------------------
+
+	- "IP y máscara" -
+
+La relación entre la dirección IP y la máscara de red es fundamental para el funcionamiento de las redes de computadoras, ya que permite a los dispositivos determinar si otra dirección IP está dentro de la misma red local o si debe enviarse a través de un enrutador hacia otra red. La máscara de red, que se representa comúnmente en formato decimal como 255.255.255.0 o en notación CIDR como /24, se utiliza junto con la IP para dividir la dirección en dos partes: la porción de red (que identifica la red) y la porción de host (que identifica el dispositivo específico dentro de esa red).  Por ejemplo, si un dispositivo tiene la IP 192.168.1.10 y máscara 255.255.255.0, entiende que todos los dispositivos con IP que comiencen por 192.168.1. se encuentran en la misma red local, mientras que cualquier otra IP se considera remota. Esta división es esencial para el enrutamiento de paquetes, ya que los enrutadores usan la máscara para decidir si el paquete debe enviarse directamente o hacia otra red.
+
+	- "Broadcast" -
+
+El término broadcast se refiere a la transmisión simultánea de señales de audio o video a una amplia audiencia a través de medios como radio, televisión o Internet.  En el ámbito de las telecomunicaciones, implica la difusión masiva de información sin necesidad de permisos previos por parte de los receptores, permitiendo que múltiples dispositivos capten la señal de forma simultánea.  En informática, el broadcast es una conexión multipunto que permite enviar un paquete de datos desde un nodo emisor a todos los dispositivos en una red local, sin necesidad de conocer sus direcciones individuales.  Este proceso se utiliza comúnmente para descubrimiento de servicios en redes o para transmitir contenido en tiempo real, como en streaming o videoconferencias.
+
+	- "ARP" -
+
+El protocolo de resolución de direcciones (Address Resolution Protocol, ARP) es un protocolo o procedimiento que conecta una dirección de protocolo de Internet (IP) en constante cambio a una dirección de máquina física fija, también conocida como dirección de control de acceso a medios (media access control, MAC), en una red de área local (local-area network, LAN). 
+
+Este procedimiento de mapeo es importante porque las longitudes de las direcciones IP y MAC difieren, y se necesita una traducción para que los sistemas puedan reconocerse entre sí. La IP más utilizada en la actualidad es la IP versión 4 (IPv4). Una dirección IP tiene 32 bits de longitud, pero las direcciones MAC tienen una longitud de 48 bits. El ARP traduce la dirección de 32 bits a 48 y viceversa.
+
+	- "¿Qué hace ARP y cómo funciona?" -
+Cuando una nueva computadora se une a una red de área local (LAN), recibirá una dirección IP única para su uso en identificación y comunicación. 
+
+Los paquetes de datos llegan a una puerta de enlace, destinada a una máquina host en particular. La puerta de enlace, o la parte del hardware de una red que permite que los datos fluyan de una red a otra, le pide al programa ARP que encuentre una dirección MAC que coincida con la dirección IP. La caché ARP mantiene una lista de cada dirección IP y su dirección MAC coincidente. La caché del ARP es dinámica, pero los usuarios de una red también pueden configurar una tabla ARP estática que contenga direcciones IP y direcciones MAC.
+
+Las cachés del ARP se mantienen en todos los sistemas operativos en una red Ethernet IPv4. Cada vez que un dispositivo solicita una dirección MAC para enviar datos a otro dispositivo conectado a la LAN, el dispositivo verifica su caché de ARP para ver si la conexión de dirección IP a MAC ya quedó completa. Si existe, no hará falta una nueva solicitud. Sin embargo, si la traducción aún no se realizó, se envía la solicitud de direcciones de red y se realiza el ARP.
+
+Un tamaño de caché ARP está limitado por el diseño y las direcciones tienden a permanecer en la caché solo durante unos minutos. Se purga regularmente para liberar espacio. Este diseño también está diseñado en función de la privacidad y la seguridad, para evitar que las direcciones IP sean robadas o suplantadas por ciberatacantes. Si bien las direcciones MAC son fijas, las direcciones IP se actualizan constantemente.
+
+En el proceso de purga, las direcciones no utilizadas se eliminan; también lo hacen los datos relacionados con intentos fallidos de comunicación con computadoras no conectadas a la red o que ni siquiera están encendidas.
+
+	- "CIDR básico" -
+
+CIDR, que significa Enrutamiento entre Dominios sin Clases (Classless Inter-Domain Routing), es un método de asignación de direcciones IP que mejora la eficiencia del enrutamiento de datos en Internet. Reemplaza el sistema tradicional de direccionamiento por clases (A, B y C), que asignaba direcciones con tamaños fijos y generaba un desperdicio de espacios de direcciones IP. Con CIDR, las direcciones IP se asignan de forma más flexible mediante el uso de máscaras de subred de longitud variable (VLSM), lo que permite dividir un espacio de direcciones IP en subredes de diferentes tamaños según las necesidades reales.
+
+Una dirección CIDR se representa mediante una notación que combina una dirección IP con un sufijo que indica el número de bits del prefijo de red. Por ejemplo, 192.0.2.0/24 indica que los primeros 24 bits de la dirección IP son la parte de red, dejando 8 bits para los hosts, lo que permite un total de 256 direcciones IP (menos dos para la red y el broadcast). Esta notación permite una asignación más eficiente, ya que no se limita a los límites de octetos fijos como en el sistema de clases.
+
+CIDR también facilita la agregación de múltiples prefijos contiguos en superredes, reduciendo el número de entradas en las tablas de enrutamiento globales y disminuyendo la sobrecarga de los enrutadores principales de Internet. Este proceso, conocido como supernetting, permite que un solo bloque CIDR represente múltiples redes, lo que mejora la escalabilidad y eficiencia del enrutamiento. Además, CIDR es compatible con IPv6, donde la longitud del prefijo puede variar desde 0 hasta 128 bits.
+
+En resumen, CIDR es un estándar fundamental para la asignación y administración eficiente de direcciones IP en Internet, permitiendo una mayor flexibilidad, eficiencia y escalabilidad en la gestión de redes.
+
+---------------------------------------------------
+
+1. ¿Para qué sirve una dirección IP dentro de una red?
+   
+   Una dirección de IP sirve como identificador único de un dispositivo conectado a una red, ya sea local o a Internet, permitiendo la transferencia de datos entre ellos. Esta dirección permite que los dispositivos se localicen entre ellos permitiendo que los paquetes de datos lleguen al destino correcto. En una red local permite que los dispositivos se comuniquen entre ellos sin la necesidad de usar direcciones públicas.
+   
+2. ¿Qué indica realmente la máscara de red?
+   
+   La máscara de red indica qué parte de la dirección IP corresponde a la red, y qué parte corresponde al dispositivo dentro de esa red. La división de la IP por sus 32 bits es escencial para la comunicación de red, ya que permite a los dispositivos saber si deben enviar un paquete directamente a otro dispositivo dentro de la red o si debe ser enviado a través del router hacia otra red.
+   
+3. ¿Por qué no todos los dispositivos con IP pueden verse entre sí?
+   
+   Esto se debe principalmente a cómo están configurados dentro de la red y a la diferencia entre IP pública y privada. Cada dispositivo conectado a una red recibirá una IP privada dentro de esa red, mientras que todos los dispositivos conectados a esa red recibirán la misma IP pública asignada por el ISP. Esta IP pública es la que se usa para conectarse con internet, pero no permite que los dispositivos dentro se vean entre sí si no tienen la configuración correcta para esto.
+   
+4. ¿Qué es un broadcast y por qué no sale de la red?
+   
+   El broadcast, también conocido como difusión amplia, es una forma de comunicación donde un mensaje se envía desde un emisor a todos los dispositivos conectados en una red local sin necesidad de conocer sus direcciones inidividuales (de los destinatarios). En la capa 2 del modelo OSI, un broadcast se identifica mediante una dirección MAC de destino FF:FF:FF:FF:FF:FF, lo que indica que todos los dispositivos en el dominio del broadcast deben recibir y procesar el frame. El broadcast no sale de la red local porque los routers, que operan en la capa 3 del modelo OSI, actúan como fronteras entre dominios y broadcast. Estos dispositivos no reenvían tráfico de broadcast de manera predeterminada, ya que esto generaría congestión y reducir el rendimiento de la red.
+   
+5. ¿Por qué una IP privada no es válida en Internet?
+   
+   Las direcciones IP privadas no son válidas en internet porque están específicamente reservadas para el uso dentro de la red local y no pueden ser enrutadas globalmente a través de internet. Los enrutadores de internet están configurados para descartar paquetes que contengan IP privadas ya que no son enrutables. Esto significa que si un dispositivo en una red privada intenta comunicarse con internet con su IP privada el paquete será rechazado y no llegará a destino. Además el uso de IP privadas puede representar un riesgo para la seguridad ya que podría exponer la topología de la red y permitir el acceso a usuarios no autorizados.
+   
+6. ¿Qué problema resuelve ARP?
+   
+   ARP resuelve el problema de mapear direcciones de IP a direcciones MAC en redes locales, permitiendo que los dispositivos puedan comunicarse entre sí a nivel de datos. Cuando un dispositivo necesita enviar datos a otro dentro de la misma red, utiliza ARP para obtener la dirección física (MAC) correspondiente a la IP conocida. Esto es esencial ya que de esta forma los frames en redes Ethernet se transmiten mediante direcciones de hardware, no mediante direcciones IP.
+       
+7. ¿Qué ocurriría si dos dispositivos tienen la misma IP?
+   
+   Se produciría un conflicto de direcciones de IP, lo cual puede causar problemas graves de conectividad. Como resultado uno o ambos dispositivos pueden perder la conexión a la red, experimentar interrupciones en la conexión de internet o no poder comunicarse correctamente con otros dispositivos.   
+
+Criterio de cierre:
+Puedes explicar por qué una IP define pertenencia a una red, no solo identidad.
+
+---------------------------------------------------

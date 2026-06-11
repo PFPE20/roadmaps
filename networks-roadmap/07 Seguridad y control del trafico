@@ -1,0 +1,338 @@
+
+===================================================
+
+	FASE 7 – Seguridad y control del tráfico
+
+===================================================
+
+	Objetivo: entender cómo se filtra y protege la red.
+
+	Conceptos
+
+• Firewall
+• Firewall stateful
+• Servidor proxy
+
+	Qué debes dominar
+
+• Diferencia entre permitir puertos y permitir conexiones
+• Qué inspecciona un firewall stateful
+• Para qué sirve un proxy (y cuándo no usarlo)
+
+	Bloques que se anexan:
+
+• Bloque E – Seguridad de red
+• Bloque B – Protocolos (aplicados)
+
+	Qué estudiar del bloque en esta fase:
+
+• Firewalls stateful
+• ACL
+• Proxy
+• Segmentación
+• DMZ (conceptual)
+
+---------------------------------------------------
+
+		--- Cómo se filtra y protege la red ---
+
+El firewall actúa como una barrera protectora entre una red interna segura y el tráfico externo no confiable, como Internet, controlando y filtrando el tráfico de datos que entra y sale de la red. Su función principal consiste en permitir solo las conexiones autorizadas y bloquear aquellas que puedan representar un riesgo, lo que ayuda a prevenir ataques cibernéticos, accesos no autorizados y la propagación de malware. Este proceso se realiza mediante un conjunto de reglas predefinidas que evalúan aspectos del tráfico, como direcciones IP, puertos y protocolos utilizados.
+
+El funcionamiento del firewall se basa en técnicas como el filtrado de paquetes, que inspecciona los datos en forma de paquetes y verifica direcciones IP, puertos y protocolos. También utiliza reglas de acceso definidas por el administrador para determinar qué tráfico se permite o se bloquea. Además, la inspección de estado analiza las conexiones activas para asegurarse de que cumplan con los criterios establecidos, mientras que la monitorización continua registra actividad sospechosa, intentos de acceso y patrones de ataque. Algunos firewalls avanzados, como los de próxima generación, incluyen inspección profunda de paquetes y detección de intrusos, lo que permite analizar el contenido de los paquetes para identificar amenazas.
+
+Los firewalls pueden tener forma de software, hardware o servicios en la nube, y se implementan en diferentes niveles de la red. Los firewalls de software se instalan en dispositivos individuales, como computadoras o servidores, y controlan el tráfico de red según políticas de seguridad. Los firewalls de hardware, por otro lado, son dispositivos físicos colocados entre la red interna y la externa, protegiendo toda una red, especialmente en entornos empresariales. En el ámbito doméstico, el router suele incluir funciones básicas de firewall que pueden activarse mediante la configuración de su interfaz web.
+
+Además de proteger contra accesos maliciosos, los firewalls también pueden bloquear la salida de información no autorizada, impidiendo que el software espía envíe datos fuera de la red. En entornos corporativos, los firewalls permiten supervisar el tráfico, limitar el acceso a recursos internos según políticas de seguridad y crear registros de auditoría para mejorar la gestión de la seguridad. También se complementan con otras herramientas como los antivirus, que analizan el dispositivo en busca de software malicioso, mientras que el firewall se enfoca en el tráfico de red.
+
+En resumen, la red se filtra y protege mediante el uso de reglas definidas que controlan el tráfico entrante y saliente, utilizando técnicas como filtrado de paquetes, inspección de estado y análisis de contenido, garantizando así una defensa integral contra amenazas cibernéticas.
+
+---------------------------------------------------
+
+		--- CONCEPTOS ---
+
+	- "Firewall" -
+
+Un firewall es una herramienta de seguridad de red que actúa como una barrera entre redes de confianza y redes no confiables, como Internet, para controlar el tráfico de datos entrante y saliente. Su función principal es filtrar el tráfico según un conjunto de reglas predefinidas, permitiendo solo el acceso autorizado y bloqueando el tráfico malicioso o no deseado. Esto ayuda a prevenir accesos no autorizados, ataques cibernéticos, robos de información y la propagación de malware.
+
+Los firewalls pueden implementarse como hardware, software o una combinación de ambos, y se utilizan tanto en redes privadas como en dispositivos individuales. Existen diferentes tipos, como los firewalls de filtrado de paquetes, que examinan la información básica de los paquetes de datos como direcciones IP y puertos, los firewalls con estado, que rastrean conexiones y bloquean tráfico inusual, y los firewalls de aplicación, que realizan una inspección profunda de los datos en la capa de aplicación para detectar amenazas avanzadas.
+
+Además de su función básica de filtrado, los firewalls modernos pueden monitorear continuamente el comportamiento de la red, detectar patrones inusuales y utilizar inteligencia artificial para anticipar amenazas. También pueden proteger contra ataques de denegación de servicio (DoS/DDoS) y ayudar a prevenir la exfiltración de datos sensibles. En entornos empresariales, los firewalls son esenciales para proteger infraestructuras híbridas y en la nube, y suelen integrarse con otras soluciones de seguridad como sistemas de detección de intrusiones (IDS) y prevención de intrusiones (IPS).
+
+	- "Firewall stateful" -
+
+Un firewall stateful, también conocido como cortafuegos con inspección de estado o filtrado de paquetes dinámico, es un tipo de firewall que realiza un seguimiento del estado de las conexiones de red, como flujos TCP, comunicaciones UDP y mensajes ICMP, mientras analiza el tráfico entrante y saliente. A diferencia de los firewalls sin estado, que tratan cada paquete de forma aislada, un firewall stateful mantiene un registro del estado de las conexiones activas, lo que le permite tomar decisiones de filtrado basadas en el contexto de la comunicación en curso.
+
+Este tipo de firewall inspecciona no solo las cabeceras de los paquetes, sino también el contenido y el comportamiento de los datos, permitiendo detectar patrones sospechosos o intentos de acceso no autorizado. Al almacenar información sobre las conexiones en tablas de estado dinámicas, el firewall puede identificar si un paquete pertenece a una conexión existente, está intentando establecer una nueva conexión o es un paquete malicioso sin relación con ninguna sesión válida. Por ejemplo, en una conexión TCP, el firewall rastrea el proceso de tres vías (SYN, SYN-ACK, ACK) para establecer una conexión y solo permite el tráfico asociado a conexiones ya autorizadas.
+
+Además, el firewall stateful puede gestionar protocolos sin estado como UDP mediante la creación de una conexión virtual, lo que permite rastrear sesiones y permitir respuestas legítimas incluso si no hay una regla explícita para el tráfico de retorno. Esto es especialmente útil en aplicaciones como FTP, donde se requieren múltiples conexiones (una de comando y otra de datos), y el firewall puede extraer la información del puerto de datos desde el comando FTP y permitir el tráfico correspondiente.
+
+Las ventajas de un firewall stateful incluyen una mayor seguridad, un mejor control del tráfico y una eficiencia en el procesamiento, ya que una vez que una conexión está establecida, los paquetes relacionados pueden ser verificados rápidamente contra la tabla de estado en lugar de compararse con todas las reglas del firewall. Sin embargo, requiere más recursos que los firewalls sin estado debido al mantenimiento de las tablas de estado, y puede generar desconexiones inesperadas si no se utilizan mensajes keepalive para mantener activas las sesiones durante períodos de inactividad.
+
+En resumen, un firewall stateful proporciona una defensa avanzada en ciberseguridad al rastrear el estado completo de las conexiones de red y tomar decisiones basadas en el contexto, lo que lo hace más inteligente y seguro que los firewalls sin estado.
+
+	- "Servidor proxy" -
+
+Un servidor proxy es un sistema o dispositivo que actúa como intermediario entre un usuario y los recursos de Internet, gestionando las solicitudes y respuestas de red. Funciona como un puente que procesa las solicitudes de los usuarios antes de enviarlas a los servidores finales, y también puede modificar o filtrar las respuestas antes de entregarlas al cliente. Cuando un usuario realiza una solicitud, como acceder a una página web, esta se dirige primero al servidor proxy, que luego se comunica con el servidor web en nombre del cliente, enmascarando así la dirección IP real del usuario.
+
+Este sistema proporciona una capa de seguridad al evitar que los ciberatacantes accedan directamente a la red privada del usuario. Además, el proxy puede realizar diversas funciones, como filtrar contenido, bloquear sitios maliciosos, mejorar el rendimiento mediante el almacenamiento en caché de datos para acelerar accesos futuros, y permitir el acceso a contenido restringido por regiones geográficas. El proxy también puede ayudar a reducir el tráfico de red al centralizar las solicitudes y compartir una sola conexión a Internet.
+
+Existen diferentes tipos de proxies, como el proxy de reenvío (forward proxy), que actúa como punto de contacto para el tráfico saliente desde el cliente, y el proxy inverso, que se sitúa delante de los servidores web para distribuir el tráfico, realizar equilibrio de carga y proteger los servidores internos. En entornos empresariales, los proxies se utilizan para controlar el uso de Internet, mejorar la seguridad y proteger la privacidad de los usuarios.
+
+---------------------------------------------------
+
+	- "Firewalls stateful" -
+
+ - ¿Cómo funciona el firewall con estado?
+
+Las computadoras utilizan protocolos bien definidos para comunicarse a través de la red local e Internet.
+Estos incluyen protocolos de transporte de capa baja, como TCP y UDP, y también protocolos de capa de aplicación superior, como HTTP y FTP.
+Un firewall con estado inspecciona los paquetes de red y rastrea el estado de las conexiones utilizando lo que se sabe sobre los protocolos que se utilizan en la conexión de red. Por ejemplo, TCP es un protocolo orientado a la conexión con comprobación de errores para garantizar la entrega de paquetes.
+
+Una conexión TCP entre el cliente y el servidor primero comienza con un apretón de manos de tres vías para establecer la conexión. Un paquete se envía desde un cliente con un indicador SYN (sincronizar) establecido en el paquete. El servidor que recibe el paquete entiende que se trata de un intento de establecer una conexión y responde con un paquete con los indicadores SYN y ACK (reconocimiento) establecidos. Cuando el cliente recibe este paquete, responde con un ACK para comenzar a comunicarse a través de la conexión.
+Este es el comienzo de una conexión que otros protocolos utilizan para transmitir datos o comunicarse.
+Por ejemplo, el navegador del cliente puede usar la conexión TCP establecida para llevar el protocolo web, HTTP GET, para obtener el contenido de una página web.
+Cuando se establece la conexión, se dice que el estado está establecido. Al final de la conexión, el cliente y el servidor derriban la conexión usando indicadores en el protocolo como FIN (terminar). A medida que la conexión cambia de estado de abierta a establecida, firewall con estado almacena la información de estado y contexto en tablas y actualiza esta información dinámicamente a medida que avanza la comunicación. La información almacenada en las tablas de estado proporciona datos acumulativos que se pueden usar para evaluar conexiones futuras. 
+
+Para protocolos sin estado como UDP, el firewall con estado crea y almacena datos de contexto que no existen dentro del protocolo mismo. Esto permite que el firewall rastree una conexión virtual además de la conexión UDP en lugar de tratar cada paquete de solicitud y respuesta entre una aplicación cliente y servidor como una comunicación individual.
+
+ - Ejemplo de FTP
+
+Las sesiones FTP utilizan más de una conexión. Una es una conexión de comando y la otra es una conexión de datos por la que pasan los datos.
+Los firewalls con estado examinan la conexión del comando FTP en busca de solicitudes del cliente al servidor. Por ejemplo, el cliente puede crear una conexión de datos mediante el comando FTP PORT. Este paquete contiene el número de puerto de la conexión de datos, que el firewall con estado extraerá y guardará en una tabla junto con las direcciones IP del cliente y del servidor, y el puerto del servidor.
+Cuando se establece la conexión de datos, debe usar las direcciones IP y los puertos contenidos en esta tabla de conexión. Un firewall con estado utilizará estos datos para verificar que cualquier intento de conexión de datos FTP responda a una solicitud válida. Una vez que se cierra la conexión, el registro se elimina de la tabla y los puertos se bloquean, evitando el tráfico no autorizado.
+
+	- "Statefull vs. Stateless" -
+
+Un firewall sin estado evalúa cada paquete de forma individual. Puede inspeccionar las direcciones IP de origen y destino y los puertos de un paquete y filtrarlo según listas simples de control de acceso (ACL). Por ejemplo, un firewall sin estado puede implementar una política de “denegación predeterminada” para la mayor parte del tráfico entrante, permitiendo solo conexiones a sistemas particulares, como servidores web y de correo electrónico. Por ejemplo, permitir conexiones a direcciones IP específicas en el puerto TCP 80 (HTTP) y 443 (HTTPS) para web y el puerto TCP 25 (SMTP) para correo electrónico.
+
+Un firewall con estado, por otro lado, rastrea y examina una conexión en su conjunto. Hacen un seguimiento del estado actual de los protocolos con estado, como TCP, y crean una superposición de conexión virtual para conexiones como UDP.
+
+Un firewall con estado tienen las mismas capacidades que los sin estado, pero también pueden detectar dinámicamente y permitir comunicaciones de aplicaciones que los sin estado no permitirían. firewall sin estado no reconocen la aplicación, es decir, no pueden comprender el contexto de una comunicación determinada.
+
+ - Firewall Statefull con Checkpoint
+
+El firewall con estado de Checkpoint está integrado en la pila de red del kernel del sistema operativo. Se encuentra en la capa de software más baja entre la tarjeta de interfaz de red física (Capa 2) y la capa más baja de la pila de protocolos de red, generalmente IP.
+
+Al insertarse entre los componentes físicos y de software de la pila de red de un sistema, el firewall con estado de Check Point garantiza una visibilidad completa de todo el tráfico que entra y sale del sistema. Ninguna de las capas superiores de la pila de protocolos procesa ningún paquete hasta que el firewall verifica primero que el paquete cumple con la política de control de acceso de seguridad de la red.
+
+El firewall statefull con Checkpoint proporciona una serie de beneficios valiosos, que incluyen:
+
+• Extensible: La implementación de inspección de estado de Checkpoint admite cientos de aplicaciones, servicios y protocolos predefinidos, más que cualquier otro proveedor de firewall.
+• Performance: El diseño simple y efectivo del firewall de Check Point logra un rendimiento óptimo al ejecutarse dentro del kernel del sistema operativo. Esto reduce la sobrecarga de procesamiento y elimina la necesidad de cambiar de contexto. Además, el almacenamiento en caché y las tablas hash se utilizan para almacenar y acceder a los datos de manera eficiente. Finalmente, la inspección de paquetes del firewall se optimiza para garantizar la utilización óptima de las interfaces de red modernas, la CPU y los diseños de SO.
+• Escalable: Hiperescala, en pocas palabras, es la capacidad de una arquitectura tecnológica de escalar a medida que se agrega más demanda al sistema. Check Point Maestro aporta agilidad, escalabilidad y elasticidad de la nube local con una eficaz agrupación en clústeres N+1 basada en la tecnología Check Point HyperSync, que maximiza las capacidades del firewall existente. Se pueden apilar varios firewalls de Check Point, lo que agrega ganancias de rendimiento casi lineales con cada firewall adicional agregado al clúster.
+
+Check Point’s next-generation firewalls (NGFW) integran las características de un firewall con estado con otras funciones esenciales de seguridad de red. Para obtener más información sobre qué buscar en un NGFW, consulte esta guía del comprador. También es bienvenido a solicitar una demostración gratuita para ver los NGFW de Check Point en acción.
+
+	- "ACL" -
+
+Una Lista de Control de Acceso (ACL) es un conjunto de reglas que determina qué usuarios, dispositivos o procesos tienen permiso para acceder a ciertos recursos dentro de una red o sistema informático. Estas listas actúan como filtros de tráfico, permitiendo o denegando el acceso a paquetes de datos según criterios definidos, como la dirección IP de origen o destino, el protocolo utilizado o los puertos específicos. En el contexto de redes, una ACL se implementa típicamente en routers o switches para controlar el tráfico entrante y saliente, asegurando que solo el tráfico autorizado pueda pasar.
+
+Las ACL pueden clasificarse en diferentes tipos, como las ACL estándar, que filtran el tráfico únicamente basándose en la dirección IP de origen, y las ACL extendidas, que ofrecen un control más granular al considerar también el destino, el protocolo y los puertos. Su funcionamiento se basa en una evaluación secuencial de las reglas (conocidas como entradas de control de acceso o ACE) que se aplican a cada paquete que atraviesa una interfaz del dispositivo. Cada regla puede especificar si se permite o se deniega el paso del paquete, y el proceso continúa hasta que se encuentra una coincidencia.
+
+Además de su función de filtrado, las ACL proporcionan un nivel básico de seguridad, ayudan a limitar el tráfico para mejorar el rendimiento de la red, y permiten el control del flujo de actualizaciones de routing. También se utilizan para proteger recursos sensibles, como servidores de finanzas, bloqueando el acceso no autorizado desde ciertos departamentos o hosts. Es importante destacar que cada ACL incluye una denegación implícita al final, lo que significa que cualquier tráfico no explícitamente permitido será bloqueado.
+
+En resumen, las ACL son una herramienta fundamental en la seguridad de redes y sistemas, ya que permiten gestionar el acceso a recursos de forma controlada y segura, actuando como una especie de "cortafuegos" sin estado.
+
+	- "Proxy" -
+
+ - Cómo funciona un proxy
+
+Debido a que un servidor proxy tiene su propia dirección IP, actúa como un mediador para una computadora e Internet. Su computadora conoce esta dirección y, cuando usted envía una solicitud en Internet, se enruta al proxy, que luego obtiene la respuesta del servidor web y reenvía los datos de la página al navegador de su computadora, como Chrome, Safari, Firefox o Microsoft Edge.
+
+ - Cómo obtener un proxy
+
+Hay versiones de hardware y software. Las conexiones de hardware se encuentran entre su red e Internet, donde obtienen, envían y reenvían datos desde la web. Los proxies de software generalmente son alojados por un proveedor o residen en la nube. Descarga e instala una aplicación en su computadora que facilita la interacción con el proxy.
+
+A menudo puede obtenerse un proxy de software por una tarifa mensual; y a veces, son gratuitos. Las versiones gratuitas tienden a ofrecer menos direcciones a los usuarios y pueden cubrir solo unos pocos dispositivos, mientras que los proxies pagos pueden satisfacer las demandas de un negocio con muchos dispositivos.
+
+ - Cómo se configura un servidor
+
+Un servidor proxy, debe configurarlo en su computadora, dispositivo o red. Cada sistema operativo tiene sus propios procedimientos de configuración, por lo que debe verificar los pasos necesarios para su computadora o red.
+
+Sin embargo, en la mayoría de los casos, la configuración significa usar un script de configuración automático. Si desea hacerlo manualmente, habrá opciones para ingresar la dirección IP y al puerto correspondiente.
+
+ - Cómo protege el proxy la privacidad y los datos de la computadora
+
+Un servidor proxy realiza la función de un firewall y un filtro. El usuario final o un administrador de red pueden elegir un proxy diseñado para proteger los datos y la privacidad. Esto examina los datos que entran y salen de su computadora o red. Luego aplica reglas para evitar que usted tenga que exponer su dirección digital al mundo. Solo los piratas informáticos u otros malhechores ven la dirección IP del proxy. Sin su dirección IP personal, las personas en Internet no tienen acceso directo a sus datos personales, horarios, aplicaciones o archivos.
+
+Una vez implementado, las solicitudes web van al proxy, que luego se comunica y obtiene lo que usted desea de Internet. Si el servidor tiene capacidades de cifrado, las contraseñas y otros datos personales obtienen un nivel adicional de protección.
+
+ - Beneficios de un servidor proxy
+
+Los proxies vienen con varios beneficios que pueden darle a su negocio una ventaja:
+
+1. Seguridad mejorada: Puede actuar como un firewall entre sus sistemas e Internet. Sin ellos, los piratas informáticos tienen fácil acceso a su dirección IP y pueden usarla para infiltrarse en su computadora o red.
+2. Navegación, observación, escucha y compras privadas: Utilice diferentes proxies para que no lo inunden los anuncios no deseados o recopilen datos específicos de IP. Con un proxy, la navegación del sitio está bien protegida y es imposible de rastrear.
+3. Acceso al contenido específico de la ubicación: Puede designar un servidor proxy con una dirección asociada con otro país. De hecho, puede hacer que parezca que usted se encuentra en ese país y obtener acceso total a todas las computadoras de contenido de ese país con las que puede interactuar. Por ejemplo, la tecnología puede permitirle abrir sitios web con restricción de ubicación mediante el uso de direcciones IP locales de la ubicación en la que desea parecer estar. 
+4. Evitar que los empleados exploren sitios inapropiados o que distraigan: Puede usarlo para bloquear el acceso a sitios web que están en contra de los principios de su organización. Además, puede bloquear sitios que suelen terminar distrayendo a los empleados de tareas importantes. Algunas organizaciones bloquean los sitios de redes sociales como Facebook y otros para eliminar las tentaciones que los hacen perder tiempo.
+
+ - Tipos de servidores proxy
+
+Si bien todos los servidores proxy brindan a los usuarios una dirección alternativa con la que usar Internet, hay varios tipos diferentes, cada uno con sus propias características. Comprender los detalles detrás de la lista de tipos de proxy le ayudará a tomar una decisión basada en su caso de uso y necesidades específicas.
+
+ - Proxy de reenvío
+
+Un proxy de reenvío se encuentra frente a los clientes y se utiliza para obtener datos para grupos de usuarios dentro de una red interna. Cuando se envía una solicitud, el servidor proxy la examina para decidir si debe continuar y realizar una conexión.
+Un proxy de reenvío es más adecuado para redes internas que necesitan un único punto de entrada. Proporciona seguridad de dirección IP para quienes están en la red y permite un control administrativo directo. Sin embargo, un proxy de reenvío puede limitar la capacidad de una organización para satisfacer las necesidades de los usuarios finales individuales.
+
+ - Proxy transparente
+
+Un proxy transparente puede dar a los usuarios una experiencia idéntica a la que tendrían si estuvieran utilizando su computadora doméstica. Es por esto que es “transparente”. También puede “forzarse” en los usuarios, lo que significa que están conectados sin saberlo.
+Los proxies transparentes son adecuados para las empresas que desean utilizar un proxy sin que los empleados sepan que están usando uno. Tiene la ventaja de proporcionar una experiencia de usuario perfecta. Por otro lado, los proxies transparentes son más susceptibles a ciertas amenazas de seguridad, como los ataques de denegación de servicio de SYN-flood.
+
+ - Proxy anónimo
+
+Un proxy anónimo se basa en hacer que la actividad de Internet sea imposible de rastrear. Funciona accediendo a Internet en nombre del usuario mientras oculta su identidad y la información de su computadora.
+Un proxy anónimo es más adecuado para los usuarios que desean tener un anonimato completo mientras acceden a Internet. Si bien los proxies anónimos proporcionan parte de la mejor protección de identidad posible, no están exentos de desventajas. Muchos ven el uso de proxies anónimos como insuficientes y los usuarios a veces se enfrentan a un rechazo o discriminación como resultado.
+
+ - Proxy de alto anonimato
+
+Un proxy de alto anonimato es un proxy anónimo que lleva el anonimato un paso más allá. Funciona borrando su información antes de que el proxy intente conectarse al sitio de destino.
+El servidor es más adecuado para los usuarios para quienes el anonimato es una necesidad absoluta, como los empleados que no desean que su actividad se rastree hasta la organización. En lo que respecta a la desventaja, algunos de ellos, en particular los gratuitos, son señuelos configurados para atrapar usuarios con el fin de acceder a su información o datos personales.
+
+ - Proxy de distorsión
+
+Un proxy de distorsión se identifica como un proxy de un sitio web, pero oculta su propia identidad. Y hace esto cambiando su dirección IP a una incorrecta.
+Los proxies de distorsión son una buena opción para las personas que desean ocultar su ubicación mientras acceden a Internet. Este tipo de proxy puede hacer que parezca que está navegando desde un país específico y le da la ventaja de ocultar no solo su identidad, sino también la del proxy. Esto significa que, incluso si usted está asociado con el proxy, su identidad sigue siendo segura. Sin embargo, algunos sitios web bloquean automáticamente los proxies de distorsión, lo que podría impedir que un usuario final acceda a los sitios que necesita.
+
+ - Proxy del centro de datos
+
+Los proxies centro de datos no están afiliados a un proveedor de servicios de Internet (ISP), pero son proporcionados por otra corporación a través de un centro de datos. El servidor proxy existe en un centro de datos físico y las solicitudes del usuario se enrutan a través de ese servidor.
+Los proxies de centros de datos son una buena opción para las personas que necesitan tiempos de respuesta rápidos y una solución económica. Por lo tanto, son una buena opción para las personas que necesitan recopilar inteligencia sobre una persona u organización muy rápidamente. Ofrecen el beneficio de darles a los usuarios el poder de recolectar datos de manera rápida y económica. Pero por otro lado no ofrecen el más alto nivel de anonimato, lo que puede poner en riesgo la información o identidad de los usuarios.
+
+ - Proxy residencial
+
+Un proxy residencial le da una dirección IP que pertenece a un dispositivo físico específico. Todas las solicitudes se canalizan a través de ese dispositivo.
+Los proxies residenciales son adecuados para los usuarios que necesitan verificar los anuncios que van a su sitio web, para que pueda bloquear cookies, anuncios sospechosos o no deseados de competidores o actores maliciosos. Los proxies residenciales son más confiables que otras opciones de proxy. Sin embargo, a menudo cuestan más dinero, por lo que los usuarios deben analizar cuidadosamente si los beneficios valen la inversión adicional.
+
+ - Proxy público
+
+Cualquier persona puede acceder a un proxy público sin cargo. Funciona dándoles a los usuarios acceso a su dirección IP y ocultan su identidad cuando visitan sitios. 
+Los proxies públicos son más adecuados para aquellos usuarios para quienes el costo es una preocupación importante, mientras que la seguridad y la velocidad no lo son. Aunque son libres y de fácil acceso, a menudo son lentos porque se atascan con usuarios libres. Cuando utiliza un proxy público, también corre un mayor riesgo de que otros accedan a su información en Internet.
+
+ - Proxy compartido
+
+Los proxies compartidos son utilizados por más de un usuario a la vez. Le dan acceso a una dirección IP que puede compartirse con otras personas, y luego usted puede navegar por Internet mientras parece que navega desde una ubicación de su elección.
+Los proxies compartidos son una opción sólida para las personas que no tienen mucho dinero para gastar y no necesariamente necesitan una conexión rápida. La principal ventaja de un proxy compartido es su bajo costo. Debido a que otras personas lo comparten, es posible que le echen la culpa por las malas decisiones de otra persona, lo que podría hacer que lo prohíban en un sitio.
+
+ - Proxy SSL
+
+Un proxy de capa de sockets seguros (SSL) proporciona descifrado entre el cliente y el servidor. Dado que los datos se cifran en ambas direcciones, el proxy oculta su existencia tanto del cliente como del servidor.
+Estos proxies son más adecuados para organizaciones que necesitan protección mejorada contra las amenazas que el protocolo SSL revela y detiene. Debido a que Google prefiere servidores que usan SSL, un proxy SSL puede ayudar a su clasificación de motores de búsqueda cuando se lo usa en relación con un sitio web. Lo negativo es que el contenido cifrado en un proxy SSL no se puede almacenar en caché; entonces, cuando visita sitios web varias veces, es posible que experimente un rendimiento más lento de lo que experimentaría de otro modo.
+
+ - Proxy rotativo
+
+Un proxy rotativo asigna una dirección IP diferente a cada usuario que se conecta a él. Cuando los usuarios se conectan, se les da una dirección que es exclusiva del dispositivo que se conectó antes.
+Los proxies rotativos son ideales para los usuarios que necesitan hacer mucho raspado web continuo y de alto volumen. Permiten volver al mismo sitio web una y otra vez de forma anónima. Sin embargo, debe tener cuidado al elegir servicios de proxy rotativos. Algunos de ellos contienen proxies públicos o compartidos que podrían exponer sus datos.
+
+ - Proxy inverso
+
+A diferencia de un proxy de reenvío, que se encuentra frente a los clientes, un proxy inverso se posiciona frente a los servidores web y reenvía solicitudes de un navegador a los servidores web. Funciona interceptando las solicitudes del usuario en el borde de la red del servidor web. Luego envía las solicitudes al servidor de origen y recibe las respuestas de este.
+Los proxies inversos constituyen una opción sólida para sitios web populares que necesitan equilibrar la carga de muchas solicitudes entrantes. Pueden ayudar a que una organización reduzca la carga del ancho de banda porque actúan como otro servidor web que administra las solicitudes entrantes. La desventaja son que los proxies inversos pueden exponer potencialmente la arquitectura del servidor HTTP si un atacante puede penetrarla. Esto significa que es posible que los administradores de red tengan que reforzar o reposicionar su firewall si están usando un proxy inverso.
+
+ - Proxy SOCKS
+
+Un proxy SOCKS es un protocolo de Internet que actúa como un intermediario entre un cliente y un servidor, permitiendo el enrutamiento de paquetes de red a través de un servidor proxy. A diferencia de los proxies HTTP, que están limitados principalmente al tráfico web, los proxies SOCKS pueden gestionar una amplia variedad de tráfico de red, incluyendo protocolos como HTTP, HTTPS, FTP, SMTP y aplicaciones de intercambio P2P, lo que los hace extremadamente versátiles. Operan en la capa 5 del modelo OSI, conocida como la capa de sesión, lo que les permite manejar conexiones TCP y UDP, facilitando tareas como la transmisión de video, el uso de torrents y la superación de firewalls. La versión más reciente, SOCKS5, ofrece mejoras significativas como soporte para IPv6, resolución de nombres de dominio en el servidor y múltiples métodos de autenticación, aumentando su seguridad y funcionalidad.
+
+
+	- "Segmentación" -
+
+ - ¿Qué es la segmentación de redes?
+
+La segmentación de redes es la práctica de dividir una red* en secciones más pequeñas y aisladas. Estas particiones pueden crearse y asegurarse mediante hardware físico o software, cada uno de los cuales conlleva sus propios retos de implementación.
+Al acordonar distintos segmentos de una red, las organizaciones pueden evitar más fácilmente el movimiento lateral, ejercer un control granular sobre el tráfico de la red y mejorar su rendimiento. Incluso pueden establecer políticas para cargas de trabajo y aplicaciones individuales, un enfoque conocido como microsegmentación.
+
+ - ¿Cómo funciona la segmentación de redes?
+
+La segmentación de redes divide una red en varias secciones, a las que se pueden aplicar distintos controles. Normalmente, este proceso se realiza utilizando uno de estos dos métodos: la segmentación física y la segmentación lógica.
+
+ - Segmentación física
+
+La segmentación física requiere aparatos de hardware -como un enrutador, conmutadores y Firewalls - para separar una red en secciones discretas. Estos aparatos controlan el tipo de tráfico que puede entrar y salir de cada sección mediante políticas de segmentación, que pueden configurarse según criterios específicos (por ejemplo. origen del tráfico, destino, etc.).
+La segmentación física (también llamada segmentación basada en el perímetro) suele ser cara y laboriosa de configurar y mantener. También funciona bajo el supuesto de que la mayoría de las organizaciones siguen manteniendo un perímetro de red físico.
+Sin embargo, con la llegada de la computación en la nube, este perímetro prácticamente ha desaparecido, ya que los usuarios pueden acceder a los datos y a las aplicaciones a través de Internet, en lugar de las redes internas gestionadas por TI. Incluso las organizaciones que utilizan infraestructura local permiten a menudo a los usuarios conectarse a recursos internos desde dispositivos y software externos.
+
+ - Segmentación lógica
+
+La segmentación lógica, o segmentación de red virtual, utiliza software para dividir una red en secciones más pequeñas. Estos segmentos pueden crearse mediante subredes, redes de área local virtuales (VLAN) y esquemas de direccionamiento de red.
+
+• Las subredes ayudan a dividir una red en segmentos más pequeños, permitiendo así que el tráfico de red recorra una distancia más corta sin pasar por enrutadores innecesarios para llegar a su destino
+• Las VLAN dividen el tráfico de una única red física en dos redes, sin necesidad de disponer de varias conexiones de enrutador o de Internet para dirigir el tráfico de la red a diferentes destinos
+• Los esquemas de direccionamiento de red crean segmentos de red dividiendo los recursos de red entre varias subredes de capa 3.
+Al igual que la segmentación física, la segmentación lógica también utiliza políticas de segmentación para restringir el flujo de tráfico que entra y sale de cada segmento de red.
+
+Puesto que la segmentación lógica no depende de la configuración, mantenimiento y actualización de múltiples dispositivos de hardware, se considera un método más flexible, escalable y rentable de separar y proteger una red.
+
+ - ¿Cuáles son las ventajas de la segmentación de redes?
+
+Cuando se aplica correctamente, la segmentación de redes puede ayudar a las organizaciones a mejorar la seguridad, el rendimiento y el cumplimiento con mayor eficacia. Algunas de las ventajas más significativas son las siguientes:
+
+• Reducción del movimiento lateral: una vez que los atacantes han penetrado en una red, no pueden moverse libremente por esta, ya que solo han penetrado en un segmento concreto de la red. Esto, a su vez, ayuda a minimizar la superficie de ataque de una organización.
+• Remediar la actividad maliciosa: cuando un ataque o actividad sospechosa se limita a un área específica, los equipos de TI pueden detectarlo y remediarlo con mayor eficacia, sin afectar al resto de la red.
+• Aumentar el rendimiento: restringir ciertos tipos de tráfico a zonas específicas de la red puede ayudar a reducir la congestión general de la red y optimizar el rendimiento.
+• Garantizar el cumplimiento: la segmentación puede aislar áreas de la red que están sujetas a normas de cumplimiento, facilitando su actualización cuando sea necesario.
+
+ - Segmentación de redes vs. microsegmentación
+
+La segmentación de redes la divide en secciones más pequeñas, a las que se aplican controles y políticas de seguridad diferentes.
+
+La microsegmentación, en cambio, es un subconjunto de la segmentación de red que permite aplicar controles aún más granulares a cargas de trabajo individuales. (Una carga de trabajo es un programa o aplicación -como un servidor, una máquina virtual o una función sin servidor- que utiliza cierta cantidad de memoria y recursos informáticos). Forma parte de un modelo de seguridad Zero Trust , en el que ningún usuario o dispositivo es de confianza por defecto.
+
+Para comprender mejor las ventajas de seguridad de la segmentación de red frente a la microsegmentación, imagine que un rey tiene una gran suma de oro y joyas que quiere proteger. Podría poner todo su tesoro en varias cámaras secretas, cada una de las cuales solo podría abrirse utilizando una llave específica (segmentación de redes). Si un ladrón robara la llave de una cámara acorazada, podría robar el tesoro que hay en su interior, pero no podría acceder a cámaras adicionales sin robar llaves adicionales de esas salas. Del mismo modo, un atacante que vulnere una subred podrá comprometer los datos que contenga, pero no podrá pasar libremente a otra subred.
+
+Alternativamente, el rey podría no solo distribuir su tesoro entre múltiples cámaras acorazadas, sino colocarlo en cofres cerrados con llave dentro de esas salas, y asegurarse de que cada cofre solo pudiera abrirse con su propia llave (microsegmentación). De ese modo, si un ladrón robaba la llave de uno de los cofres del tesoro, no podría abrir los cofres individuales sin procurarse llaves adicionales. Del mismo modo, en una red microsegmentada, incluso si un atacante compromete una carga de trabajo, puede que no sea capaz de comprometer (o incluso acceder) a cargas de trabajo adicionales.
+
+	- "DMZ (conceptual)" -
+
+Una DMZ, o zona desmilitarizada, es una subred perimetral situada entre la red interna de una organización y una red externa no confiable, generalmente Internet.
+ Su principal función es actuar como una capa adicional de seguridad, aislando y protegiendo los sistemas internos críticos de posibles ataques que puedan originarse a partir de servicios expuestos al exterior, como servidores web, de correo o DNS.
+ La DMZ permite que ciertos servicios sean accesibles desde el exterior, mientras se restringe el acceso directo desde la DMZ hacia la red interna, lo que evita que un compromiso en la DMZ afecte directamente los activos internos.
+
+Esta zona se implementa mediante cortafuegos que filtran el tráfico entre la red pública, la DMZ y la red interna, asegurando que solo se permita el tráfico necesario.
+ Los servicios alojados comúnmente en una DMZ incluyen servidores web, de correo, FTP, DNS, proxy y sistemas de autenticación.
+ La DMZ también puede utilizarse en entornos industriales (DMZ TO) para aislar la red industrial de la corporativa, protegiendo así los sistemas de control.
+
+Aunque el término proviene de la franja neutral entre países en conflicto, en informática representa un área de seguridad donde se colocan servicios de acceso público, pero con un alto nivel de control y monitoreo.
+ En redes domésticas, la opción DMZ en routers se refiere a asignar todos los puertos abiertos a una sola IP, aunque esta práctica es considerada insegura y no se recomienda.
+ Una implementación más segura utiliza dos cortafuegos, creando una DMZ con un firewall perimetral y otro interno, lo que añade una barrera adicional frente a posibles intrusiones.
+
+---------------------------------------------------
+
+1. ¿Qué diferencia hay entre permitir tráfico y permitir conexiones?
+   
+   La diferencia radica en el nivel de abstracción y el tipo de control ejercido sobre las comunicaciones de red.
+   
+   Permitir tráfico se refiere a autorizar el paso de paquetes a través de un firewall o dispositivo de red, basandose en criterios como dirección de IP de origen o destino, el puerto, el protocolo usado (TCP, UDP, ICMP...). Esta acción se realiza a nivel de paquete y se aplica a todo el tráfico que cumpla con los criterios definidos por una regla de firewall.
+   
+   Permitir conexiones implica la gestión de sesiones de comunicación completa entre dos puntos, lo cual es más complejo que el simple paso de paquetes. Las reglas de firewall con estado no solo permiten el tráfico inicial, sino que también permiten automáticamente el tráfico de respuesta asociado siempre que coincida con la tupla de cinco elementos: IP de origen, IP de destino, puerto de origen, puerto de destino y protocolo, pero con las direcciones y puertos invertidos. Este comportamiento se conoce como “regla con estado” y permite que una conexión establecida se mantenga activa sin necesidad de crear reglas adicionales para el tráfico de retorno. 
+   
+   En resumen permitir tráfico se refiere al paso de paquetes individuales según las reglas específicas, mientras que permitir conexiones implica la gestión de sesiones completas, incluyendo el tráfico de ida y retorno, gracias al seguimiento de conexiones implementado por firewalls con estado.
+   
+2. ¿Qué información analiza un firewall stateful?
+   
+   Un firewall stateful analiza múltiples aspectos de tráfico de red para tomar desiciones de seguridad basadas en el conexto de las conexiones. Examina las cabeceras de los paquetes, las direcciones de IP de origen y destino, puertos utilizados, protocolos utilizados, y el contenido de los paquetes para evitar amenazas. Además rastrea el estado de las conexiones, como flujos TCP, o comunicaciones UDP, y mantiene tablas dinámicas que almacenan información sobre la conexión o conexiones activas, incluyendo direcciones IP, puertos y números de secuencia de los paquetes. Estas tablas se actualizan de forma dinámica y constante a medida que avanza la información, permitiendo al firewall distinguir entre paquetes legítimos y paquetes maliciosos. Para protocolos sin estado como UDP, el firewall crea y almacena datos de contexto que no existen dentro del protocolo mismo, permitiendo rastrear una conexión virtual. También puede inspeccionar el comportamiento de los paquetes, catalogar patrones de comportamiento y realizar una inspección profunda de paquetes (DPI) para buscar contenido dañino o patrones maliciosos. En el caso de protocolos como FTP, que usan múltiples conexiones, el firewall examina la conexión de comandos para extraer información como el puerto de datos y verificar que las conexiones de datos coincidan con solicitudes válidas.
+   
+3. ¿Por qué un firewall no es lo mismo que un antivirus?
+   
+   En principio no son lo mismo porque cumplen funciones distintas en la seguridad informática: el firewall actúa como una barrera preventiva que controla el tráfico de red entrante y saliente, bloqueando acceso no autorizado, mientras que el antivirus se enfoca en detectar, aislar y eliminar malware ya presente en un dispositivo. Aunque ambos son escenciales, un firewall protege la red desde afuera, mientras que el antivirus protege el sistema desde adentro.
+   
+4. ¿Qué problema resuelve un proxy?
+   
+   Un proxy resuelve problemas de acceso a recursos de red especialmente en entornos con restricciones de seguridad como firewalls o servidores proxy, al actuar como intermediario entre un cliente y un servidor. Permite el acceso controlado a aplicaciones y servicios, facilitando la autenticación y autorización de usuarios. Además un proxy puede solucionar errores de conexión como “no se pudo resolver la dirección” o “conexión rechazada” al corregir la configuración de red, ajustar la configuración del proxy, deshabilitar VPNs o servidores proxy adicionales y verificar el firewall. También ayuda a mitigar problemas causados por errores temporales, como interrupciones de red o fallos del servidor, mediante reintentos automáticos de solicitudes 
+   
+5. ¿Por qué segmentar una red mejora la seguridad?
+   
+   La segmentación de red ayuda a dividir la red en subredes más pequeñas y aisladas, cada una con sus propias políticas y protocolos de seguridad, lo que ayuda a evitar el movimiento lateral de amenazas. Este enfoque limita el alcance potencial de una violación de seguridad, ya que si algún segmento se ve comprometido, los atacantes no podrán moverse libremente a otros segmentos sin superar barreras adicionales. Al contener intrusiones dentro de un espacio limitado, se protege al resto de elementos sensibles en una red. 
+   
+6. ¿Qué es una DMZ y por qué existe?
+   
+   Una DMZ o zona desmilitarizada es un segmento o subred que se sitúa entre una red interna y una red externa no confiable, como internet. Su principal función es actuar como una barrera de seguridad intermedia que permite el acceso a servicios públicos desde el exterior, como servicios web, de correo, etc, sin exponer directamente la red interna. Esta configuración protege a los sistemas y datos críticos de la red privada, ya que los servicios expuestos a internet se aíslan en esta zona.
+   
+   La DMZ existe para mitigar riesgos asociados con la exposición de servicios a internet, que son potencialmente vulnerables a ataques, como la explotación de vulnerabilidades a aplicaciones WEB o el uso de DNS para amplificar ataques de denegación de servicios distribuido (DDoS). Al colocar estos servicios en una DMZ, se reduce la posibilidad de que un atacante comprometa la red DMZ y luego se mueva lateralmente hacia la red interna. Incluso si un servidor DMZ es hackeado, el atacante aún debe superar una segunda capa de seguridad, como un firewall interno, para acceder a los sistemas internos. 
+   
+   La arquitectura de una DMZ normalmente está compuesta por dos firewalls, uno externo entre Internet y la DMZ y otro interno entre la DMZ y la red privada, lo que proporciona múltiples niveles de defensa. Esta configuración permite controlar estrictamente el tráfico entrante y saliente, permitiendo sólo conexiones necesarias y filtrando tráfico malicioso. Además la DMZ ayuda a prevenir el reconocimiento de la red interna, ya que los sistemas internos no son visibles directamente desde internet, y mejora el rendimiento de carga sobre los sistemas internos.
+   
+Criterio de cierre:
+Puedes justificar por qué algo se bloquea, no solo que “está bloqueado”.
+
+---------------------------------------------------

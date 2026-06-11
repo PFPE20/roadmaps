@@ -1,0 +1,287 @@
+
+===================================================
+
+        FASE 8 – Consolidación
+
+===================================================
+
+	Imprescindibles añadidos
+
+• Modelo OSI y TCP/IP
+• ARP (cómo se resuelven IP → MAC)
+• DNS (resolución de nombres)
+• ICMP (ping, traceroute)
+• TCP vs UDP
+
+	Bloques que se anexan:
+
+• Bloque F – Diagnóstico y herramientas
+• Bloque G – Redes reales
+• Bloque H – Conceptos transversales
+
+	Qué estudiar del bloque en esta fase:
+
+• Wireshark de forma intensiva
+• ping, traceroute, tcpdump
+• Escenarios reales
+• MTU, latencia, jitter, QoS
+
+---------------------------------------------------
+
+		--- Modelo OSI y TCP/IP ---
+
+	- "Modelo OSI" -
+
+ - ¿Qué es el modelo OSI?
+
+El modelo Open Systems Interconnection (OSI) es un modelo conceptual creado por la Organización Internacional para la Estandarización (ISO), el cual permite que diversos sistemas de comunicación se conecten usando protocolos estándar. En otras palabras, el OSI proporciona un estándar para que distintos sistemas de equipos puedan comunicarse entre sí.
+
+El modelo OSI se puede ver como un lenguaje universal para la conexión de las redes de equipos. Se basa en el concepto de dividir un sistema de comunicación en siete capas abstractas, cada una apilada sobre la anterior.
+
+Cada capa del modelo OSI tiene una función específica y se comunica con las capas superiores e inferiores. Los ataques DDoS se dirigen a capas específicas de una conexión de red, los ataques a la capa de aplicación se dirigen a la capa 7, mientras que los ataques a la capa de protocolo se dirigen a las capas 3 y 4.
+
+ - ¿Por qué es importante el modelo OSI?
+
+A pesar de que el Internet moderno no sigue estrictamente el modelo OSI (sigue más de cerca el paquete de protocolos de Internet más simple), este modelo sigue siendo muy útil para resolver problemas de red. Ya sea una persona que no puede lograr que su ordenador portátil se conecte a Internet o un sitio web que está caído para miles de usuarios, el modelo OSI puede ayudar a desglosar el problema y a identificar la causa. Si el problema puede reducirse a una capa específica del modelo, se puede evitar mucho trabajo innecesario.
+
+ - ¿Cuáles son las 7 capas del Modelo OSI?
+
+Las siete capas de abstracción del modelo OSI pueden definirse de la siguiente manera, en orden descendente:
+
+7. Capa de aplicación
+   
+   Esta es la única capa que interactúa directamente con los datos del usuario. Las aplicaciones de software, como los navegadores web y los clientes de correo electrónico, dependen de la capa de aplicación para iniciar las comunicaciones. Sin embargo, debe quedar claro que las aplicaciones de software cliente no forman parte de la capa de aplicación; más bien, la capa de aplicación es responsable de los protocolos y la manipulación de datos de los que depende el software para presentar datos significativos al usuario.
+   
+   Los protocolos de la capa de aplicación incluyen HTTP, así como también SMTP (el protocolo simple de transferencia por correo electrónico, uno de los protocolos que permiten las comunicaciones por correo electrónico).
+   
+6. Capa de presentación
+   
+   Esta capa es principalmente responsable de preparar los datos para que los pueda usar la capa de aplicación; en otras palabras, la capa 6 hace que los datos se preparen para su consumo por las aplicaciones. La capa de presentación es responsable de la traducción, el cifrado y la compresión de los datos.
+   
+   Dos dispositivos de comunicación que se conectan entre sí podrían estar usando distintos métodos de codificación, por lo que la capa 6 es la responsable de traducir los datos entrantes en una sintaxis que la capa de aplicación del dispositivo receptor pueda comprender.
+   
+   Si los dispositivos se comunican a través de una conexión cifrada, la capa 6 es responsable de añadir el cifrado en el extremo del emisor, así como de decodificar el cifrado en el extremo del receptor, para poder presentar a la capa de aplicación datos descifrados y legibles.
+   
+   Después, la capa de presentación es también la encargada de comprimir los datos que recibe de la capa de aplicación antes de ser enviados a la capa 5. Esto ayuda a mejorar la velocidad y la eficiencia de la comunicación mediante la minimización de la cantidad de datos que serán transferidos.
+   
+5. Capa de sesión
+   
+   La capa de sesión es la responsable de la apertura y cierre de comunicaciones entre dos dispositivos. Ese tiempo que transcurre entre la apertura de la comunicación y el cierre de esta se conoce como sesión. La capa de sesión garantiza que la sesión permanezca abierta el tiempo suficiente como para transferir todos los datos que se están intercambiando; tras esto, cerrará sin demora la sesión para evitar el desaprovechamiento de recursos.
+
+La capa de sesión también sincroniza la transferencia de datos utilizando puntos de control. Por ejemplo, si un archivo de 100 megabytes está transfiriéndose, la capa de sesión podría fijar un punto de control cada 5 megabytes. En caso de desconexión o caída tras haberse transferido, por ejemplo, 52 megabytes, la sesión podría reiniciarse a partir del último punto de control, con lo cual solo quedarían unos 50 megabytes pendientes de transmisión. Sin esos puntos de control, la transferencia en su totalidad tendría que reiniciarse desde cero. 
+
+4. Capa de transporte
+   
+   La capa 4 es la responsable de las comunicaciones de extremo a extremo entre dos dispositivos. Esto implica, antes de proceder a ejecutar el envío a la capa 3, tomar datos de la capa de sesión y fragmentarlos seguidamente en trozos más pequeños llamados segmentos. La capa de transporte del dispositivo receptor es la responsable luego de rearmar tales segmentos y construir con ellos datos que la capa de sesión pueda consumir.
+   
+   La capa de transporte también es responsable del control de flujo y el control de errores. El control de flujo determina una velocidad óptima de transmisión para garantizar que un emisor con una conexión rápida no abrume a un receptor con una conexión lenta. La capa de transporte realiza un control de errores en el extremo receptor al garantizar que los datos recibidos estén completos y solicitar una retransmisión si no lo están.
+   
+   Los protocolos de la capa de transporte incluyen el Protocolo de control de transmisión (TCP) y el User Datagram Protocol (UDP).
+
+3. Capa de red
+   
+   La capa de red es responsable de facilitar la transferencia de datos entre dos redes diferentes. Si los dispositivos que se comunican se encuentran en la misma red, entonces la capa de red no es necesaria. Esta capa divide los segmentos de la capa de transporte en unidades más pequeñas, llamadas paquetes, en el dispositivo del emisor, y vuelve a juntar estos paquetes en el dispositivo del receptor. La capa de red también busca la mejor ruta física para que los datos lleguen a su destino; esto se conoce como enrutamiento.
+   
+   Los protocolos de la capa de red incluyen la dirección IP, el Protocolo de mensajes de control de Internet (ICMP), el Protocolo de mensajes de grupo de Internet (IGMP) y el paquete IPsec. 
+
+2. Capa de enlace de datos
+   
+   La capa de enlace de datos es muy similar a la capa de red, excepto que la capa de enlace de datos facilita la transferencia de datos entre dos dispositivos dentro la misma red. La capa de enlace de datos toma los paquetes de la capa de red y los divide en partes más pequeñas que se denominan tramas. Al igual que la capa de red, esta capa también es responsable del control de flujo y el control de errores en las comunicaciones dentro de la red (la capa de transporte solo realiza tareas de control de flujo y de control de errores para las comunicaciones dentro de la red).
+
+1. Capa física
+   
+   Esta capa incluye el equipo físico implicado en la transferencia de datos, tal como los cables y los conmutadores de red. Esta también es la capa donde los datos se convierten en una secuencia de bits, es decir, una cadena de unos y ceros. La capa física de ambos dispositivos también debe estar de acuerdo en cuanto a una convención de señal para que los 1 puedan distinguirse de los 0 en ambos dispositivos.
+
+Cómo transitan los datos a través del modelo OSI
+
+Para que la información legible para los seres humanos se pueda transferir a través de una red de un dispositivo a otro, los datos deben atravesar las siete capas del modelo OSI en orden descendente en el dispositivo emisor y luego en orden ascendente en el extremo del receptor.
+
+Más información: https://www.cloudflare.com/es-es/learning/ddos/glossary/open-systems-interconnection-model-osi/
+
+	- "TCP/IP" -
+
+ - ¿Qué son IP y TCP?
+
+El protocolo de Internet (IP) es el sistema de direcciones de Internet y tiene la función principal de entregar paquetes de información desde un dispositivo de origen a un dispositivo de destino. Es la forma principal en la que se realizan las conexiones de red y establece la base de Internet, pero no gestiona el orden de los paquetes ni la verificación de errores. Esta funcionalidad requiere otro protocolo, a menudo el Protocolo de control de transmisión (TCP).
+
+La relación entre los protocolos TCP e IP es similar a enviar a alguien un mensaje escrito en un rompecabezas por correo postal. Se escribe el mensaje y se desmontan las piezas del rompecabezas. Luego, cada pieza puede viajar a través de una ruta postal diferente, algunas de las cuales requieren más tiempo que otras. Cuando las piezas del rompecabezas llegan después de recorrer diferentes rutas, es posible que estén desordenadas. El protocolo de Internet garantiza que las piezas lleguen a su dirección de destino. Por su parte, el protocolo TCP sería como la persona que ordena las piezas del rompecabezas en el otro lado. Reúne las piezas en el orden correcto, solicita el reenvío de las piezas que faltan e informa al remitente de que se ha recibido el rompecabezas. Además, mantiene la conexión con el remitente antes del envío de la primera pieza del rompecabezas hasta después del envío de la última pieza.
+
+IP es un protocolo sin conexión, lo que significa que cada unidad de datos se aborda individualmente y se enruta desde el dispositivo de origen al dispositivo de destino, que no envía una confirmación de vuelta al origen. Ahí es donde entran en juego protocolos como el TCP. Este último se utiliza junto con el protocolo de Internet para mantener una conexión entre el remitente y el destino y para garantizar el orden del paquete.
+
+Por ejemplo, cuando se envía un correo electrónico a través del protocolo TCP, se establece una conexión y se realiza un protocolo de enlace de 3 vías. En primer lugar, el origen envía un paquete de "solicitud inicial" SYN al servidor de destino para iniciar la comunicación. Luego, el servidor de destino envía un paquete SYN-ACK para aceptar el proceso. Por último, el origen envía un paquete ACK al destino para confirmar el proceso, tras lo que se puede enviar el contenido del mensaje. El mensaje de correo electrónico se divide en última instancia en paquetes antes de que cada paquete se envíe a Internet, donde recorre una serie de puertas de enlace antes de llegar al dispositivo de destino donde el TCP reagrupa el conjunto de paquetes en el contenido original del correo electrónico.
+
+	- "ARP (cómo se resuelven IP → MAC)" -
+
+El ordenador tiene dos direcciones en Internet: una dirección física permanente o dirección de Control de Acceso al Medio (MAC) y una dirección lógica de Protocolo de Internet o dirección IP.
+
+ - ¿Qué Es el ARP?
+
+El Protocolo de Resolución de Direcciones o ARP es una forma habitual de que las redes traduzcan entre (o resuelvan) la dirección IP de un ordenador y su dirección física de máquina.
+
+Dado que estas dos direcciones difieren en longitud y formato, el ARP es esencial para permitir que los ordenadores y otros dispositivos se comuniquen a través de una red. Sin embargo, para entender realmente por qué es importante, vamos a hacer un rápido repaso de estos dos tipos de direcciones y cómo se relacionan con nuestros modelos de red cotidianos.
+
+ - ¿Cómo Funciona el ARP?
+
+ARP mantiene una lista actualizada de direcciones MAC y sus direcciones IP asociadas. Esta lista suele mantenerla una pasarela o un router — es decir, cualquier conmutador de red responsable de gestionar el flujo de datos entre redes y dispositivos.
+
+	- "ARP vs DHCP vs DNS: ¿Cuál es la Diferencia?" -
+
+ • DHCP vs ARP: ARP existe en gran medida porque las direcciones IP siempre se están cambiando y reasignando en una red. El DHCP es el responsable de este cambio constante, ya que es el protocolo que configura una dirección IP dinámica para los hosts, de ahí el nombre de protocolo de configuración dinámica de host. DHCP también ayuda a evitar conflictos, como que varios ordenadores tengan asignada la misma dirección IP.
+ 
+• DNS vs ARP: Mientras que ARP asocia direcciones IP y MAC, DNS asocia direcciones IP y nombres de dominio (como «kinsta.com»). Todos los sitios web dependen del alojamiento web para alojar sus páginas web, imágenes y todo lo que las compone. Como cualquier otro dispositivo de red, los servidores de alojamiento web tienen una dirección IP. Sin embargo, gracias al DNS, no necesitas escribir la dirección IP de un servidor para acceder a un sitio web. En lugar de eso, basta con que escribas una URL como «www.ejemplo.com», y el servidor DNS obtendrá la dirección IP correspondiente para que tu navegador web pueda solicitar y servir las páginas web del alojamiento web.
+
+ - Usos y Tipos de ARP
+
+Aunque el ARP pueda parecer un proceso grande y monolítico, puede implementarse de muchas formas diferentes.
+
+ - Proxy ARP
+Un proxy ARP es aquel en el que un conmutador configurado para ARP (como un router) gestiona solicitudes ARP (es decir, solicitudes de direcciones MAC) de dispositivos/hosts fuera de su red inmediata. El conmutador envía su propia dirección MAC como respuesta, actuando como «representante» de cada host de su red.
+
+ - ARP Gratuito
+Un ARP gratuito es una respuesta ARP que no se ha solicitado previamente. En otras palabras, el ARP gratuito es gratuito con el envío de respuestas ARP, difundiendo efectivamente su traducción IP a MAC a cada host/dispositivo de la red. Es casi como si alguien enviara un «correo masivo» para hacer saber a todo el mundo que ha actualizado su información de contacto.
+
+ - ARP Inverso (RARP)
+El ARP inverso (RARP) hace exactamente lo que sugiere su nombre. Envía una dirección IP en lugar de una dirección MAC.
+
+ - ARP inverso (IARP o InARP)
+Al igual que RARP, ARP inverso (abreviado como IARP o InARP) también envía direcciones IP en lugar de direcciones MAC. Sin embargo, a diferencia del RARP, el ARP inverso funciona exactamente igual que el ARP tradicional, sólo que traduce direcciones MAC a direcciones IP en lugar de direcciones IP a direcciones MAC.
+
+ - ¿Qué Es el ARP Spoofing?
+
+También conocido como ARP Poisoning, el ARP Spoofing consiste en que los hackers envían mensajes ARP falsos a una red objetivo en un intento de vincular su propia dirección MAC con una dirección IP legítima de la red.
+
+Si tiene éxito, los mensajes destinados al ordenador con la dirección IP legítima se enviarán al hacker en su lugar. Esto permite al hacker lanzar otros tipos de ciberataques, entre ellos:
+
+• Man-in-the-Middle (MTM)
+Un ataque man-in-the-middle (MTM) consiste en que un hacker «espía» el tráfico de la red, interceptando potencialmente datos valiosos como contraseñas, información bancaria, etc. En el caso de los ataques de suplantación de ARP, los hackers utilizan mensajes ARP fraudulentos para redirigir el tráfico de red a través de sus ordenadores, a menudo pasándolo al destinatario previsto para que parezca que no ha pasado nada.
+
+• Session Hijacking
+El «secuestro de sesión» consiste en que un hacker roba y asume el identificador de sesión de un usuario, un tipo especial de datos que autoriza a los usuarios a realizar determinadas acciones en los sitios web. A menudo distribuidos por los sitios web en forma de cookies, los ID de sesión permiten a los usuarios permanecer conectados o acceder a carros de la compra guardados.
+
+Al redirigir el tráfico mediante la suplantación de ARP, los hackers pueden acceder fácilmente a los ID de sesión y hacerse pasar por el usuario. Esto significa que podrán hacer cualquier cosa para la que el usuario esté autorizado, como acceder a cuentas bancarias en las que haya iniciado sesión.
+
+• Denial-of-Service (DoS)
+Un ataque de denegación de servicio (DoS) o de denegación de servicio distribuido (DDoS) puede adoptar una de estas dos formas: un hacker bloquea los mensajes a un host o un hacker satura a un host con demasiados mensajes. Esto último es lo más frecuente.
+
+En ambos casos, sin embargo, la suplantación de ARP es lo que permite a los hackers bloquear o transmitir mensajes en masa. Interceptando el tráfico normal de la red, el hacker puede bloquear los mensajes a sus destinatarios o redirigirlos a un único objetivo.
+
+	- "DNS (resolución de nombres)" -
+
+ - ¿Qué es DNS?
+
+El sistema de nombres de dominio (DNS) es la agenda telefónica de Internet. Las personas acceden a la información en línea a través de nombres de dominio, tales como nytimes.com o espn.com. Los navegadores web interactúan mediante direcciones de protocolo de Internet (IP). DNS traduce los nombres de dominio a direcciones IP para que los navegadores puedan cargar los recursos de Internet.
+
+Cada dispositivo conectado a Internet tiene una dirección IP única que pueden usar otras máquinas para encontrar el dispositivo. Con los servidores DNS, no es necesario que las personas memoricen direcciones IP, tales como 192.168.1.1 (en IPv4) o nuevas direcciones IP alfanuméricas más complejas, tales como 2400:cb00:2048:1::c629:d7a2 (en IPv6).
+
+ - ¿Cómo funciona DNS?
+
+El proceso de resolución de DNS consiste en convertir un nombre de host (tal como www.example.com) en una dirección IP fácil de usar en un computadora (tal como 192.168.1.1). Se otorga una dirección IP a cada dispositivo en Internet y esa dirección será necesaria para encontrar el dispositivo apropiado de Internet, al igual que se usa la dirección de una calle para encontrar una casa en particular. Cuando un usuario quiere cargar una página web, se debe hacer una traducción entre lo que un usuario escribe en su navegador web (example.com) y la dirección fácil de usar para la máquina que se necesitará para localizar la página web example.com.
+
+Para entender el proceso de la resolución de DNS, es importante conocer los diferentes componentes de hardware entre los que debe pasar una consulta de DNS. Para el navegador web, la búsqueda de DNS se produce "en segundo plano" y no requiere ninguna interacción de la computadora del usuario, aparte de la solicitud inicial.
+
+Hay 4 servidores DNS que intervienen al cargar un sitio web:
+
+• Recursor DNS: el recursor se puede comparar con un bibliotecario al que se le pide que busque un libro específico en alguna parte en una biblioteca. El recursor DNS es un servidor diseñado para recibir consultas de los equipos de los clientes mediante aplicaciones, tales como los navegadores web. En general, el recursor será entonces el responsable de hacer solicitudes adicionales para satisfacer la consulta de DNS del cliente.
+• Servidor de nombres raíz: el servidor raíz es el primer paso para traducir (resolver) nombres de host legibles por los seres humanos en direcciones IP. Se puede comparar a un índice en una biblioteca que apunta a diferentes estantes de libros, por lo general, sirve como referencia para otras ubicaciones más específicas.
+• Servidor de nombres TLD: el servidor de dominio de nivel superior (TLD) se puede comparar con una estantería de libros en una biblioteca. Es el paso siguiente en la búsqueda de una dirección IP específica, y contiene la última parte de un nombre de servidor (en ejemplo.com, el servidor TLD es “com”).
+• Servidor de nombres autorizado: este servidor de nombres final se puede comparar a un diccionario en un estante de libros, en el que un nombre específico se puede traducir a su definición. El servidor de nombres autorizado es la última parada en la consulta del servidor de nombres. Si el servidor de nombres autorizado tiene acceso al registro solicitado, devolverá la dirección IP para el nombre de host solicitado al recursor DNS (el bibliotecario) que hizo la solicitud inicial.
+   
+ - ¿Cuál es la diferencia entre un servidor DNS autorizado y una resolución de DNS recursiva?
+
+Ambos conceptos se refieren a servidores (grupos de servidores) que son integrales para la infraestructura de DNS, pero cada uno desempeña un rol diferente y se encuentra en diferentes ubicaciones dentro del trayecto de una consulta de DNS. Una forma de pensar acerca de la diferencia es que la resolución recursiva está al inicio de la consulta de DNS y el servidor de nombres autorizado está al final.
+
+ - Resolución de DNS recursiva
+
+La resolución recursiva es la computadora que responde a una solicitud recursiva de un cliente y se toma el tiempo necesario para inspeccionar el registro de DNS. Hace esto mediante una serie de solicitudes hasta que alcanza el servidor de nombres DNS autorizado para el registro solicitado (o se vuelve inactiva o devuelve un error si no encuentra ningún registro). Afortunadamente, las resoluciones de DNS recursivas no siempre tienen que hacer solicitudes múltiples para inspeccionar los registros necesarios para responder a un cliente; el almacenamiento en caché es un proceso de persistencia de datos que ayuda a saltarse las solicitudes necesarias y ofrece antes el registro de recurso solicitado en la búsqueda de DNS.
+
+	- "ICMP (ping, traceroute)" -
+
+ - ¿Qué es el Protocolo de control de mensajes de Internet (ICMP)?
+
+El Protocolo de control de mensajes de Internet (ICMP) es un protocolo en la capa de red que utilizan los dispositivos de red para diagnosticar problemas de comunicación en la red. El ICMP se utiliza principalmente para determinar si los datos llegan o no a su destino a su debido tiempo. El protocolo ICMP se suele utilizar en dispositivos de red, como los enrutadores. El ICMP es crucial para informar de errores y realizar pruebas, pero también se puede utilizar en ataques de denegación de servicio distribuido (DDoS).
+
+ - ¿Para qué se utiliza el ICMP?
+
+El objetivo principal del ICMP es informar sobre errores. Cuando dos dispositivos se conectan a través de Internet, el ICMP genera errores para compartirlos con el dispositivo emisor en caso de que alguno de los datos no haya llegado a su destino previsto. Por ejemplo, si un paquete de datos es demasiado grande para un enrutador, este descartará el paquete y enviará un mensaje ICMP de vuelta a la fuente original de los datos.
+
+Un uso secundario del protocolo ICMP es llevar a cabo diagnósticos de red; las utilidades de terminal más utilizadas, traceroute y ping, funcionan ambas con ICMP. La utilidad traceroute se utiliza para mostrar la ruta de enrutamiento entre dos dispositivos de Internet. La ruta de enrutamiento es el camino físico real de los enrutadores conectados por el que debe pasar una solicitud antes de llegar a su destino. El trayecto entre un enrutador y otro se conoce como "salto", y una traceroute también informa del tiempo necesario para cada salto en el camino. Esto puede ser útil para determinar las fuentes de retraso de la red.
+
+La utilidad ping es una versión simplificada de traceroute. Un ping probará la velocidad de la conexión entre dos dispositivos, e informará exactamente del tiempo que tarda un paquete de datos en llegar a su destino y volver al dispositivo del remitente. Aunque el ping no proporciona datos sobre el enrutamiento o los saltos, sigue siendo una métrica muy útil para calibrar la latencia entre dos dispositivos. Los mensajes ICMP de solicitud de eco y de respuesta de eco se utilizan habitualmente para realizar un ping.
+
+ - ¿Cómo funciona ICMP?
+
+A diferencia del protocolo de Internet (IP), ICMP no está asociado a un protocolo de la capa de transporte como TCP o UDP. Esto hace que ICMP sea un protocolo sin conexión: un dispositivo no necesita abrir una conexión con otro dispositivo antes de enviar un mensaje ICMP. El tráfico IP normal se envía utilizando TCP, lo que significa que dos dispositivos que intercambian datos primero llevarán a cabo un protocolo de enlace TCP para asegurarse de que ambos dispositivos estén listos para recibir datos. ICMP no abre una conexión de esta manera. El protocolo ICMP tampoco permite apuntar a un puerto específico en un dispositivo.
+
+ - ¿Qué es un paquete ICMP?
+
+Un paquete ICMP es un paquete que usa el protocolo ICMP. Los paquetes ICMP incluyen un encabezado de ICMP después de un encabezado de dirección IP normal. Cuando un enrutador o servidor necesita enviar un mensaje de error, el cuerpo del paquete ICMP o sección de datos siempre contiene una copia del encabezado de dirección IP del paquete que causó el error.
+
+ - ¿Cómo se utiliza ICMP en los ataques DDoS?
+
+• taque de inundación de ICMP
+
+Una inundación de ping o de ICMP es cuando el atacante intenta sobrecargar un dispositivo objetivo con paquetes de solicitud de eco de ICMP. El objetivo tiene que procesar y responder a cada paquete, lo que consume sus recursos informáticos hasta que los usuarios legítimos no pueden recibir el servicio.
+
+• Ataque de ping de la muerte
+
+Un ataque de ping de la muerte se produce cuando el atacante envía un ping de tamaño superior al máximo permitido para un paquete a una máquina objetivo, lo que provoca que la máquina se bloquee o deje de funcionar. El paquete se fragmenta de camino a su objetivo, pero cuando el objetivo vuelve a ensamblar el paquete en su tamaño máximo original, el tamaño del paquete provoca un desbordamiento del búfer.
+
+El ataque de ping de la muerte es ya prácticamente algo que pertenece a la historia. Sin embargo, los equipos de red más antiguos podrían seguir siendo susceptibles de sufrirlo.
+
+• Ataque smurf
+
+En un ataque Smurf, el atacante envía un paquete ICMP con una dirección IP de origen falsa. El equipo de red responde al paquete, enviando las respuestas a la IP falsa e inundando a la víctima con paquetes ICMP no deseados. Igual que el "ping de la muerte", en la actualidad el ataque Smurf solo es posible con equipos heredados.
+
+El ICMP no es el único protocolo de la capa de red utilizado en ataques DDoS a la capa 3. Por ejemplo, Los atacantes también han utilizado paquetes GRE en el pasado.
+
+Normalmente, los ataques DDoS a la capa de red se dirigen a los equipos e infraestructuras de red, a diferencia de los ataques DDoS a la capa de aplicación, que se dirigen a las propiedades web. Cloudflare Magic Transit es una forma de defenderse de los ataques DDoS a la capa de red.
+
+	- "TCP vs UDP" -
+
+- TCP frente a UDP: Diferencias entre los protocolos
+
+La principal diferencia entre el TCP (protocolo de control de transmisiones) y el UDP (protocolo de datagramas de usuario) es que el TCP es un protocolo basado en conexiones y el UDP es sin conexiones. Aunque el TCP es más fiable, transfiere los datos más despacio. El UDP es menos fiable pero funciona más rápido. Esto hace que cada protocolo sea adecuado para distintos tipos de transferencia de datos.
+
+Los protocolos son reglas que rigen el formato de los datos y su envío a través de una red. El TCP y el UDP son dos métodos diferentes para hacer el mismo trabajo: transferir datos a través de Internet. Permiten que los servidores y dispositivos se comuniquen para que pueda enviar correos electrónicos, ver Netflix, jugar y navegar por páginas web.
+
+El TCP crea una línea de comunicación segura para garantizar la transmisión fiable de todos los datos. Una vez enviado un mensaje, se verifica la recepción para asegurar que se han transferido todos los datos.
+
+El UDP no establece una conexión al enviar datos. Envía datos sin confirmar la recepción ni comprobar si hay errores. Esto significa que una parte o la totalidad de los datos pueden perderse durante la transmisión.
+
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+
+1. ¿En qué capa ocurre ARP y por qué?
+   
+   
+   
+2. ¿En qué capas actúa un firewall?
+   
+   
+   
+3. ¿Qué información puedes ver en Wireshark que no ves en una aplicación?
+   
+   
+   
+4. ¿Por qué una pérdida de paquetes afecta más a TCP que a UDP?
+   
+   
+   
+5. ¿Cómo detectarías un problema de red paso a paso?
+   
+   
+   
+6. ¿Qué capas intervienen cuando escribes una URL en el navegador?
+   
+   
+   
+Criterio de cierre:
+Puedes seguir mentalmente un paquete de principio a fin.
+
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+---------------------------------------------------
+

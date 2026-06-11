@@ -1,0 +1,89 @@
+
+---------------------------------------------------
+
+	- BLOQUE A – Modelos y arquitectura (fundamental) -
+
+Modelo OSI (7 capas)
+Modelo TCP/IP
+Encapsulación y desencapsulación
+Unidades de datos (bits, frames, paquetes, segmentos)
+
+---------------------------------------------------
+
+	- BLOQUE B – Protocolos esenciales (núcleo real de Internet) - 
+
+DNS (resolución de nombres)
+ICMP (control y diagnóstico)
+TCP (orientado a conexión)
+UDP (no orientado a conexión)
+ARP (resolución IP ↔ MAC)
+
+Especial atención a:
+	Three-way handshake
+	Retransmisiones
+	Ventanas y control de flujo
+
+---------------------------------------------------
+
+ - BLOQUE C – Direccionamiento avanzado - 
+
+CIDR
+Subnetting
+Supernetting
+IP pública vs privada
+IPv6 (conceptual, no obsesionarse al inicio)
+
+---------------------------------------------------
+
+BLOQUE D – Enrutamiento (más allá de lo básico)
+
+Enrutamiento estático vs dinámico
+
+Protocolos de enrutamiento (conceptual):
+	RIP
+	OSPF
+	BGP (muy importante a nivel teórico)
+	Métricas de enrutamiento
+
+---------------------------------------------------
+
+	- BLOQUE E – Seguridad de red (base técnica) - 
+
+ACL (listas de control de acceso)
+IDS / IPS (detección e intrusión)
+Segmentación de red
+DMZ
+Concepto de Zero Trust (solo a nivel conceptual)
+
+---------------------------------------------------
+
+	- BLOQUE F – Diagnóstico y herramientas -
+
+Wireshark
+ping
+traceroute / tracert
+netstat / ss
+tcpdump
+nmap (conceptual al inicio)
+
+---------------------------------------------------
+
+	- BLOQUE G – Redes reales (escenarios prácticos) -
+
+Red doméstica
+Red de oficina pequeña
+Red corporativa segmentada
+Acceso remoto
+Redes públicas (hotspots)
+
+---------------------------------------------------
+
+	- BLOQUE H – Conceptos transversales (muy valiosos) -
+
+Latencia, jitter y pérdida
+QoS (calidad de servicio)
+MTU y fragmentación
+Half-duplex vs full-duplex
+Colisiones (histórico, pero importante)
+
+---------------------------------------------------

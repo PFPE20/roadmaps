@@ -1,0 +1,39 @@
+Especificador | Descripción
+
+    %c        | Carácter
+    %d        | Número entero(int)
+    %i        | Número entero(int)
+    %D        | Número entero long(o también %ld)
+    %f        | Punto flotante(float)
+    %e        | Notación científica con e minúscula
+    %E        | Notación científica con E mayúscula
+    %g        | Formato para tipo punto flotante(float)
+    %G        | Formato para tipo punto flotante(float)
+    %o        | Número octal sin signo
+    %s        | Cadena de texto
+    %u        | Entero sin signo
+    %U        | Entero sin signo long(o también %lu)
+    %x        | Hexadecimal sin signo con minúsculas
+    %X        | Hexadecimal sin signo con mayúsculas
+    %p        | Puntero, dirección de memoria
+    %n        | Número de caracteres
+    %o        | Formato entero octal
+    %O        | Formato entero octal long(o también %lo)
+    %lf       | Formato double
+    %LF       | Formato long double
+    %l        | Formato double
+    %h        | Formato double
+    %L        | Formato long double
+
+
+  - Notas / Cursidades - 
+
+- "%n" imprime el número de caracteres, muy poderoso en reverse engineering si no está saneado el stdout o stdin según sea el caso.
+
+- Cuando se usa "$" en un especificador de formato:
+
+  • %1$p → lee específicamente el valor en la posición 1 del stack, sin importar el orden. (2 si el número es 2, etc...)
+  
+  • Si se usa solamente "%p" → lee el siguiente valor del stack en orden.
+
+  • En ambos casos, se imprime lo que haya en el momento si la función "printf" no tiene argumentos, es decir, empieza a buscar en el stack e imprime lo que encuentre (secuencialmente)

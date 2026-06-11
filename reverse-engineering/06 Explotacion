@@ -1,0 +1,184 @@
+
+FASE 06 — VULNERABILIDADES CLÁSICAS EN C  [EXPLOTACIÓN]
+--------------------------------------------------------
+
+► Buffer Overflow (stack)
+  La vulnerabilidad más icónica. gets(), strcpy() y scanf() sin
+  límite pueden escribir más allá del buffer y sobreescribir la
+  dirección de retorno en el stack. La base de la mayoría de retos
+  "pwn" en CTFs.
+
+► Format String Attack
+  printf(input) en lugar de printf("%s", input) permite al atacante
+  leer y escribir memoria arbitraria usando %x, %n. Aparece
+  sorprendentemente seguido en CTFs de dificultad media.
+
+► Integer Overflow y signedness bugs
+  Lo que ya sabes de overflow en binarios se aplica directo aquí.
+  Comparar un int con un unsigned int puede producir comportamiento
+  inesperado explotable. Muy común en retos con validaciones.
+
+► Protecciones del sistema: NX, ASLR, Stack Canary, PIE
+  Defensas modernas que complican la explotación. NX impide ejecutar
+  código en el stack. ASLR aleatoriza direcciones. El canary detecta
+  overflows. PIE aleatoriza la base del binario. Entender cada una
+  para saber qué técnica de bypass aplicar.
+
+// CTF relevance: categoría "pwn" y "reversing" — estas
+// vulnerabilidades son el 80% del contenido
+
+-------------------------------------------------------------
+
+  "Buffer Overflow"
+
+  - ¿Qué es un búfer?
+
+  Un búfer, o búfer de datos, es un área de almacenamiento de memoria física que se utiliza para almacenar temporalmente los datos mientras se trasladan de un lugar a otro. Estos búferes suelen estar en la memoria RAM. Con frecuencia, los ordenadores utilizan los búferes para ayudar a mejorar el rendimiento; la mayoría de los discos duros modernos aprovechan el búfer para acceder a los datos de forma eficiente, y muchos servicios en línea también utilizan búferes. 
+
+  Los búferes están diseñados para contener cantidades específicas de datos. A menos que el programa que utilice el búfer tenga instrucciones incorporadas para descartar datos cuando se envíen demasiados al búfer, el programa sobrescribirá los datos de la memoria adyacente en el búfer.
+
+  - ¿Qué es un ataque de desbordamiento del búfer?
+
+  El desbordamiento del búfer es una anomalía que se produce cuando el software que escribe datos en un búfer desborda la capacidad del búfer, lo que provoca que se sobrescriban las ubicaciones de memoria adyacentes. En otras palabras, se pasa demasiada información a un contenedor que no cuenta con el espacio suficiente, y esa información acaba sustituyendo a los datos de los contenedores adyacentes.
+
+  Los atacantes pueden aprovecharse de los desbordamientos del búfer con el objetivo de modificar la memoria de una computadora para socavar o tomar el control de la ejecución del programa.
+
+  - Consecuencias del desbordamiento del búfer
+
+  1. Fallas del sistema: un ataque de desbordamiento del búfer generalmente conducirá a la falla del sistema. También puede resultar en una falta de disponibilidad y programas que se ponen en un bucle infinito.
+
+  2. Pérdida de control de acceso: un ataque de desbordamiento del búfer a menudo implicará el uso de código arbitrario, que a menudo está fuera del alcance de las políticas de seguridad de los programas.
+  
+  3. Otros problemas de seguridad: Cuando un ataque de desbordamiento del búfer da lugar a la ejecución de código arbitrario, el atacante puede usarlo para explotar otras vulnerabilidades y subvertir otros servicios de seguridad.
+
+  - Tipos de ataques de desbordamiento del búfer
+
+  1. desbordamientos del búfer basados en pila: esta es la forma más común de ataque de desbordamiento de búfer. El enfoque basado en pilas se produce cuando un atacante envía datos que contienen código malicioso a una aplicación, que almacena los datos en un búfer de pila. Esto sobrescribe los datos en la pila, incluido su puntero de retorno, que controla las transferencias al atacante.
+
+  2. desbordamientos del búfer basado en pilas: Un ataque basado en pilas es más difícil de llevar a cabo que el enfoque basado en pilas. Implica el ataque que inunda el espacio de memoria de un programa más allá de la memoria que utiliza para las operaciones actuales de tiempo de ejecución.
+
+  3. Ataque de cadena de formato: una vulnerabilidad de seguridad de cadena de formato se produce cuando una aplicación procesa datos de entrada como comando o no valida los datos de entrada de manera efectiva. Esto permite al atacante ejecutar código, leer datos en la pila o causar fallas de segmentación en la aplicación. Esto podría desencadenar nuevas acciones que amenazan la seguridad y estabilidad del sistema. 
+
+  - Cómo evitar desbordamientos del búfer
+
+  Los desarrolladores de aplicaciones pueden prevenir los desbordamientos de los búferes al crear medidas de seguridad en su código de desarrollo, usar lenguajes de programación que incluyan protección integrada y probar el código regularmente para detectar y corregir errores.
+
+  Uno de los métodos más comunes para prevenir los desbordamientos del búfer es evitar las funciones estándar de la biblioteca que no se han verificado con límites, que incluyen get, scanf y strcpy. Otro método común es evitar los rebasamientos de búfer mediante el uso de verificación de límites que se aplica en tiempo de ejecución. Esto verifica automáticamente que los datos escritos en un búfer estén dentro de los límites adecuados.
+
+  Los sistemas operativos modernos ahora implementanprotección de tiempo de  ejecución  que permite una seguridad adicional contra desbordamientos del búfer. Esto incluye protección común como:
+
+  1. Aleatorización del diseño del espacio de dirección (ASLR): los ataques de desbordamiento del búfer generalmente necesitan saber dónde se encuentra el código ejecutable. ASLR se mueve al azar alrededor de ubicaciones de regiones de datos para hacer aleatorios espacios de dirección, lo que hace que los ataques de desbordamiento sean casi imposibles.
+
+  2. Prevención de ejecución de datos: Este método evita que un ataque pueda ejecutar código en regiones no ejecutables al marcar áreas de memoria como ejecutables o no ejecutables.
+
+  3. Protección de sobrescritura de manejo de excepciones estructuradas (SEHOP): los atacantes pueden intentar sobrescribir el manejo de excepciones estructuradas (SEH), que es un sistema integrado que administra excepciones de hardware y software. Lo hacen a través de un ataque de desbordamiento basado en pilas para sobrescribir la bitácora de registro de excepciones, que se almacena en la pila del programa. SEHOP evita que el código malicioso de los atacantes pueda atacar el SEH y usar su técnica de explotación de sobrescritura.
+
+-------------------------------------------------------------
+
+  "Format String Attack"
+
+  Este exploit consiste en aprovecharse de funciones que imprimen texto con formato.
+
+  - Funciones de formato
+
+  En C existen varias funciones que dan formato a tipos de datos primitivos y lo escriben por una salida, por ejemplo, por salida estándar para imprimirlo en la terminal.
+
+  - Cadena de formato (o format string)
+
+  Parte de su vulnerabilidad se ve provocada por el hecho de que son funciones con argumentos variables. Por ejemplo, la función "printf(const char* format, ...)" requiere de un primer parámetro denominado "format string" o "cadena de formato", seguida por 0 o más argumentos. 
+  
+  El format string es la cadena a mostrar. Se compone, por un lado, de caracteres ordinarios (exceptuando -por ejemplo- el caracter reservado %) que se copian sin cambios a la salida y, por otro, de parámetros de formato que comienzan con el simbolo % seguido de un indicador de conversión (%d o %x por ejemplo). De esta manera el format string da la pauta de la cantidad de argumentos que serán representados en la salida.
+  
+  Cuando se detecta en el format string un símbolo % se busca el siguiente argumento de la función y se lo convierte a la representación indicada por el parámetro de formato (sea %x, %d, etc) y así sucesivamente.
+
+  Por ejemplo en printf ("El año %d", 1984) el format string "El año %d" tiene un único parámetro de formato %d. Inicialmente la función imprime el string “El año “, se detiene en %d y busca en la pila el siguiente argumento que lo reemplazará, en este caso “1984”. Lo procesa como decimal resultando en la sálida: “El año 1984”.
+
+  ---------------------------------
+  |                               |
+  |   printf ("El año %d.", 1984) |
+  |                               |
+  |   El año 1984.                |
+  |                               |
+  ---------------------------------
+
+  - ¿Cuáles son las consecuencias?
+  
+  Dependiendo de lo que logre el atacante, esta vulnerabilidad puede derivar en:
+
+  • Denegación de servicio (DoS): Hacer que la aplicación falle y se cierre (crashee).
+
+  • Fuga de información: Filtrar datos internos o de otros usuarios.
+
+  • Ejecución remota de código (RCE): Tomar el control total del sistema.
+
+-------------------------------------------------------------
+
+  "Integer Overflow y signedness bugs"
+
+  "Integer Overflow"
+
+  (desbordamiento de enteros) es un error de programación que ocurre cuando una operación aritmética intenta almacenar un número mayor que el límite máximo permitido por el espacio de memoria asignado. En lugar de dar un error, el valor "da la vuelta" y comienza desde el valor mínimo posible.
+
+   - ¿Cómo funciona?
+
+   Las variables tienen un tamaño fijo en memoria (por ejemplo, 8, 16, 32 o 64 bits) y un rango de números exacto que pueden representar.
+
+   • Si a la capacidad máxima se le suma "1", el sistema descarta el exceso de bits y la variable pasa a valer su valor mínimo (o cero).
+
+   • Es similar a un cuentakilómetros analógico de un auto que llega a 999,999 y, al avanzar un kilómetro más, se reinicia a 000,000
+
+   Ejemplo:
+
+  #include <stdio.h>
+  #include <string.h>
+  
+  int main(int argc, char *argv[]){
+      int i, j, k, suma;
+  
+      if (argc == 4) {
+          i = atoi(argv[1]);
+          j = atoi(argv[2]);
+          k = atoi(argv[3]);
+  
+          if (i<=0 || j<=0 || k<=0) {  
+              printf("Ningún parametro puede ser <= 0\n");
+          } else {
+              suma = i + j + k;
+              printf("%d + %d + %d = %d\n", i, j, k, suma);
+              if (suma == 0) {
+                  printf("Área privada\n");
+              }
+          }   
+      } else {
+          printf("Se necesitan tres parámetros\n");
+      }
+      return(0);
+  }
+
+  En principio, tal y como está planteado el código no debería ser posible entrar en el área privada debido a que, como nos aseguramos de que las variables i, j y k son positivas, no es posible que su suma tome un valor negativo ¿verdad?. Sin embargo, si nos fijamos, no se establece ningún control sobre la conversión de los parámetros de entrada a números enteros (int). Esto produce un potencial problema conocido como Integer Overflow.
+
+  En la arquitectura x86 una variable tipo int permite almacenar valores de 32 bits. Internamente se almacenan en un formato llamado complemento a 2. En esta forma de representación, si el bit más significativo (el de la izquierda) está a 1, el valor se considera negativo, así que sólo tenemos que desbordar el valor de la variable int y poner este bit a 1 para conseguir un valor negativo. Así pues, el mayor valor positivo de 32 bits que puede almacenar una variable entera en complemento a 2 es 0x7fffffff, que en binario es 01111111111111111111111111111111 y en decimal 2147483647. Como el bit más significativo es 0 el valor del entero es positivo.
+
+  Si ahora sumamos 1 a este valor, obtendremos 0x80000000 que en binario es 10000000000000000000000000000000. Como tiene el bit más significativo a 1, se interpreta como un valor negativo.
+
+  ./intoverflow 2147483647 1 2
+
+  2147483647 + 1 + 2 = -2147483646
+
+  "signedness bugs"
+
+  ocurre cuando un programa maneja incorrectamente la conversión o comparación de datos entre números con signo (que pueden ser positivos o negativos) y sin signo (solo positivos y el cero).
+
+  Esto suele provocar desbordamientos numéricos, bucles infinitos o graves fallos de seguridad.
+
+  - ¿Cómo funciona?
+
+  En la memoria de una computadora, los números se guardan como cadenas de ceros y unos. El procesador utiliza un bit específico (el bit más significativo) para determinar si un número es positivo o negativo.
+
+  Un signedness bug suele darse en dos escenarios:
+
+  1. Conversión implícita (Truncamiento): Se asigna un valor grande o negativo a una variable que no puede manejarlo (por ejemplo, pasar de un tipo con signo a uno sin signo), lo que hace que el valor cambie drásticamente o se convierta en un número inusualmente alto.
+
+  2. Comparaciones inseguras: Cuando comparas una variable con signo (ej. int que vale \(-1\)) con una sin signo (ej. unsigned int), el compilador suele convertir ambas a sin signo. Ese \(-1\) se convierte repentinamente en un número gigantesco (por ejemplo, 4.294.967.295), alterando toda la lógica del código.
+
+-------------------------------------------------------------

@@ -1,0 +1,239 @@
+ROADMAP: C PARA REVERSE ENGINEERING
+Continuación del Roadmap de Binarios v1.0
+Prerequisito: haber completado las Fases 01-07 del roadmap anterior
+=====================================================================
+
+
+FASE 01 — C DESDE CERO: SINTAXIS Y ESTRUCTURA  [FUNDAMENTOS]
+-------------------------------------------------------------
+
+► Tipos de datos y tamaños en memoria
+  char (1B), short (2B), int (4B), long (8B). Lo que ya sabes de bits
+  se vuelve concreto aquí: un int son exactamente 32 bits en
+  representación complemento a 2. Aprender sizeof().
+
+► Variables, operadores y control de flujo
+  Aritmética, comparaciones, if/else, bucles for/while. Los operadores
+  &, |, ^, ~, <<, >> que ya conoces existen nativamente en C.
+
+► Funciones y el stack
+  Cada llamada a función crea un stack frame. Entender parámetros,
+  valor de retorno y variables locales. Esto es exactamente lo que
+  verás en el desensamblado más adelante.
+
+► Arrays y strings en C
+  Un string en C es un array de char terminado en \0 (byte nulo =
+  0x00 en hex). Entender esto es clave para reconocer strings en
+  memoria al hacer reversing.
+
+► Entorno de desarrollo y compilación básica con GCC
+  Antes de escribir cualquier programa en C, entender el flujo obligatorio: 
+  escribir el .c → compilar con gcc → ejecutar el binario resultante.
+  A diferencia de lenguajes interpretados, C requiere este paso intermedio
+  siempre. Investigar también las flags más usadas de gcc (-o, -g, -S, 
+  -Wall) y el uso básico de make.
+
+// CTF relevance: reconocer tipos y estructuras de control al leer
+// pseudocódigo en Ghidra/IDA
+
+
+FASE 02 — PUNTEROS Y GESTIÓN DE MEMORIA  [MEMORIA]
+---------------------------------------------------
+
+► ¿Qué es un puntero?
+  Una variable que guarda una dirección de memoria en lugar de un
+  valor. "int *p = &x" — p contiene la dirección donde vive x.
+  Cuando hagas reversing, los punteros aparecen constantemente como
+  valores hex (ej. 0x7ffd3a2c).
+
+► Stack vs Heap
+  El stack es automático (variables locales, parámetros). El heap es
+  manual (malloc/free). En CTFs de pwn, la distinción es crítica:
+  los exploits atacan uno u otro con técnicas distintas.
+
+► Aritmética de punteros
+  p + 1 no suma 1 byte sino sizeof(*p) bytes. Entender esto explica
+  cómo se recorren arrays en memoria y cómo los desensambladores
+  calculan offsets.
+
+► Estructuras (struct) y su layout en memoria
+  Una struct es un bloque contiguo de bytes. Conocer el padding y
+  alignment te permite reconstruir estructuras de datos cuando
+  analizas binarios sin código fuente.
+
+// CTF relevance: leer el estado del stack y heap en GDB durante
+// análisis dinámico
+
+
+FASE 03 — COMPILACIÓN Y EL PROCESO DE BUILD  [TOOLCHAIN]
+---------------------------------------------------------
+
+► De código fuente a binario: las 4 etapas
+  Preprocesador → Compilador → Ensamblador → Linker. Saber que
+  "gcc -o programa main.c" hace todo esto automáticamente, pero
+  poder detenerlo en cada fase (-E, -S, -c).
+
+► Niveles de optimización del compilador
+  -O0 (sin optimización, ideal para aprender) vs -O2/-O3 (el
+  compilador reorganiza, inlinea y elimina código). Los CTFs suelen
+  usar binarios con optimización — el Assembly puede verse muy
+  diferente al C original.
+
+► Símbolos, stripped y unstripped binaries
+  Un binario "stripped" no tiene nombres de funciones ni variables.
+  La mayoría de CTFs te dan binarios stripped — necesitas inferir
+  qué hace cada función por su comportamiento.
+
+► ELF: anatomía de un binario Linux
+  Header, secciones (.text, .data, .bss, .plt, .got). Con readelf y
+  objdump puedes inspeccionar cualquier binario antes de abrirlo en
+  un decompilador.
+
+// CTF relevance: usar readelf/objdump como primer paso al recibir
+// un binario CTF (file, checksec, strings)
+
+
+FASE 04 — C → ASSEMBLY x86-64  [REVERSING CORE]
+------------------------------------------------
+
+► Registros fundamentales
+  rax, rbx, rcx, rdx (propósito general), rsp (stack pointer),
+  rbp (base pointer), rip (instruction pointer). Cada función que
+  escribas en C se traduce a manipulaciones de estos registros.
+
+► Instrucciones básicas: MOV, PUSH, POP, CALL, RET
+  El prólogo de toda función (push rbp / mov rbp, rsp) y su epílogo
+  (pop rbp / ret). Reconocer este patrón te permite identificar
+  límites de funciones en cualquier binario.
+
+► Condicionales y bucles en Assembly
+  cmp + jz/jnz/jl/jg... Un if en C se convierte en un cmp seguido
+  de un salto condicional. Un for en un bloque con salto hacia atrás.
+
+► Convención de llamada (calling convention)
+  En Linux x86-64, los primeros 6 argumentos van en rdi, rsi, rdx,
+  rcx, r8, r9. El valor de retorno en rax. Saber esto te permite
+  "leer" una llamada a función en Assembly como si fuera C.
+
+// CTF relevance: leer el output de Ghidra/IDA y correlacionarlo
+// con código C que tú mismo hayas compilado
+
+
+FASE 05 — HERRAMIENTAS DE REVERSE ENGINEERING  [TOOLING]
+---------------------------------------------------------
+
+► GDB — depurador dinámico
+  Ejecutar un binario paso a paso, inspeccionar registros y memoria
+  en tiempo real. Comandos esenciales: break, run, next, step,
+  x (examine memory), info registers. Usar GDB con pwndbg o peda
+  para CTFs.
+
+► Ghidra — decompilador estático (gratis)
+  Desarrollado por la NSA. Convierte Assembly de vuelta a pseudocódigo
+  C. Ideal para empezar. Aprender a renombrar funciones y variables
+  para reconstruir el código original.
+
+► ltrace / strace — trazado de llamadas
+  strace muestra las llamadas al sistema operativo (abrir archivos,
+  leer, escribir). ltrace muestra llamadas a funciones de librería
+  (strcmp, printf...). Muy útiles en CTFs para entender qué hace un
+  binario sin desensamblarlo.
+
+► strings, file, checksec
+  Primeros pasos al recibir un binario CTF: file identifica el tipo,
+  strings extrae texto legible (a veces la flag está ahí!), checksec
+  muestra qué protecciones tiene (NX, ASLR, canary, PIE).
+
+// CTF relevance: flujo estándar → checksec → strings → Ghidra
+// (estático) → GDB (dinámico)
+
+
+FASE 06 — VULNERABILIDADES CLÁSICAS EN C  [EXPLOTACIÓN]
+--------------------------------------------------------
+
+► Buffer Overflow (stack)
+  La vulnerabilidad más icónica. gets(), strcpy() y scanf() sin
+  límite pueden escribir más allá del buffer y sobreescribir la
+  dirección de retorno en el stack. La base de la mayoría de retos
+  "pwn" en CTFs.
+
+► Format String Attack
+  printf(input) en lugar de printf("%s", input) permite al atacante
+  leer y escribir memoria arbitraria usando %x, %n. Aparece
+  sorprendentemente seguido en CTFs de dificultad media.
+
+► Integer Overflow y signedness bugs
+  Lo que ya sabes de overflow en binarios se aplica directo aquí.
+  Comparar un int con un unsigned int puede producir comportamiento
+  inesperado explotable. Muy común en retos con validaciones.
+
+► Protecciones del sistema: NX, ASLR, Stack Canary, PIE
+  Defensas modernas que complican la explotación. NX impide ejecutar
+  código en el stack. ASLR aleatoriza direcciones. El canary detecta
+  overflows. PIE aleatoriza la base del binario. Entender cada una
+  para saber qué técnica de bypass aplicar.
+
+// CTF relevance: categoría "pwn" y "reversing" — estas
+// vulnerabilidades son el 80% del contenido
+
+
+FASE 07 — CTF EN LA PRÁCTICA  [OBJETIVO FINAL]
+-----------------------------------------------
+
+► pwntools — scripting de exploits en Python
+  La librería estándar para automatizar exploits en CTFs. Conectar
+  a servicios remotos, enviar payloads, leer respuestas. Con lo que
+  sabes de Python y bitwise ops, aprenderás esto muy rápido.
+
+► Crackmes — retos de reversing puros
+  Binarios cuyo objetivo es encontrar una contraseña o serial válido.
+  No hay explotación de memoria, solo reversing puro. Plataformas:
+  crackmes.one, reversing.kr. El mejor punto de entrada para CTF
+  reversing.
+
+► Metodología de análisis de un binario CTF
+  1. file + checksec
+  2. strings
+  3. Análisis estático en Ghidra
+  4. Identificar función principal y lógica de validación
+  5. Análisis dinámico en GDB
+  6. Construir exploit o solución
+
+► Plataformas para practicar progresivamente
+  Empezar con picoCTF (diseñado para estudiantes, excelente).
+  Luego pwn.college (módulos estructurados de binary exploitation).
+  Después HackTheBox y CTFtime.org para competiciones reales.
+
+// CTF relevance: picoCTF → pwn.college → HackTheBox → CTFtime
+
+
+=====================================================================
+STACK DE HERRAMIENTAS
+=====================================================================
+
+  gcc / clang    - Compilar C y ver Assembly generado con -S
+  GDB + pwndbg   - Análisis dinámico con visualización de stack/heap
+  Ghidra         - Decompilador estático gratuito, estándar en CTFs
+  pwntools       - Librería Python para construir y enviar payloads
+  objdump/readelf- Inspeccionar secciones ELF y Assembly
+  strace/ltrace  - Ver llamadas de sistema y de librería en tiempo real
+
+
+=====================================================================
+PROGRESIÓN DE PLATAFORMAS CTF
+=====================================================================
+
+  1. picoCTF      - Diseñado para principiantes. Retos de reversing
+                    con binarios simples. Empieza aquí.
+
+  2. crackmes.one - Solo reversing puro. Binarios para encontrar
+                    contraseñas. Progresión de dificultad clara.
+
+  3. pwn.college  - Módulos estructurados de binary exploitation.
+                    El mejor recurso gratuito para aprender pwn.
+
+  4. HackTheBox   - Máquinas completas y retos. Reversing y pwn
+                    de dificultad media-alta.
+
+  5. CTFtime.org  - Competiciones reales con equipos. Aquí mides
+                    tu nivel contra el mundo.
