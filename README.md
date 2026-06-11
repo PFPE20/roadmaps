@@ -7,7 +7,7 @@ This is the method I use for learning and remember **binaries** and **networks**
 
 ### Clone the repository
 
-`git clone URL`
+`git clone https://github.com/PFPE20/roadmaps.git`
 
 ### Create a syslink
 
