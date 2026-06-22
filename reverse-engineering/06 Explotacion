@@ -111,6 +111,10 @@ FASE 06 — VULNERABILIDADES CLÁSICAS EN C  [EXPLOTACIÓN]
 
   • Ejecución remota de código (RCE): Tomar el control total del sistema.
 
+  - Especificador de formato "%n:
+
+  Escribe en memoria (específicamente, escribe el número de bytes impresos hasta ese punto en la dirección apuntada por el argumento correspondiente en la pila). Permite escribir desde la salida hacia la memoria
+
 -------------------------------------------------------------
 
   "Integer Overflow y signedness bugs"
