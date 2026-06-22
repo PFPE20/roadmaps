@@ -2,30 +2,7 @@
 FASE 05 — HERRAMIENTAS DE REVERSE ENGINEERING  [TOOLING]
 ---------------------------------------------------------
 
-► GDB — depurador dinámico
-  Ejecutar un binario paso a paso, inspeccionar registros y memoria
-  en tiempo real. Comandos esenciales: run, find, break, next, step,
-  x (examine memory), info. Usar GDB con pwndbg o peda
-  para CTFs.
-
-► Ghidra — decompilador estático (gratis)
-  Desarrollado por la NSA. Convierte Assembly de vuelta a pseudocódigo
-  C. Ideal para empezar. Aprender a renombrar funciones y variables
-  para reconstruir el código original.
-
-► ltrace / strace — trazado de llamadas
-  strace muestra las llamadas al sistema operativo (abrir archivos,
-  leer, escribir). ltrace muestra llamadas a funciones de librería
-  (strcmp, printf...). Muy útiles en CTFs para entender qué hace un
-  binario sin desensamblarlo.
-
-► strings, file, checksec
-  Primeros pasos al recibir un binario CTF: file identifica el tipo,
-  strings extrae texto legible (a veces la flag está ahí!), checksec
-  muestra qué protecciones tiene (NX, ASLR, canary, PIE).
-
-// CTF relevance: flujo estándar → checksec → strings → Ghidra
-// (estático) → GDB (dinámico)
+► GDB, Ghidra, ltrace / strace, strings, file, checksec, checksec, strings, ldd, objdump, readelf
 
 -------------------------------------------------------------
 
@@ -165,3 +142,63 @@ https://users.dcc.uchile.cl/~lmateu/CC41C/gdb.txt
   También se puede establecer una variable:
 
     NOASRL=(setarch $(uname -m) -R)
+
+-------------------------------------------------------------
+
+  Preguntas para hacerse antes de tocar nada:
+
+    1. ¿Qué es este binario? — tipo, arquitectura, permisos
+  
+    2. ¿Qué hace al ejecutarse? — comportamiento observable
+  
+    3. ¿Qué restricciones tengo para analizarlo? — ¿puedo leerlo? ¿debuggearlo?
+  
+    4. ¿Qué superficie de ataque hay disponible dado lo anterior?
+
+-------------------------------------------------------------
+
+  GOT - PLT
+
+PLT y GOT son dos piezas centrales del enlazado dinámico en Linux/ELF
+
+    -- El problema que resuelven --
+
+Cuando compilas un binario dinámicamente enlazado (el caso normal, frente a uno estático), funciones como printf, strcpy, system, etc. no están dentro de tu ejecutable. Viven en bibliotecas compartidas como libc.so, que se cargan en memoria en tiempo de ejecución. El problema es que la dirección exacta donde termina cargada esa biblioteca puede variar (más aún con ASLR activado), así que el binario no puede tener "hardcodeada" la dirección de printf en tiempo de compilación. Necesita un mecanismo de indirección.
+
+
+    -- GOT (Global Offset Table) --
+
+Es literalmente una tabla de punteros, ubicada en una sección de datos del ELF (.got / .got.plt). Cada entrada de la tabla apunta a la dirección real de una función (o variable) externa, una vez que esa dirección se conoce. Al principio de la ejecución, muchas de estas entradas no apuntan todavía a la función real, sino de vuelta al propio mecanismo de resolución (esto es la clave del "lazy binding").
+
+
+    -- PLT (Procedure Linkage Table) --
+
+Es código ejecutable, una sección de stubs (pequeños fragmentos de instrucciones) en .plt. Cuando tu programa llama a printf@plt, en realidad no está saltando directamente a libc, sino a uno de estos stubs. Ese stub hace un salto indirecto (jmp *GOT_entry) usando la dirección que está almacenada en la entrada correspondiente de la GOT.
+
+
+    -- Cómo se relacionan: el flujo de lazy binding --
+
+La primera vez que llamas a una función externa, ocurre algo así:
+
+  1. Tu código llama a func@plt.
+
+  2. El stub del PLT hace jmp a la dirección guardada en la entrada de la GOT para esa función.
+
+  3. En la primera llamada, esa entrada de GOT todavía no apunta a la función real, apunta de vuelta a una instrucción dentro del propio PLT (típicamente un push del índice de la función seguido de un salto al PLT[0]).
+
+  4. PLT[0] es un stub especial que salta al resolver dinámico (_dl_runtime_resolve en glibc), pasándole información sobre qué símbolo hay que resolver.
+
+  5. El resolver dinámico busca la dirección real de la función en libc, la escribe en la entrada correspondiente de la GOT, y salta a la función real.
+
+  6. En todas las llamadas siguientes, el stub del PLT salta directo a la GOT, y la GOT ya contiene la dirección real, así que el salto va directo a la función sin pasar de nuevo por el resolver.
+
+Esto se llama "lazy binding" porque el costo de resolver el símbolo solo se paga la primera vez que se usa, no al cargar el programa. Esto es controlable con la variable de entorno LD_BIND_NOW o la flag de compilación -z now, que fuerza resolver todo al inicio (full RELRO), justo lo contrario de lazy.
+
+
+    -- Importancia en "exploiting" --
+
+La GOT es un objetivo de ataque muy típico porque es memoria escribible que contiene punteros a código que se van a ejecutar. Si consigues sobrescribir una entrada de la GOT (por ejemplo con un format string %n, o un buffer overflow con primitiva de escritura arbitraria), puedes redirigir esa entrada hacia donde quieras, por ejemplo a system(), a un shellcode, o a otra función. La próxima vez que el programa llame a esa función "secuestrada", en realidad salta a donde tú decidiste. Esto es justamente lo que estás explorando con los "%n": en vez de sobrescribir una variable random, el objetivo de alto valor suele ser una entrada de la GOT.
+
+También por eso existe RELRO (Relocation Read-Only): Partial RELRO deja la GOT escribible para las funciones lazy-bound; Full RELRO resuelve todo al inicio y luego marca toda la GOT como solo lectura, cerrando este vector de ataque. Es algo que vale la pena revisar con checksec 
+
+
