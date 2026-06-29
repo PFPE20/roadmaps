@@ -1,0 +1,45 @@
+
+===================================================
+
+	FASE 8 – Cloud
+
+===================================================
+
+ - "Diseñando la Nube" -
+
+• On-Demand energía de la computación
+• Elasticidad
+• Aplicaciones escalables
+• Multitenencia
+
+  - "Redes Virtuales" -
+
+  - "NFV (Network Function Virtualization)" -
+
+  - "VPC (Virtual Private Cloud)" -
+
+  - "Virtual Private Cloud Gateway" - 
+
+  - "VPC NAT Gateway" -
+
+  - "VPC Endpoint" -
+
+  - "Network Security List" -
+
+  - "Modelos de la nube" -
+
+• Público
+• Privado
+• Híbrido
+
+  - "SaaS - Software As A Service" -
+
+  - "IaaS - Infrastructure As A Service" -
+
+• También conocido como "HaaS" - Hardware As A Service
+
+  - "PaaS - Platform As A Service" -
+
+• Sin servidores, sin software, sin equipo de mantenimiento, sin HVAC (refrigeración).
+• No tienes control directo sobre la data, gente o infraestructura, equipos especializados lo hacen para ti.
+• Desarrolla las aplicaciones basado en lo que hay disponible en la plataforma.

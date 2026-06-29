@@ -152,6 +152,22 @@ El enrutamiento estático es una técnica de enrutamiento en la que un administr
    
 • BGP (Border Gateway Protocol): es el protocolo de enrutamiento principal que hace que Internet funcione, permitiendo el intercambio de información de enrutamiento entre sistemas autónomos (AS), que son redes independientes administradas por entidades como proveedores de servicios de internet (ISP), empresas o gobiernos. BGP actúa como un sistema de navegación global, analizando todas las rutas disponibles para determinar la mejor ruta para que los datos viajen desde su origen hasta su destino, tomando en cuenta atributos como la longitud de la ruta, políticas de red configuradas por administradores y condiciones de red.
 
+  - "GRE - Generic Routing Encapsulation" -
+
+La encapsulación de enrutamiento genérico, o GRE, es un protocolo para encapsular paquetes de datos que utilizan un protocolo de enrutamiento dentro de los paquetes de otro protocolo. GRE es una forma de establecer una conexión directa punto a punto a través de una red, con el fin de simplificar las conexiones entre redes distintas. Funciona con una variedad de protocolos de la capa de red.
+
+GRE permite el uso de protocolos que no suelen ser compatibles con una red, porque los paquetes están envueltos dentro de otros paquetes que sí utilizan protocolos compatibles. Para entender cómo funciona esto, pensemos en la diferencia entre un coche y un ferry. Un coche se desplaza por carreteras terrestres, mientras que un ferry lo hace por el agua. Normalmente, un coche no puede viajar por el agua, pero sí puede cargarse en un transbordador para hacerlo.
+
+ - ¿Qué significa la tunelización GRE?
+
+La encapsulación de paquetes dentro de otros paquetes se conoce como "tunelización". Los túneles de GRE suelen configurarse entre dos enrutadores, y cada uno de ellos actúa como un extremo del túnel. Los enrutadores se configuran para enviar y recibir paquetes de GRE directamente entre ellos. Los enrutadores que se encuentren entre esos dos enrutadores no abrirán los paquetes encapsulados; solo harán referencia a los encabezados que rodean los paquetes encapsulados para reenviarlos.
+
+ - ¿Qué va en un encabezado de GRE?
+
+ Todos los datos enviados a través de una red se dividen en trozos más pequeños llamados paquetes, y todos los paquetes tienen dos partes: la carga útil y el encabezado. La carga útil es el contenido real del paquete, los datos que se envían. El encabezado contiene información sobre la procedencia del paquete y el grupo de paquetes al que pertenece. Cada protocolo de red adjunta un encabezado a cada paquete.
+
+GRE añade dos encabezados a cada paquete: el encabezado GRE, de 4 bytes, y un encabezado IP, de 20 bytes. El encabezado GRE indica el tipo de protocolo utilizado por el paquete encapsulado. El encabezado IP encapsula la cabecera y la carga útil del paquete original. Esto significa que un paquete GRE suele tener dos encabezados IP: uno para el paquete original y otro añadido por el protocolo GRE. Solo los enrutadores de cada extremo del túnel GRE harán referencia al encabezado IP original, que no es GRE.
+
 ---------------------------------------------------
 
 1. ¿Por qué una red necesita un router?

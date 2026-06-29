@@ -133,6 +133,22 @@ Además de su función de filtrado, las ACL proporcionan un nivel básico de seg
 
 En resumen, las ACL son una herramienta fundamental en la seguridad de redes y sistemas, ya que permiten gestionar el acceso a recursos de forma controlada y segura, actuando como una especie de "cortafuegos" sin estado.
 
+  - "QoS" -
+
+La calidad de servicio (QoS) es el uso de mecanismos o tecnologías que funcionan en una red para controlar el tráfico y garantizar el rendimiento de aplicaciones críticas con capacidad de red limitada. Permite a las organizaciones ajustar su tráfico de red general al priorizar aplicaciones específicas de alto rendimiento.
+
+La QoS generalmente se aplica a redes que transportan tráfico para sistemas con uso intensivo de recursos. Los servicios comunes para los que se requiere incluyen televisión por protocolo de Internet (IPTV), juegos en línea, medios de transmisión, videoconferencias, video a pedido (VOD) y voz sobre IP (VoIP). 
+
+Al utilizar QoS en redes, las organizaciones tienen la capacidad de optimizar el rendimiento de múltiples aplicaciones en su red y obtener visibilidad de la velocidad de bits, el retraso, la fluctuación y la velocidad de paquetes de su red. Esto garantiza que puedan diseñar el tráfico en su red y cambiar la forma en que los paquetes se enrutan a Internet u otras redes para evitar demoras en la transmisión. Esto también garantiza que la organización logre la calidad de servicio esperada para las aplicaciones y brinde las experiencias de usuario esperadas.
+
+Según el significado de QoS, el objetivo clave es permitir que las redes y las organizaciones prioricen el tráfico, lo que incluye ofrecer ancho de banda dedicado, fluctuación controlada y menor latencia. Las tecnologías utilizadas para garantizar esto son vitales para mejorar el rendimiento de las aplicaciones empresariales, las redes de área ancha (WAN) y las redes de proveedores de servicios.
+
+  - ¿Cómo funciona la calidad de servicio QoS?
+
+La tecnología de redes de QoS funciona al marcar paquetes para identificar tipos de servicios y luego configurar enrutadores para crear colas virtuales separadas para cada aplicación, según su prioridad. Como resultado, el ancho de banda se reserva para aplicaciones críticas o sitios web a los que se les ha asignado acceso prioritario. 
+
+Las tecnologías de QoS proporcionan la capacidad y la asignación de manejo a flujos específicos en el tráfico de redes. Esto permite al administrador de red asignar el orden en el que se manejan los paquetes y proporcionar la cantidad adecuada de ancho de banda a cada aplicación o flujo de tráfico.
+
 	- "Proxy" -
 
  - Cómo funciona un proxy
@@ -295,6 +311,61 @@ Esta zona se implementa mediante cortafuegos que filtran el tráfico entre la re
 Aunque el término proviene de la franja neutral entre países en conflicto, en informática representa un área de seguridad donde se colocan servicios de acceso público, pero con un alto nivel de control y monitoreo.
  En redes domésticas, la opción DMZ en routers se refiere a asignar todos los puertos abiertos a una sola IP, aunque esta práctica es considerada insegura y no se recomienda.
  Una implementación más segura utiliza dos cortafuegos, creando una DMZ con un firewall perimetral y otro interno, lo que añade una barrera adicional frente a posibles intrusiones.
+
+  - "IPSec - Internet Protocol Security" -
+
+IPSec es un conjunto de reglas o protocolos de comunicación para configurar conexiones seguras a través de una red. El protocolo de Internet (IP) es el estándar común que determina cómo viajan los datos por Internet. IPSec agrega cifrado y autenticación para hacer que el protocolo sea más seguro. Por ejemplo, IPSec codifica los datos en el origen y los descodifica en su destino. También autentica el origen de los datos. Opera en la capa 3 del modelo OSI.
+
+  - ¿Cuáles son los usos de IPSec?
+IPsec se puede usar para hacer lo siguiente:
+
+• Proporcionar seguridad al enrutador cuando se envíen datos a través de la red de Internet pública.
+• Cifrar los datos de la aplicación.
+• Autenticar rápidamente los datos si proceden de un remitente conocido.
+• Proteger los datos de la red estableciendo circuitos cifrados, llamados túneles IPsec, que cifran todos los datos enviados entre dos puntos de conexión.
+
+ - ¿Qué es el cifrado IPSec?
+
+El cifrado IPSec es una función de software que codifica los datos para proteger su contenido frente a partes no autorizadas. Los datos se cifran mediante una clave de cifrado, y se necesita una clave de descifrado para descifrar la información. IPSec admite varios tipos de cifrado, como AES, Blowfish, Triple DES, ChaCha y DES-CBC. 
+
+IPSec utiliza el cifrado asimétrico y simétrico para proporcionar velocidad y seguridad durante la transferencia de datos. En el cifrado asimétrico, la clave de cifrado se hace pública mientras que la clave de descifrado se mantiene en privado. El cifrado simétrico usa la misma clave pública para cifrar y descifrar los datos. IPSec establece una conexión segura con cifrado asimétrico y cambia al cifrado simétrico para acelerar la transferencia de datos.
+
+ - ¿Cómo funciona IPSec?
+
+1. La computadora del remitente determina si la transmisión de datos requiere protección IPSec mediante la verificación de su política de seguridad. Si lo hace, la computadora inicia la transmisión segura IPSec con la computadora receptora.
+
+2. Ambas computadoras negocian los requisitos para establecer una conexión segura. Esto incluye acordar mutuamente el cifrado, la autenticación y otros parámetros de la asociación de seguridad (SA). 
+
+3. La computadora envía y recibe datos encriptados, y valida que provienen de fuentes confiables. Realiza comprobaciones para garantizar que el contenido subyacente sea fiable. 
+
+4. Una vez que la transmisión se completa o la sesión concluye, la computadora finaliza la conexión IPSec. 
+
+  - ¿Qué son los protocolos IPSec?
+
+Los protocolos IPSec envían paquetes de datos de forma segura:
+
+• Un encabezado es una sección precedente que contiene información instructiva para dirigir el paquete de datos al destino correcto. 
+• “Carga útil” es un término que describe la información real que contiene un paquete de datos.
+• El tráiler son datos adicionales que se agregan a la cola de la carga útil para indicar el final del paquete de datos.
+
+  Encabezado de autenticación (AH)
+
+El protocolo de encabezado de autenticación (AH) agrega un encabezado que contiene datos de autenticación del remitente y protege el contenido del paquete de la modificación por parte de personas no autorizadas. Alerta al receptor de posibles manipulaciones del paquete de datos original. Al recibir el paquete de datos, la computadora compara el cálculo del hash criptográfico de la carga útil con el encabezado para asegurarse de que ambos valores coinciden. Un hash criptográfico es una función matemática que resume los datos en un valor único. 
+
+  Carga útil de seguridad encapsulada (ESP)
+
+Según el modo IPSec seleccionado, el protocolo de carga útil de seguridad encapsulada (ESP) realiza el cifrado de todo el paquete IP o solo de la carga útil. El protocolo ESP agrega un encabezado y un tráiler al paquete de datos al cifrarse. 
+
+  Intercambio de claves de Internet (IKE)
+
+El intercambio de claves de Internet (IKE) es un protocolo que establece una conexión segura entre dos dispositivos en Internet. Ambos dispositivos establecen una asociación de seguridad (SA), que implica la negociación de claves y algoritmos de cifrado para transmitir y recibir paquetes de datos posteriores.
+
+  ¿Qué son los modos IPSec?
+IPSec funciona en dos modos diferentes con distintos grados de protección. 
+
+• Túnel: El modo de túnel IPSec es adecuado para transferir datos en redes públicas, ya que mejora la protección de los datos frente a partes no autorizadas. La computadora encripta todos los datos, incluida la carga útil y el encabezado, y les añade un nuevo encabezado. 
+
+• Transporte: El modo de transporte IPSec cifra solo la carga útil del paquete de datos y deja el encabezado IP en su forma original. El encabezado del paquete sin cifrar permite a los enrutadores identificar la dirección de destino de cada paquete de datos. Por lo tanto, el transporte IPSec se utiliza en una red cercana y de confianza, como por ejemplo para asegurar una conexión directa entre dos computadoras. 
 
 ---------------------------------------------------
 

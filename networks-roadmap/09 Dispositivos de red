@@ -1,0 +1,130 @@
+
+  ===================================================
+
+    09 - DISPOSITIVOS DE RED
+
+  ===================================================
+
+  - " Router " -
+
+  ¿Cómo funciona un router?
+
+Los routers guían y dirigen los datos de red mediante paquetes que contienen varios tipos de datos, como archivos, comunicaciones y transmisiones simples como interacciones web.
+
+Los paquetes de datos tienen varias capas o secciones; una de ellas transporta la información de identificación, como emisor, tipo de datos, tamaño y, aún más importante, la dirección IP (protocolo de Internet) de destino. El router lee esta capa, prioriza los datos y elige la mejor ruta para cada transmisión.
+
+Un router opera en la capa de red (capa 3) del modelo OSI.
+
+Aunque la funcionalidad principal de un router es el enrutamiento basado en direcciones IP en esta capa, los dispositivos físicos requieren implementar las capas inferiores para funcionar:
+
+• Capa 3 (Red): Se encarga de la toma de decisiones de reenvío utilizando direcciones lógicas (IP) y mantiene las tablas de enrutamiento. 
+• Capas 1 y 2 (Física y Enlace de Datos): Son necesarias para la transmisión física de las señales y el manejo de las tramas (direcciones MAC) en los segmentos de red locales.
+
+
+  - " Switch " -
+
+Conmutador (switch) es el dispositivo digital lógico de interconexión de equipos que opera en la capa de enlace de datos (capa 2) del modelo OSI. Su función es interconectar dos o más host de manera similar a los puentes de red, pasando datos de un segmento a otro de acuerdo con la dirección MAC de destino de las tramas en la red y eliminando la conexión una vez finalizada esta.
+
+Los conmutadores se utilizan cuando se desea conectar múltiples tramos de una red, fusionándolos en una sola red. Al igual que los puentes, dado que funcionan como un filtro en la red y solo retransmiten la información hacia los tramos en los que hay el destinatario de la trama de red, mejoran el rendimiento y la seguridad de las redes de área local (LAN).
+
+Un switch de red opera principalmente en la Capa 2 (Enlace de Datos) del modelo OSI, donde toma decisiones de reenvío basadas en las direcciones MAC para conectar dispositivos dentro de una misma red local (LAN). 
+
+Además, existen switches de Capa 3 que operan en la Capa de Red, integrando funciones de enrutamiento para dirigir paquetes entre diferentes subredes o VLANs utilizando direcciones IP. Por lo tanto, mientras la función estándar es la conmutación en Capa 2, los dispositivos avanzados combinan ambas capas para ofrecer conectividad y enrutamiento interno de alta velocidad.
+
+
+  - " Firewall " -
+
+Un cortafuegos (firewall) es un dispositivo de seguridad de red diseñado para monitorear, filtrar y controlar el tráfico de red entrante y saliente basado en reglas de seguridad predeterminadas. El propósito principal de un firewall es establecer una barrera entre una red interna de confianza y redes externas no confiables.
+
+Los cortafuegos están disponibles tanto en forma de hardware como de software, y funcionan inspeccionando los paquetes de datos y determinando si se permiten o bloquean en función de un conjunto de reglas. Las organizaciones pueden configurar estas reglas para permitir o rechazar el tráfico en función de diversos criterios, como las direcciones IP de origen y destino, los números de puerto y el tipo de protocolo.
+
+Los firewalls operan en diferentes capas del modelo OSI según su tipo específico, aunque los más comunes funcionan en las capas 3 y 4 (red y transporte) o en la capa 7 (aplicación). 
+
+• Firewalls tradicionales (filtrado de paquetes e inspección de estado): Operan principalmente en la capa 3 (direcciones IP, enrutamiento) y la capa 4 (puertos TCP/UDP, protocolos de transporte).  Permiten o bloquean el tráfico basándose en estas direcciones y números de puerto.
+
+• Firewalls de capa 7 (Proxy o de aplicación): Operan en la capa 7 del modelo OSI. Analizan el contenido del tráfico a nivel de aplicación, permitiendo filtrar por URLs, identificar aplicaciones específicas y detectar amenazas que se ocultan en el tráfico legítimo. 
+
+• Firewalls de próxima generación (NGFW): Combinan funciones de las capas inferiores con capacidades avanzadas, operando hasta la capa 7 para realizar inspección profunda de paquetes, control de aplicaciones y prevención de intrusiones.
+
+• Firewalls transparentes: Operan en la capa 2 (enlace de datos), filtrando tramas basándose en direcciones MAC sin necesidad de direccionamiento IP.
+
+
+  - " IDS y IPS " -
+
+  "IDS"
+
+Un sistema de detección de intrusos (IDS - Intrusion Detection System) identifica las amenazas potenciales y los puntos débiles de los sistemas conectados en red. Un IDS examina el tráfico de la red, alertando a los administradores de actividades sospechosas sin intervenir en la transmisión de datos.
+
+Los IDS se colocan fuera del flujo de tráfico principal. Normalmente funcionan duplicando el tráfico para evaluar las amenazas, preservando el rendimiento de la red mediante el análisis de un flujo duplicado de datos. Esta configuración garantiza que el IDS siga siendo un observador no perturbador.
+
+Los sistemas IDS se presentan en varias formas, como el sistema de detección de intrusiones en red (NIDS), el sistema de detección de intrusiones basado en host (HIDS), el basado en protocolo (PIDS), el basado en protocolo de aplicación (APIDS) y el híbrido. También existe un subgrupo de métodos de detección IDS. Las dos variantes más comunes son los IDS basados en firmas y los IDS basados en anomalías.
+
+Un IDS diferencia entre las operaciones habituales de la red y las actividades anómalas, potencialmente dañinas. Lo consigue evaluando el tráfico frente a patrones conocidos de uso indebido y comportamientos inusuales, centrándose en las incoherencias de los protocolos de red y los comportamientos de las aplicaciones.
+
+  "IPS"
+
+Los sistemas de prevención de intrusiones (IPS - Intrusion Prevention System) son soluciones de seguridad dinámicas que interceptan y analizan el tráfico malicioso. Actúan de forma preventiva para mitigar las amenazas antes de que puedan infiltrarse en las defensas de la red. Esto reduce la carga de trabajo de los equipos de seguridad.
+
+Las herramientas IPS son especialmente eficaces para identificar y detener los intentos de explotar vulnerabilidades. Actúan con rapidez para bloquear estas amenazas, salvando a menudo la distancia entre la aparición de una vulnerabilidad y la implementación de un parche. Con la evolución de la seguridad de la red, la funcionalidad IPS se integra en sistemas más amplios como los dispositivos de administración unificada de amenazas y los firewalls de nueva generación. Las herramientas IPS modernas también se extienden a los servicios conectados a la nube.
+
+La colocación del IPS está en la ruta directa del tráfico de la red. Esto permite al IPS escudriñar y actuar sobre las amenazas en tiempo real, lo que contrasta con el enfoque de vigilancia pasiva de su precursor, el IDS. Normalmente situado justo después del firewall, el IPS examina los datos entrantes y toma medidas automatizadas cuando es necesario. Los sistemas IPS pueden señalar alertas, descartar datos dañinos, bloquear direcciones de origen y restablecer conexiones para evitar nuevos ataques.
+
+Para minimizar los falsos positivos, los sistemas IPS diferencian entre las amenazas genuinas y los datos benignos. Los sistemas de prevención de intrusiones lo consiguen mediante diversas técnicas, como la detección basada en firmas, que se basa en patrones conocidos de exploits; la detección basada en anomalías, que compara la actividad de la red con líneas de base establecidas; y la detección basada en políticas, que aplica reglas de seguridad específicas configuradas por los administradores. Estos métodos garantizan que sólo se permite el acceso autorizado.
+
+
+  - " Balanceador de carga " -
+
+Un balanceador de carga se puede implementar como software o hardware en un dispositivo que distribuye las conexiones de los clientes entre un conjunto de servidores. Un balanceador de carga actúa como un "proxy inverso" para representar los servidores de aplicaciones al cliente a través de una dirección IP virtual (VIP). Esta tecnología se conoce como balanceador de carga del servidor (SLB). SLB está diseñado para grupos de servidores de aplicaciones dentro de un solo sitio o red de área local (LAN).
+
+Los balanceadores de carga se utilizan para proporcionar disponibilidad y escalabilidad a la aplicación. La aplicación puede escalar más allá de la capacidad de un solo servidor. El balanceador de carga trabaja para dirigir el tráfico a un grupo de servidores disponibles a través de varios algoritmos de equilibrio de carga. Si se necesitan más recursos, se pueden agregar servidores adicionales.
+
+Los balanceadores de carga comprueban el estado de la aplicación en el servidor para determinar su disponibilidad. Si se produce un error en la comprobación de estado, el balanceador de carga saca esa instancia de la aplicación de su grupo de servidores disponibles. Cuando la aplicación vuelva a estar en línea, La comprobación de estado valida su disponibilidad y el servidor se vuelve a colocar en el grupo de disponibilidad.
+
+
+  - " Proxies " -
+
+Un servidor proxy es un sistema o enrutador que proporciona una puerta de enlace entre los usuarios e Internet. Por lo tanto, ayuda a evitar que los ciberatacantes ingresen a una red privada. Es un servidor denominado “intermediario”, porque está entre los usuarios finales y las páginas web que visitan en línea.
+
+Cuando una computadora se conecta a Internet, utiliza una dirección IP. Esto es similar a la dirección de su casa: le indica a los datos entrantes adónde ir y marca los datos salientes con una dirección de devolución para que otros dispositivos se autentiquen. Un servidor proxy es esencialmente una computadora en Internet que tiene una dirección IP propia.
+
+
+ - " NAS vs SAN " -
+
+  "NAS"
+
+Un Network Attached Storage, NAS por sus siglas, se traduce como al­ma­ce­na­mie­n­to conectado a una red y denomina a un di­s­po­si­ti­vo de al­ma­ce­na­mie­n­to dedicado, conectado a una red local y, en co­m­pa­ra­ción con otras so­lu­cio­nes de re­po­si­to­rio, ca­ra­c­te­ri­za­do por un precio más bajo y una ad­mi­ni­s­tra­ción menos exigente.
+
+Los sistemas de al­ma­ce­na­mie­n­to en red NAS proceden de fa­bri­ca­n­tes como Synology, Seagate Te­ch­no­lo­gy, Netgear, QNAP, Buffalo o Western Digital, que los ofrecen, por regla general, como un di­s­po­si­ti­vo completo con todos los co­m­po­ne­n­tes de hardware y de software que requiere su puesta en marcha. El público objetivo de esta solución de al­ma­ce­na­mie­n­to en red incluye pymes, autónomos y usuarios privados.
+
+Podría decirse que un sistema NAS está co­n­s­trui­do bá­si­ca­me­n­te como un ordenador al uso, in­clu­ye­n­do elementos fu­n­da­me­n­ta­les como un punto de conexión a la red eléctrica, un ve­n­ti­la­dor, una unidad CPU, otra de RAM y un panel de control principal, así como puntos ha­bi­tua­les de conexión como LAN, USB y WLAN.
+
+Un sistema NAS consiste fu­n­da­me­n­ta­l­me­n­te en un servidor de archivos op­ti­mi­za­do para el al­ma­ce­na­mie­n­to de datos en redes locales que accede a la red local a través del protocolo de red Windows SMB (Server Message Blocks). Los sistemas basados en Linux usan NFS (Network File System) o FTP (File Transfer Protocol) como protocolo de tra­n­s­fe­re­n­cia, mientras que el hardware Apple apuesta por AFP (Apple Filing Protocol). Muchos NAS admiten el al­ma­ce­na­mie­n­to de copias de seguridad rea­li­za­das con el software de Apple Time Machine.
+
+Una de las funciones pri­n­ci­pa­les de un Network Attached Storage es controlar el acceso a los datos al­ma­ce­na­dos, es­pe­cia­l­me­n­te en un ámbito como el pro­fe­sio­nal, donde se requiere depositar en la misma pla­ta­fo­r­ma los datos de di­fe­re­n­tes usuarios, pro­te­gi­dos los unos de los otros.
+
+  "SAN"
+
+Una red de área de almacenamiento SAN, Storage Area Network, por sus siglas en inglés es una red de alta velocidad que conecta servidores con dispositivos de almacenamiento, utilizada principalmente por empresas para aplicaciones críticas que requieren un alto rendimiento y una baja latencia. Las SAN centralizan el almacenamiento en bloques, permitiendo a las organizaciones almacenar datos en un pool compartido, lo que facilita prácticas coherentes de protección de datos, seguridad y recuperación ante desastres.
+
+En una red de área de almacenamiento SAN, los datos se almacenan en unidades lógicas conocidas como LUN (Logical Unit Numbers), que son bloques de almacenamiento que se crean a partir de un pool de almacenamiento compartido. Los servidores ven los LUN como si fueran discos locales: los particionan, formatean y los utilizan para almacenar datos, igual que con el almacenamiento local. Las SAN están diseñadas para ofrecer alta disponibilidad y resistencia, lo que les permite soportar fallos de varios componentes o dispositivos sin interrumpir el acceso a los datos.
+
+
+NOTA: NAS y SAM requieren un uso GRANDE de ancho de banda para una comunicación óptima. Además pueden estar aisladas en una red.
+
+
+  - " Punto de Acceso (AP - Access Point) " -
+
+Un punto de acceso (AP) es un dispositivo que permite ampliar la cobertura de una red Wi-Fi, conectando dispositivos inalámbricos (como notebooks, celulares o cámaras IP) a una red cableada existente. A diferencia de un router, un AP no crea una red nueva, sino que extiende y mejora una red ya configurada.
+
+La diferencia entre un Router y un AP es que el router sería el “corazón” de la red doméstica, redirigiendo el tráfico de datos entre dispositivos con el protocol ARP. Por otro lado el punto de acceso actúa como un extensor de la señal Wi-Fi, su rol es crear una red inalámbrica local para que otros dispositivos se conecten a esa red a través del router, básicamente es un extensor de la señal. “EL AP NO REDIRIGE TRÁFICO HACIA LOS DISPOSITIVOS, SOLO AL ROUTER”
+
+Un punto de acceso (Access Point) opera principalmente en la Capa 2 (Capa de Enlace de Datos) del modelo OSI. 
+
+En este nivel, el dispositivo gestiona el direccionamiento físico (direcciones MAC) y el acceso al medio inalámbrico, actuando como un conmutador (switch) para conectar dispositivos en una red de área local (LAN).  Dependiendo de su complejidad y configuración, algunos puntos de acceso avanzados pueden también realizar funciones de enrutamiento en la Capa 3 (Capa de Red) o gestión de sesiones en la Capa 5, pero su función fundamental es la de enlace de datos. 
+
+NOTA: Un punto de acceso es un puente (bridge) a la red.
+
+
+
+
+

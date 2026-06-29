@@ -101,6 +101,51 @@ CIDR también facilita la agregación de múltiples prefijos contiguos en superr
 
 En resumen, CIDR es un estándar fundamental para la asignación y administración eficiente de direcciones IP en Internet, permitiendo una mayor flexibilidad, eficiencia y escalabilidad en la gestión de redes.
 
+  - "TTL" -
+
+El tiempo de vida (TTL - Time To Live) es el tiempo o “saltos” que un paquete puede moverse a través de una red antes de ser desechado por un enrutador, o cuánto tiempo se retiene el contenido o una consulta en el caché DNS y CDN.
+
+A medida que aprende lo que significa TTL, debe diferenciar entre TTL del sistema de nombres de dominio (DNS) y TTL de la red de entrega de contenido (CDN). El TTL de DNS instruye al solucionador de DNS sobre la cantidad de tiempo que necesita para almacenar una consulta en caché antes de solicitar una nueva. Esta información se almacena dentro de la memoria caché del sistema del solucionador local o recursivo que maneja el TTL hasta que tenga que recopilar nuevos detalles.
+
+El "CDN TTL" es diferente en cuanto a que se refiere al almacenamiento en caché del contenido. Esto implica conservar una copia de los recursos en un sitio web en proxies CDN para acelerar la carga de páginas y reducir la cantidad de ancho de banda consumido.
+
+"DNS TTL" se expresa en términos de tiempo porque determina la cantidad de tiempo antes de que el resólver recopile los detalles de un sitio web. Por ejemplo, si el TTL de DNS de una página se estableciera en 900 segundos (15 minutos), el solucionador recopilaría detalles sobre esa página una vez cada 15 minutos. Durante ese período de 15 minutos, todos los usuarios que fueron a esa página verían exactamente lo mismo. Si 2000 usuarios fueran a dicha página entre las 12:00 p. m. y las 12:15 p. m., todos verían el mismo texto, imágenes, enlaces, etc.
+
+Sin embargo, incluso si se realizara una actualización en el sitio web a las 12:10 p. m., esto no entraría en vigencia hasta que el TTL del DNS volviera a recopilar más detalles para el sitio a las 12:15 p. m. Por lo tanto, un usuario que se dirigiera a Fortinet.com a las 12:16 p. m. vería el contenido actualizado, pero un usuario que lo visitó a las 12:14 p. m. vería cualquier cosa que estuviera allí entre las 12:00 p. m. y las 12:15 p. m.
+
+ - ¿Cómo funciona el TTL?
+
+La función básica del TTL gira en torno a la gestión de paquetes de información en relación con las solicitudes de DNS. Cuando uno de estos paquetes se crea y se transmite a través de Internet, existe la posibilidad de que pase continuamente de un enrutador a otro sin parar. Para evitar que esto suceda, cada paquete tiene un límite TTL o de salto específico. También es posible examinar el registro TTL de un paquete de datos para obtener información sobre cómo se ha movido a través de Internet durante el transcurso de sus viajes.
+
+Dentro de cada paquete, hay un lugar específico donde el valor TTL se almacena. Se trata de un valor numérico e indica cuánto más tiempo debe moverse el paquete por Internet. Cuando un enrutador recibe un paquete de datos, quita una unidad del recuento de TTL antes de enviarlo al siguiente destino dentro de la red. Esto continúa ocurriendo hasta que el recuento de TTL dentro del paquete alcanza el cero. 
+
+Una vez vencido, el enrutador elimina el paquete de datos y transmite un mensaje de protocolo de mensajes de control de Internet (ICMP) al host desde donde se originó el paquete. ICMP es un protocolo que permite a los dispositivos comunicarse entre sí y transmitir errores con respecto al flujo de paquetes de datos.
+
+ - "IP - Internet Protocol - Frame" -
+
+  Esquema por pasos de cómo viaja la información entre protocolos:
+
+  1.    | Ethernet  | --------------------------------- Ethernet  --------------------------------------  | Ethernet  |
+        |  Header   | --------------------------------  Payload   --------------------------------------  | Trailer   |
+
+
+
+  2.    | Ethernet  | ----------  IP  ------------ | ---------------------- IP -------------------------  | Ethernet  |
+        |  Header   | ---------------------------- | --------------------- Payload ---------------------  | Trailer   |
+
+
+
+  3.    | Ethernet  | ----------  IP  ------------ | ------ TCP------ | ------------- TCP --------------  | Ethernet  |
+        |  Header   | ---------------------------- | ---------------- | ----------- Payload ------------  | Trailer   |
+
+
+
+  4.    | Ethernet  | ----------  IP  ------------ | ------ TCP------ | ------------- HTTP -------------  | Ethernet  |
+        |  Header   | ---------------------------- | ---------------- | ------------- Data -------------  | Trailer   |
+
+
+  Al final termina siendo una "Matrioshka" de protocolos anidados dentro de protocolos mayores
+
 ---------------------------------------------------
 
 1. ¿Para qué sirve una dirección IP dentro de una red?

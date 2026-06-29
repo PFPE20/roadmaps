@@ -248,7 +248,8 @@ La traducción de direcciones de red (NAT) tiene un impacto significativo en el 
    
    Esta pregunta es un poco redundante y de cierta forma está ligada a la explicación de IPs públicas y privadas. Las IP interna o IP privada son aquellas direcciones que se asignan a los dispositivos en una red, se asignan a través del protocolo DHCP y se traducen mediante NAT. La IP externa o IP pública es la dirección que proporcionan los enrutadores a los paquetes enviados desde cada dispositivo en la red para establecer una conexión con otras redes externas, teniendo que los frames lleguen a las direcciones de destino usando la dirección proporcionada por el enrutador, cuando estas solicitudes reciben una respuesta, el mismo router se encargará, mediante el mismo protocolo DHCP en entregar esta respuesta al dispositivo que la ha solicitado.
    
-Criterio de cierre:
-Puedes explicar cómo una red privada accede a Internet.
-
 ---------------------------------------------------
+
+    - "CDN (Content Delivery Network)" -
+
+Una red de entrega de contenido (CDN) es una red de servidores interconectados que acelera la carga de las páginas web para las aplicaciones que tienen un uso intensivo de datos. CDN puede significar red de entrega de contenido o red de distribución de contenido. Cuando un usuario visita un sitio web, los datos del servidor de ese sitio tienen que viajar a través de Internet para llegar a la computadora del usuario. Si el usuario se encuentra lejos de ese servidor, un archivo de gran tamaño, como un video o una imagen del sitio web, se demorará mucho en cargar. En su lugar, el contenido del sitio web se almacena en servidores de CDN ubicados geográficamente más cerca de los usuarios, por lo que el contenido llega a sus computadoras mucho más rápido.
